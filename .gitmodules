@@ -1,0 +1,3 @@
+[submodule "RAK2270-Sticker-Tracker"]
+	path = RAK2270-Sticker-Tracker
+	url = https://github.com/RAKWireless/RAK2270-Sticker-Tracker.git
