@@ -1,0 +1,20 @@
+requires-atopile: "^0.12.4"
+
+paths:
+  src: ./
+  layout: ./layouts
+
+builds:
+  default:
+    entry: "aertactx_dogtracker.ato:AertactxDogtracker"
+
+package:
+  identifier: "glovepost/aertactx-dogtracker"
+  repository: "https://github.com/glovepost/aertactx-dogtracker"
+  version: "0.1.0"  # recommended first version
+  authors:
+    - name: "Glovepost"
+      email: "lawrence@glovepost.com"
+  summary: "A brand new atopile project!"
+  license: "MIT license"
+  homepage: # fill me!

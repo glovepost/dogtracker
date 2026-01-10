@@ -1,0 +1,1904 @@
+(export
+    (version "E")
+    (components
+        (comp
+            (ref "ANT1")
+            (value "Antenna")
+            (footprint "KYOCERA_AVX_M620720:ANT-SMD_3P-L6.0-W2.0_M620720")
+            (property
+                (name "LCSC")
+                (value "C5110126")
+            )
+            (property
+                (name "Manufacturer")
+                (value "KYOCERA AVX")
+            )
+            (property
+                (name "Partnumber")
+                (value "M620720")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.ant1")
+            )
+            (tstamps "1")
+            (fields)
+        )
+        (comp
+            (ref "B1")
+            (value "CR2032_Holder")
+            (footprint "Q_J_CR2032_BS_6_1:BAT-TH_CR2032-BS-6-1")
+            (property
+                (name "LCSC")
+                (value "C70377")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Q&J")
+            )
+            (property
+                (name "Partnumber")
+                (value "CR2032-BS-6-1")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.b1")
+            )
+            (tstamps "2")
+            (fields)
+        )
+        (comp
+            (ref "C1")
+            (value "5.6pF 50V C0G")
+            (footprint "Murata_Electronics_GJM1555C1H5R6BB01D:C0402")
+            (property
+                (name "LCSC")
+                (value "C161329")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "GJM1555C1H5R6BB01D")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 5.6e-12, \"max\": 5.6e-12}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"C0G\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c_match1")
+            )
+            (tstamps "3")
+            (fields)
+        )
+        (comp
+            (ref "C2")
+            (value "5.6pF 50V C0G")
+            (footprint "Murata_Electronics_GJM1555C1H5R6BB01D:C0402")
+            (property
+                (name "LCSC")
+                (value "C161329")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "GJM1555C1H5R6BB01D")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 5.6e-12, \"max\": 5.6e-12}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"C0G\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c_match2")
+            )
+            (tstamps "4")
+            (fields)
+        )
+        (comp
+            (ref "C3")
+            (value "4.7µF ±10% 10V X5R")
+            (footprint "Murata_Electronics_GRM155R61A475KEAAD:C0402")
+            (property
+                (name "LCSC")
+                (value "C77004")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "GRM155R61A475KEAAD")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4.229999993e-06, \"max\": 5.170000007e-06}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 10.0, \"max\": 10.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"X5R\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c1")
+            )
+            (tstamps "5")
+            (fields)
+        )
+        (comp
+            (ref "C4")
+            (value "100nF ±10% 50V X7R")
+            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (property
+                (name "LCSC")
+                (value "C131394")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "CC0402KRX7R9BB104")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 9e-08, \"max\": 1.1e-07}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"X7R\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c2")
+            )
+            (tstamps "6")
+            (fields)
+        )
+        (comp
+            (ref "C5")
+            (value "100nF ±10% 50V X7R")
+            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (property
+                (name "LCSC")
+                (value "C131394")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "CC0402KRX7R9BB104")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 9e-08, \"max\": 1.1e-07}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"X7R\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c3")
+            )
+            (tstamps "7")
+            (fields)
+        )
+        (comp
+            (ref "C6")
+            (value "4.7µF ±10% 10V X5R")
+            (footprint "Murata_Electronics_GRM155R61A475KEAAD:C0402")
+            (property
+                (name "LCSC")
+                (value "C77004")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "GRM155R61A475KEAAD")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4.229999993e-06, \"max\": 5.170000007e-06}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 10.0, \"max\": 10.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"X5R\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c4")
+            )
+            (tstamps "8")
+            (fields)
+        )
+        (comp
+            (ref "C7")
+            (value "100nF ±10% 50V X7R")
+            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (property
+                (name "LCSC")
+                (value "C131394")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "CC0402KRX7R9BB104")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 9e-08, \"max\": 1.1e-07}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"X7R\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c5")
+            )
+            (tstamps "9")
+            (fields)
+        )
+        (comp
+            (ref "C8")
+            (value "100nF ±10% 50V X7R")
+            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (property
+                (name "LCSC")
+                (value "C131394")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "CC0402KRX7R9BB104")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 9e-08, \"max\": 1.1e-07}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"X7R\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c6")
+            )
+            (tstamps "10")
+            (fields)
+        )
+        (comp
+            (ref "C9")
+            (value "22µF ±20% 6.3V X5R")
+            (footprint "YAGEO_CC0603MRX5R5BB226:C0603")
+            (property
+                (name "LCSC")
+                (value "C109448")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "CC0603MRX5R5BB226")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 6.3, \"max\": 6.3}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_capacitance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 1.7599999934e-05, \"max\": 2.6400000066e-05}}]}}, \"unit\": \"farad\"}}")
+            )
+            (property
+                (name "PARAM_temperature_coefficient")
+                (value "{\"type\": \"EnumSet\", \"data\": {\"elements\": [{\"name\": \"X5R\"}], \"enum\": {\"name\": \"TemperatureCoefficient\", \"values\": {\"Y5V\": 1, \"Z5U\": 2, \"X7S\": 3, \"X5R\": 4, \"X6R\": 5, \"X7R\": 6, \"X8R\": 7, \"C0G\": 8}}}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.c_bulk")
+            )
+            (tstamps "11")
+            (fields)
+        )
+        (comp
+            (ref "H1")
+            (value "SWD_Header")
+            (footprint "Ckmtw_B_2100S05P_A110:HDR-TH_5P-P2.54-V-M")
+            (property
+                (name "LCSC")
+                (value "C124379")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Ckmtw")
+            )
+            (property
+                (name "Partnumber")
+                (value "B-2100S05P-A110")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.j1")
+            )
+            (tstamps "12")
+            (fields)
+        )
+        (comp
+            (ref "L1")
+            (value "10µH ±20% 30MHz 50mA 1.17Ω")
+            (footprint "Murata_Electronics_LQM18FN100M00D:L0603")
+            (property
+                (name "LCSC")
+                (value "C86083")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "LQM18FN100M00D")
+            )
+            (property
+                (name "PARAM_dc_resistance")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 1.17, \"max\": 1.17}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "PARAM_inductance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 7.99999997e-06, \"max\": 1.200000003e-05}}]}}, \"unit\": \"henry\"}}")
+            )
+            (property
+                (name "PARAM_max_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.05, \"max\": 0.05}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_saturation_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.05, \"max\": 0.05}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_self_resonant_frequency")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 30000000.0, \"max\": 30000000.0}}]}}, \"unit\": \"hertz\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.l1")
+            )
+            (tstamps "13")
+            (fields)
+        )
+        (comp
+            (ref "L2")
+            (value "")
+            (footprint "Murata_Electronics_BLM15PD121SN1D:L0402")
+            (property
+                (name "LCSC")
+                (value "C76891")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "BLM15PD121SN1D")
+            )
+            (property
+                (name "PARAM_dc_resistance")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 1.17, \"max\": 1.17}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "PARAM_inductance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 7.99999997e-06, \"max\": 1.200000003e-05}}]}}, \"unit\": \"henry\"}}")
+            )
+            (property
+                (name "PARAM_max_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.05, \"max\": 0.05}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_saturation_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.05, \"max\": 0.05}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_self_resonant_frequency")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 30000000.0, \"max\": 30000000.0}}]}}, \"unit\": \"hertz\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.e1")
+            )
+            (tstamps "14")
+            (fields)
+        )
+        (comp
+            (ref "L3")
+            (value "")
+            (footprint "Murata_Electronics_BLM15PD121SN1D:L0402")
+            (property
+                (name "LCSC")
+                (value "C76891")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "BLM15PD121SN1D")
+            )
+            (property
+                (name "PARAM_dc_resistance")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 1.17, \"max\": 1.17}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "PARAM_inductance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 7.99999997e-06, \"max\": 1.200000003e-05}}]}}, \"unit\": \"henry\"}}")
+            )
+            (property
+                (name "PARAM_max_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.05, \"max\": 0.05}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_saturation_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.05, \"max\": 0.05}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_self_resonant_frequency")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 30000000.0, \"max\": 30000000.0}}]}}, \"unit\": \"hertz\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.e2")
+            )
+            (tstamps "15")
+            (fields)
+        )
+        (comp
+            (ref "L4")
+            (value "")
+            (footprint "Murata_Electronics_BLM15PD121SN1D:L0402")
+            (property
+                (name "LCSC")
+                (value "C76891")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "BLM15PD121SN1D")
+            )
+            (property
+                (name "PARAM_dc_resistance")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 1.17, \"max\": 1.17}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "PARAM_inductance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 7.99999997e-06, \"max\": 1.200000003e-05}}]}}, \"unit\": \"henry\"}}")
+            )
+            (property
+                (name "PARAM_max_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.05, \"max\": 0.05}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_saturation_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.05, \"max\": 0.05}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_self_resonant_frequency")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 30000000.0, \"max\": 30000000.0}}]}}, \"unit\": \"hertz\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.e3")
+            )
+            (tstamps "16")
+            (fields)
+        )
+        (comp
+            (ref "L5")
+            (value "4.3nH 6GHz 750mA 140mΩ")
+            (footprint "Murata_Electronics_LQG15HS4N3S02D:L0402")
+            (property
+                (name "LCSC")
+                (value "C97999")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "LQG15HS4N3S02D")
+            )
+            (property
+                (name "PARAM_dc_resistance")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.14, \"max\": 0.14}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "PARAM_inductance")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4.3e-09, \"max\": 4.3e-09}}]}}, \"unit\": \"henry\"}}")
+            )
+            (property
+                (name "PARAM_max_current")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.75, \"max\": 0.75}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_saturation_current")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0, \"max\": null}}]}}, \"unit\": \"ampere\"}}")
+            )
+            (property
+                (name "PARAM_self_resonant_frequency")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 6000000000.0, \"max\": 6000000000.0}}]}}, \"unit\": \"hertz\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.l_series")
+            )
+            (tstamps "17")
+            (fields)
+        )
+        (comp
+            (ref "LED1")
+            (value "StatusLED")
+            (footprint "Everlight_Elec_19_217_GHC_YR1S2_3T:LED0603-RD")
+            (property
+                (name "LCSC")
+                (value "C72043")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Everlight Elec")
+            )
+            (property
+                (name "Partnumber")
+                (value "19-217/GHC-YR1S2/3T")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.d1")
+            )
+            (tstamps "18")
+            (fields)
+        )
+        (comp
+            (ref "R1")
+            (value "10kΩ ±1% 62.5mW")
+            (footprint "YAGEO_RC0402FR_0710KL:R0402")
+            (property
+                (name "LCSC")
+                (value "C60490")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "RC0402FR-0710KL")
+            )
+            (property
+                (name "PARAM_max_power")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0625, \"max\": 0.0625}}]}}, \"unit\": \"watt\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_resistance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 9900.000002235174, \"max\": 10099.999997764826}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.r1")
+            )
+            (tstamps "19")
+            (fields)
+        )
+        (comp
+            (ref "R2")
+            (value "")
+            (footprint "Murata_Electronics_NCP15XH103F03RC:R0402")
+            (property
+                (name "LCSC")
+                (value "C77131")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Murata Electronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "NCP15XH103F03RC")
+            )
+            (property
+                (name "PARAM_max_power")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0625, \"max\": 0.0625}}]}}, \"unit\": \"watt\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_resistance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 9900.000002235174, \"max\": 10099.999997764826}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.r2")
+            )
+            (tstamps "20")
+            (fields)
+        )
+        (comp
+            (ref "R3")
+            (value "10kΩ ±1% 62.5mW")
+            (footprint "YAGEO_RC0402FR_0710KL:R0402")
+            (property
+                (name "LCSC")
+                (value "C60490")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "RC0402FR-0710KL")
+            )
+            (property
+                (name "PARAM_max_power")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0625, \"max\": 0.0625}}]}}, \"unit\": \"watt\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_resistance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 9900.000002235174, \"max\": 10099.999997764826}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.r3")
+            )
+            (tstamps "21")
+            (fields)
+        )
+        (comp
+            (ref "R4")
+            (value "1kΩ ±5% 62.5mW")
+            (footprint "YAGEO_RC0402JR_071KL:R0402")
+            (property
+                (name "LCSC")
+                (value "C105637")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "RC0402JR-071KL")
+            )
+            (property
+                (name "PARAM_max_power")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0625, \"max\": 0.0625}}]}}, \"unit\": \"watt\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_resistance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 949.9999992549419, \"max\": 1050.000000745058}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.r4")
+            )
+            (tstamps "22")
+            (fields)
+        )
+        (comp
+            (ref "R5")
+            (value "4.7kΩ ±5% 62.5mW")
+            (footprint "YAGEO_RC0402JR_074K7L:R0402")
+            (property
+                (name "LCSC")
+                (value "C105870")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "RC0402JR-074K7L")
+            )
+            (property
+                (name "PARAM_max_power")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0625, \"max\": 0.0625}}]}}, \"unit\": \"watt\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_resistance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4464.999996498227, \"max\": 4935.000003501773}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.r5")
+            )
+            (tstamps "23")
+            (fields)
+        )
+        (comp
+            (ref "R6")
+            (value "4.7kΩ ±5% 62.5mW")
+            (footprint "YAGEO_RC0402JR_074K7L:R0402")
+            (property
+                (name "LCSC")
+                (value "C105870")
+            )
+            (property
+                (name "Manufacturer")
+                (value "YAGEO")
+            )
+            (property
+                (name "Partnumber")
+                (value "RC0402JR-074K7L")
+            )
+            (property
+                (name "PARAM_max_power")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0625, \"max\": 0.0625}}]}}, \"unit\": \"watt\"}}")
+            )
+            (property
+                (name "PARAM_max_voltage")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+            )
+            (property
+                (name "PARAM_resistance")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4464.999996498227, \"max\": 4935.000003501773}}]}}, \"unit\": \"ohm\"}}")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.r6")
+            )
+            (tstamps "24")
+            (fields)
+        )
+        (comp
+            (ref "U1")
+            (value "RAK3172")
+            (footprint "RAKwireless_RAK3172_SIP_8_SM_NI:LGA-73_L12.0-W12.0-P0.60-TL")
+            (property
+                (name "LCSC")
+                (value "C19818882")
+            )
+            (property
+                (name "Manufacturer")
+                (value "RAKwireless")
+            )
+            (property
+                (name "Partnumber")
+                (value "RAK3172-SIP-8-SM-NI")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.u1")
+            )
+            (tstamps "25")
+            (fields)
+        )
+        (comp
+            (ref "U2")
+            (value "EEPROM")
+            (footprint "FMD_FT24C02A_KLR_T:SOT-23-5_L2.9-W1.5-P0.95-LS2.8-BL")
+            (property
+                (name "LCSC")
+                (value "C5189122")
+            )
+            (property
+                (name "Manufacturer")
+                (value "FMD")
+            )
+            (property
+                (name "Partnumber")
+                (value "FT24C02A-KLR-T")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.u3")
+            )
+            (tstamps "26")
+            (fields)
+        )
+        (comp
+            (ref "U3")
+            (value "HDC2080")
+            (footprint "Texas_Instruments_HDC2080DMBR:WSON-6_L3.0-W3.0-P1.00-TL-EP")
+            (property
+                (name "LCSC")
+                (value "C918141")
+            )
+            (property
+                (name "Manufacturer")
+                (value "Texas Instruments")
+            )
+            (property
+                (name "Partnumber")
+                (value "HDC2080DMBR")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.u5")
+            )
+            (tstamps "27")
+            (fields)
+        )
+        (comp
+            (ref "U4")
+            (value "LIS3DH")
+            (footprint "STMicroelectronics_LIS3DHTR:LGA-16_L3.0-W3.0-P0.50-TL")
+            (property
+                (name "LCSC")
+                (value "C15134")
+            )
+            (property
+                (name "Manufacturer")
+                (value "STMicroelectronics")
+            )
+            (property
+                (name "Partnumber")
+                (value "LIS3DHTR")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.u2")
+            )
+            (tstamps "28")
+            (fields)
+        )
+        (comp
+            (ref "U5")
+            (value "QMI8658C")
+            (footprint "QST_QMI8658C:LGA-14_L3.0-W2.5-P0.50-BR")
+            (property
+                (name "LCSC")
+                (value "C2842151")
+            )
+            (property
+                (name "Manufacturer")
+                (value "QST")
+            )
+            (property
+                (name "Partnumber")
+                (value "QMI8658C")
+            )
+            (property
+                (name "atopile_address")
+                (value "blah.u4")
+            )
+            (tstamps "29")
+            (fields)
+        )
+    )
+    (nets
+        (net
+            (code 1)
+            (name "A")
+            (node
+                (ref "LED1")
+                (pin "2")
+            )
+            (node
+                (ref "R4")
+                (pin "2")
+            )
+        )
+        (net
+            (code 2)
+            (name "ADC1")
+            (node
+                (ref "U4")
+                (pin "16")
+            )
+        )
+        (net
+            (code 3)
+            (name "ADC2")
+            (node
+                (ref "U4")
+                (pin "15")
+            )
+        )
+        (net
+            (code 4)
+            (name "ADC3")
+            (node
+                (ref "U4")
+                (pin "13")
+            )
+        )
+        (net
+            (code 5)
+            (name "BOOT0")
+            (node
+                (ref "U1")
+                (pin "43")
+            )
+        )
+        (net
+            (code 6)
+            (name "CS_AUX")
+            (node
+                (ref "U5")
+                (pin "10")
+            )
+        )
+        (net
+            (code 7)
+            (name "DRDY_INT")
+            (node
+                (ref "U1")
+                (pin "19")
+            )
+            (node
+                (ref "U3")
+                (pin "4")
+            )
+        )
+        (net
+            (code 8)
+            (name "Feed")
+            (node
+                (ref "ANT1")
+                (pin "1")
+            )
+            (node
+                (ref "C2")
+                (pin "1")
+            )
+            (node
+                (ref "L5")
+                (pin "2")
+            )
+        )
+        (net
+            (code 9)
+            (name "INT1")
+            (node
+                (ref "U1")
+                (pin "15")
+            )
+            (node
+                (ref "U4")
+                (pin "11")
+            )
+        )
+        (net
+            (code 10)
+            (name "PA10")
+            (node
+                (ref "U1")
+                (pin "62")
+            )
+        )
+        (net
+            (code 11)
+            (name "PA11")
+            (node
+                (ref "U1")
+                (pin "63")
+            )
+        )
+        (net
+            (code 12)
+            (name "PA12")
+            (node
+                (ref "U1")
+                (pin "64")
+            )
+        )
+        (net
+            (code 13)
+            (name "PA2_UART2_TX")
+            (node
+                (ref "U1")
+                (pin "29")
+            )
+        )
+        (net
+            (code 14)
+            (name "PA3_UART2_RX")
+            (node
+                (ref "U1")
+                (pin "30")
+            )
+        )
+        (net
+            (code 15)
+            (name "PA4")
+            (node
+                (ref "U1")
+                (pin "31")
+            )
+        )
+        (net
+            (code 16)
+            (name "PA5")
+            (node
+                (ref "U1")
+                (pin "32")
+            )
+        )
+        (net
+            (code 17)
+            (name "PA6")
+            (node
+                (ref "U1")
+                (pin "33")
+            )
+        )
+        (net
+            (code 18)
+            (name "PA7")
+            (node
+                (ref "U1")
+                (pin "34")
+            )
+        )
+        (net
+            (code 19)
+            (name "PA8")
+            (node
+                (ref "U1")
+                (pin "51")
+            )
+        )
+        (net
+            (code 20)
+            (name "PA9")
+            (node
+                (ref "U1")
+                (pin "50")
+            )
+        )
+        (net
+            (code 21)
+            (name "PB1")
+            (node
+                (ref "U1")
+                (pin "57")
+            )
+        )
+        (net
+            (code 22)
+            (name "PB10")
+            (node
+                (ref "U1")
+                (pin "49")
+            )
+        )
+        (net
+            (code 23)
+            (name "PB11")
+            (node
+                (ref "U1")
+                (pin "48")
+            )
+        )
+        (net
+            (code 24)
+            (name "PB12")
+            (node
+                (ref "U1")
+                (pin "59")
+            )
+        )
+        (net
+            (code 25)
+            (name "PB13")
+            (node
+                (ref "U1")
+                (pin "60")
+            )
+        )
+        (net
+            (code 26)
+            (name "PB14")
+            (node
+                (ref "U1")
+                (pin "61")
+            )
+        )
+        (net
+            (code 27)
+            (name "PB15")
+            (node
+                (ref "U1")
+                (pin "9")
+            )
+        )
+        (net
+            (code 28)
+            (name "PB7_UART1_RX")
+            (node
+                (ref "U1")
+                (pin "18")
+            )
+        )
+        (net
+            (code 29)
+            (name "PB9")
+            (node
+                (ref "U1")
+                (pin "20")
+            )
+        )
+        (net
+            (code 30)
+            (name "PC0")
+            (node
+                (ref "U1")
+                (pin "21")
+            )
+        )
+        (net
+            (code 31)
+            (name "PC1")
+            (node
+                (ref "U1")
+                (pin "22")
+            )
+        )
+        (net
+            (code 32)
+            (name "PC13")
+            (node
+                (ref "U1")
+                (pin "5")
+            )
+        )
+        (net
+            (code 33)
+            (name "PC2")
+            (node
+                (ref "U1")
+                (pin "23")
+            )
+        )
+        (net
+            (code 34)
+            (name "PC3")
+            (node
+                (ref "U1")
+                (pin "24")
+            )
+        )
+        (net
+            (code 35)
+            (name "PC4")
+            (node
+                (ref "U1")
+                (pin "25")
+            )
+        )
+        (net
+            (code 36)
+            (name "PC5")
+            (node
+                (ref "U1")
+                (pin "26")
+            )
+        )
+        (net
+            (code 37)
+            (name "PC6")
+            (node
+                (ref "U1")
+                (pin "27")
+            )
+        )
+        (net
+            (code 38)
+            (name "RES")
+            (node
+                (ref "U4")
+                (pin "10")
+            )
+        )
+        (net
+            (code 39)
+            (name "RF_OUT")
+            (node
+                (ref "C1")
+                (pin "1")
+            )
+            (node
+                (ref "L5")
+                (pin "1")
+            )
+            (node
+                (ref "U1")
+                (pin "37")
+            )
+        )
+        (net
+            (code 40)
+            (name "SCX")
+            (node
+                (ref "U5")
+                (pin "3")
+            )
+        )
+        (net
+            (code 41)
+            (name "SDO_SA0")
+            (node
+                (ref "U5")
+                (pin "1")
+            )
+        )
+        (net
+            (code 42)
+            (name "SDO_SUX")
+            (node
+                (ref "U5")
+                (pin "11")
+            )
+        )
+        (net
+            (code 43)
+            (name "SDX")
+            (node
+                (ref "U5")
+                (pin "2")
+            )
+        )
+        (net
+            (code 44)
+            (name "VDDMPS")
+            (node
+                (ref "U1")
+                (pin "11")
+            )
+        )
+        (net
+            (code 45)
+            (name "VFBSMPS")
+            (node
+                (ref "U1")
+                (pin "10")
+            )
+        )
+        (net
+            (code 46)
+            (name "VLXSMPS")
+            (node
+                (ref "U1")
+                (pin "13")
+            )
+        )
+        (net
+            (code 47)
+            (name "VREFpos")
+            (node
+                (ref "U1")
+                (pin "6")
+            )
+        )
+        (net
+            (code 48)
+            (name "activation")
+            (node
+                (ref "R3")
+                (pin "2")
+            )
+            (node
+                (ref "U1")
+                (pin "42")
+            )
+        )
+        (net
+            (code 49)
+            (name "adc_ntc")
+            (node
+                (ref "R1")
+                (pin "2")
+            )
+            (node
+                (ref "R2")
+                (pin "1")
+            )
+            (node
+                (ref "U1")
+                (pin "45")
+            )
+        )
+        (net
+            (code 50)
+            (name "blah-CS-0")
+            (node
+                (ref "U4")
+                (pin "8")
+            )
+        )
+        (net
+            (code 51)
+            (name "blah-CS-1")
+            (node
+                (ref "U5")
+                (pin "12")
+            )
+        )
+        (net
+            (code 52)
+            (name "blah-INT2-0")
+            (node
+                (ref "U1")
+                (pin "58")
+            )
+            (node
+                (ref "U5")
+                (pin "9")
+            )
+        )
+        (net
+            (code 53)
+            (name "blah-INT2-1")
+            (node
+                (ref "U1")
+                (pin "14")
+            )
+            (node
+                (ref "U4")
+                (pin "9")
+            )
+        )
+        (net
+            (code 54)
+            (name "blah-net-0")
+            (node
+                (ref "L1")
+                (pin "1")
+            )
+        )
+        (net
+            (code 55)
+            (name "blah-net-1")
+            (node
+                (ref "L1")
+                (pin "2")
+            )
+        )
+        (net
+            (code 56)
+            (name "blah-net-2")
+            (node
+                (ref "U1")
+                (pin "40")
+            )
+        )
+        (net
+            (code 57)
+            (name "blah-net-3")
+            (node
+                (ref "U1")
+                (pin "41")
+            )
+        )
+        (net
+            (code 58)
+            (name "blah-net-4")
+            (node
+                (ref "U4")
+                (pin "2")
+            )
+        )
+        (net
+            (code 59)
+            (name "blah-net-5")
+            (node
+                (ref "U4")
+                (pin "3")
+            )
+        )
+        (net
+            (code 60)
+            (name "blah-vcc-0")
+            (node
+                (ref "C3")
+                (pin "1")
+            )
+            (node
+                (ref "C4")
+                (pin "1")
+            )
+            (node
+                (ref "H1")
+                (pin "1")
+            )
+            (node
+                (ref "L2")
+                (pin "2")
+            )
+            (node
+                (ref "L3")
+                (pin "1")
+            )
+            (node
+                (ref "L4")
+                (pin "1")
+            )
+            (node
+                (ref "R1")
+                (pin "1")
+            )
+            (node
+                (ref "R3")
+                (pin "1")
+            )
+            (node
+                (ref "R5")
+                (pin "1")
+            )
+            (node
+                (ref "R6")
+                (pin "1")
+            )
+        )
+        (net
+            (code 61)
+            (name "blah-vcc-1")
+            (node
+                (ref "C7")
+                (pin "1")
+            )
+            (node
+                (ref "C8")
+                (pin "1")
+            )
+            (node
+                (ref "L4")
+                (pin "2")
+            )
+            (node
+                (ref "U2")
+                (pin "4")
+            )
+            (node
+                (ref "U3")
+                (pin "5")
+            )
+            (node
+                (ref "U4")
+                (pin "1")
+            )
+            (node
+                (ref "U4")
+                (pin "14")
+            )
+            (node
+                (ref "U5")
+                (pin "5")
+            )
+            (node
+                (ref "U5")
+                (pin "8")
+            )
+        )
+        (net
+            (code 62)
+            (name "gnd")
+            (node
+                (ref "ANT1")
+                (pin "2")
+            )
+            (node
+                (ref "ANT1")
+                (pin "3")
+            )
+            (node
+                (ref "B1")
+                (pin "2")
+            )
+            (node
+                (ref "C1")
+                (pin "2")
+            )
+            (node
+                (ref "C2")
+                (pin "2")
+            )
+            (node
+                (ref "C3")
+                (pin "2")
+            )
+            (node
+                (ref "C4")
+                (pin "2")
+            )
+            (node
+                (ref "C5")
+                (pin "2")
+            )
+            (node
+                (ref "C6")
+                (pin "2")
+            )
+            (node
+                (ref "C7")
+                (pin "2")
+            )
+            (node
+                (ref "C8")
+                (pin "2")
+            )
+            (node
+                (ref "C9")
+                (pin "2")
+            )
+            (node
+                (ref "H1")
+                (pin "5")
+            )
+            (node
+                (ref "LED1")
+                (pin "1")
+            )
+            (node
+                (ref "R2")
+                (pin "2")
+            )
+            (node
+                (ref "U1")
+                (pin "12")
+            )
+            (node
+                (ref "U1")
+                (pin "28")
+            )
+            (node
+                (ref "U1")
+                (pin "35")
+            )
+            (node
+                (ref "U1")
+                (pin "36")
+            )
+            (node
+                (ref "U1")
+                (pin "38")
+            )
+            (node
+                (ref "U1")
+                (pin "39")
+            )
+            (node
+                (ref "U1")
+                (pin "46")
+            )
+            (node
+                (ref "U1")
+                (pin "47")
+            )
+            (node
+                (ref "U1")
+                (pin "52")
+            )
+            (node
+                (ref "U1")
+                (pin "56")
+            )
+            (node
+                (ref "U1")
+                (pin "65")
+            )
+            (node
+                (ref "U1")
+                (pin "66")
+            )
+            (node
+                (ref "U1")
+                (pin "67")
+            )
+            (node
+                (ref "U1")
+                (pin "68")
+            )
+            (node
+                (ref "U1")
+                (pin "69")
+            )
+            (node
+                (ref "U1")
+                (pin "70")
+            )
+            (node
+                (ref "U1")
+                (pin "71")
+            )
+            (node
+                (ref "U1")
+                (pin "72")
+            )
+            (node
+                (ref "U1")
+                (pin "73")
+            )
+            (node
+                (ref "U2")
+                (pin "2")
+            )
+            (node
+                (ref "U2")
+                (pin "5")
+            )
+            (node
+                (ref "U3")
+                (pin "2")
+            )
+            (node
+                (ref "U3")
+                (pin "3")
+            )
+            (node
+                (ref "U3")
+                (pin "7")
+            )
+            (node
+                (ref "U4")
+                (pin "12")
+            )
+            (node
+                (ref "U4")
+                (pin "5")
+            )
+            (node
+                (ref "U4")
+                (pin "7")
+            )
+            (node
+                (ref "U5")
+                (pin "4")
+            )
+            (node
+                (ref "U5")
+                (pin "6")
+            )
+            (node
+                (ref "U5")
+                (pin "7")
+            )
+        )
+        (net
+            (code 63)
+            (name "i2c_scl")
+            (node
+                (ref "R6")
+                (pin "2")
+            )
+            (node
+                (ref "U1")
+                (pin "8")
+            )
+            (node
+                (ref "U2")
+                (pin "1")
+            )
+            (node
+                (ref "U3")
+                (pin "6")
+            )
+            (node
+                (ref "U4")
+                (pin "4")
+            )
+            (node
+                (ref "U5")
+                (pin "13")
+            )
+        )
+        (net
+            (code 64)
+            (name "i2c_sda")
+            (node
+                (ref "R5")
+                (pin "2")
+            )
+            (node
+                (ref "U1")
+                (pin "17")
+            )
+            (node
+                (ref "U2")
+                (pin "3")
+            )
+            (node
+                (ref "U3")
+                (pin "1")
+            )
+            (node
+                (ref "U4")
+                (pin "6")
+            )
+            (node
+                (ref "U5")
+                (pin "14")
+            )
+        )
+        (net
+            (code 65)
+            (name "led_status")
+            (node
+                (ref "R4")
+                (pin "1")
+            )
+            (node
+                (ref "U1")
+                (pin "16")
+            )
+        )
+        (net
+            (code 66)
+            (name "nrst")
+            (node
+                (ref "H1")
+                (pin "4")
+            )
+            (node
+                (ref "U1")
+                (pin "44")
+            )
+        )
+        (net
+            (code 67)
+            (name "swclk")
+            (node
+                (ref "H1")
+                (pin "3")
+            )
+            (node
+                (ref "U1")
+                (pin "2")
+            )
+        )
+        (net
+            (code 68)
+            (name "swdio")
+            (node
+                (ref "H1")
+                (pin "2")
+            )
+            (node
+                (ref "U1")
+                (pin "1")
+            )
+        )
+        (net
+            (code 69)
+            (name "vbat")
+            (node
+                (ref "B1")
+                (pin "1")
+            )
+            (node
+                (ref "C9")
+                (pin "1")
+            )
+            (node
+                (ref "L2")
+                (pin "1")
+            )
+            (node
+                (ref "U1")
+                (pin "4")
+            )
+        )
+        (net
+            (code 70)
+            (name "vcc_mcu")
+            (node
+                (ref "C5")
+                (pin "1")
+            )
+            (node
+                (ref "C6")
+                (pin "1")
+            )
+            (node
+                (ref "L3")
+                (pin "2")
+            )
+            (node
+                (ref "U1")
+                (pin "3")
+            )
+            (node
+                (ref "U1")
+                (pin "53")
+            )
+            (node
+                (ref "U1")
+                (pin "54")
+            )
+            (node
+                (ref "U1")
+                (pin "55")
+            )
+            (node
+                (ref "U1")
+                (pin "7")
+            )
+        )
+    )
+    (libparts)
+    (libraries)
+)

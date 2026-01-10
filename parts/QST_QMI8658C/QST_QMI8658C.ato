@@ -1,0 +1,30 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component QST_QMI8658C_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C2842151", date="2026-01-09T20:57:47.592340+00:00", checksum="d6fede25512913182098c82c963148151aabe63055da0ebb61e846067dc5ed01">
+
+    trait is_atomic_part<manufacturer="QST", partnumber="QMI8658C", footprint="LGA-14_L3.0-W2.5-P0.50-BR.kicad_mod", symbol="QMI8658C.kicad_sym", model="LGA-14_L3.0-W2.5-P0.50-BR.STEP">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C2842151", manufacturer="QST", partno="QMI8658C">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    signal CS ~ pin 12
+    signal CS_AUX ~ pin 10
+    signal GND ~ pin 6
+    GND ~ pin 7
+    signal INT1 ~ pin 4
+    signal INT2 ~ pin 9
+    signal SCL ~ pin 13
+    signal SCX ~ pin 3
+    signal SDA ~ pin 14
+    signal SDO_SA0 ~ pin 1
+    signal SDO_SUX ~ pin 11
+    signal SDX ~ pin 2
+    signal VDD ~ pin 8
+    signal VDDIO ~ pin 5

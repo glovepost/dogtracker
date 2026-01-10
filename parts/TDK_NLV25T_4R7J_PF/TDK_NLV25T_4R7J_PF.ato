@@ -1,0 +1,20 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component TDK_NLV25T_4R7J_PF_package:
+    """4.7uH±5%"""
+
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C76832", date="2026-01-10T01:29:01.377590+00:00", checksum="f6b154e7a535945e4b1d48bfeaf3bd69ed0e13a7affd795569c4acc2b1516af0">
+
+    trait is_atomic_part<manufacturer="TDK", partnumber="NLV25T-4R7J-PF", footprint="IND-SMD_L2.5-W2.0_NLV25T-390J-PF.kicad_mod", symbol="NLV25T-4R7J-PF.kicad_sym", model="IND-SMD_L2.5-W2.0_NLV25T-390J-PF.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C76832", manufacturer="TDK", partno="NLV25T-4R7J-PF">
+    trait has_designator_prefix<prefix="L">
+
+    # pins
+    pin 2
+    pin 1

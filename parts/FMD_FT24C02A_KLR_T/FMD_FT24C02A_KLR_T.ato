@@ -1,0 +1,21 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component FMD_FT24C02A_KLR_T_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C5189122", date="2026-01-09T21:36:57.766878+00:00", checksum="80df0d7a7ced3e67171b41f6e7b8cbb145b84162e5b1ccffd6beb4ade38873ce">
+
+    trait is_atomic_part<manufacturer="FMD", partnumber="FT24C02A-KLR-T", footprint="SOT-23-5_L2.9-W1.5-P0.95-LS2.8-BL.kicad_mod", symbol="FT24C02A-KLR-T.kicad_sym", model="SOT-23-5_L2.9-W1.5-P0.95-LS2.8-BL.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C5189122", manufacturer="FMD", partno="FT24C02A-KLR-T">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    signal GND ~ pin 2
+    signal SCL ~ pin 1
+    signal SDA ~ pin 3
+    signal VCC ~ pin 4
+    signal WP ~ pin 5

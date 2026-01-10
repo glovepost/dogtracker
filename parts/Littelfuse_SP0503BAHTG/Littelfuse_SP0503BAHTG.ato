@@ -1,0 +1,22 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Littelfuse_SP0503BAHTG_package:
+    """SP0503BAHTG"""
+
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C7074", date="2026-01-09T21:12:02.016251+00:00", checksum="9cab74dec815f382fdbab50422c926214fd4f0bc8ff6c057fea4bb1cacb44a78">
+
+    trait is_atomic_part<manufacturer="Littelfuse", partnumber="SP0503BAHTG", footprint="SOT-143_L2.9-W1.3-P1.92-LS2.3-BR.kicad_mod", symbol="SP0503BAHTG.kicad_sym", model="SOT-143-4P_L3.0-W1.3-H1.0-LS2.3-P1.70.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C7074", manufacturer="Littelfuse", partno="SP0503BAHTG">
+    trait has_designator_prefix<prefix="D">
+
+    # pins
+    pin 1
+    pin 2
+    pin 3
+    pin 4

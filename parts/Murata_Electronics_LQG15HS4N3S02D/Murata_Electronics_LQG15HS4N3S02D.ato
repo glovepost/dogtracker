@@ -1,0 +1,18 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Murata_Electronics_LQG15HS4N3S02D_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C97999", date="2026-01-09T22:05:22.090381+00:00", checksum="4d482c5965998e9cf56b539d1089db350cbf43047c1dcda8d21eb252bb22d289">
+
+    trait is_atomic_part<manufacturer="Murata Electronics", partnumber="LQG15HS4N3S02D", footprint="L0402.kicad_mod", symbol="LQG15HS4N3S02D.kicad_sym", model="L0402_L1.0-W0.5-H0.5_BEAD.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C97999", manufacturer="Murata Electronics", partno="LQG15HS4N3S02D">
+    trait has_designator_prefix<prefix="L">
+
+    # pins
+    pin 2
+    pin 1

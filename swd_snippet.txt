@@ -1,0 +1,14 @@
+
+component SWD_Header:
+    signal vcc
+    signal swdio
+    signal swclk
+    signal nrst
+    signal gnd
+
+    # Pin mapping for standard 1x5 1.27mm header
+    vcc ~ pin 1
+    swdio ~ pin 2
+    swclk ~ pin 3
+    nrst ~ pin 4
+    gnd ~ pin 5

@@ -1,0 +1,21 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Ckmtw_B_2100S05P_A110_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C124379", date="2026-01-09T22:04:26.301094+00:00", checksum="2e65bf1fc568b1bef9ad564a642a89f6385d33cb49351b856e75993440e7273d">
+
+    trait is_atomic_part<manufacturer="Ckmtw", partnumber="B-2100S05P-A110", footprint="HDR-TH_5P-P2.54-V-M.kicad_mod", symbol="210S-1*5PL=11.6MMGold-platedblack.kicad_sym", model="HDR-TH_5P-P2.54-M-LI-1X5P.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C124379", manufacturer="Ckmtw", partno="B-2100S05P-A110">
+    trait has_designator_prefix<prefix="H">
+
+    # pins
+    pin 1
+    pin 2
+    pin 3
+    pin 4
+    pin 5

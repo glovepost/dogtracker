@@ -1,0 +1,23 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Texas_Instruments_HDC2080DMBR_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C918141", date="2026-01-09T21:54:22.633241+00:00", checksum="9e7f7b821747f78025b7591000b503a15d2b5fbb902538014b523c562bce33ea">
+
+    trait is_atomic_part<manufacturer="Texas Instruments", partnumber="HDC2080DMBR", footprint="WSON-6_L3.0-W3.0-P1.00-TL-EP.kicad_mod", symbol="HDC2080DMBR.kicad_sym", model="WSON-6_L3.0-W3.0-P1.00-TL-EP.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C918141", manufacturer="Texas Instruments", partno="HDC2080DMBR">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    signal ADDR ~ pin 3
+    signal DRDY_INT ~ pin 4
+    signal EP ~ pin 7
+    signal GND ~ pin 2
+    signal SCL ~ pin 6
+    signal SDA ~ pin 1
+    signal VDD ~ pin 5

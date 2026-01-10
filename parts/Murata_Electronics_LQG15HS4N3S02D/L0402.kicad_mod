@@ -1,0 +1,204 @@
+(footprint "Murata_Electronics_LQG15HS4N3S02D:L0402"
+    (layer "F.Cu")
+    (descr "")
+    (version 20241229)
+    (generator "faebryk")
+    (generator_version "v5")
+    (tedit "5DC5F6A4")
+    (property "Reference" "REF**"
+        (at 0 -4 0)
+        (layer "F.SilkS")
+        (hide no)
+        (uuid "938bfb5c-f040-404c-a008-fa9add5184e2")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "Value" "L0402"
+        (at 0 4 0)
+        (layer "F.Fab")
+        (hide no)
+        (uuid "d6ab904f-d0b7-4448-b7e1-dd242bfe4904")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "checksum" "96672f9b0b7438349c3aa9cb7993d7ee9de3518070d45cde1fdf9e003ebbe7c7"
+        (at 0 0 0)
+        (layer "User.9")
+        (hide no)
+        (uuid "468d6045-3dbf-4c15-9dc0-39df2f52a744")
+        (effects
+            (font
+                (size 0.125 0.125)
+                (thickness 0.01875)
+            )
+            (hide yes)
+        )
+    )
+    (attr smd)
+    (fp_line
+        (start -0.13 0.51)
+        (end -0.92 0.51)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "9b913b24-2b73-458a-a48e-93a2faa46816")
+    )
+    (fp_line
+        (start -0.92 0.51)
+        (end -1.07 0.36)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "48284108-bf1a-4bc5-8e65-44ab2df108a3")
+    )
+    (fp_line
+        (start -1.07 0.36)
+        (end -1.07 -0.34)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "b92da546-4ef4-4edb-b7ab-373b7039b3e1")
+    )
+    (fp_line
+        (start -1.07 -0.34)
+        (end -0.92 -0.49)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "08f20073-a70d-4c07-9b68-b04ae5b6217a")
+    )
+    (fp_line
+        (start -0.92 -0.49)
+        (end -0.13 -0.49)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "b02538a4-570a-43de-b91d-c6dea216109a")
+    )
+    (fp_line
+        (start 0.13 0.51)
+        (end 0.92 0.51)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "98ed708d-be55-4d7f-b4ee-8c077a1f8039")
+    )
+    (fp_line
+        (start 0.92 0.51)
+        (end 1.07 0.36)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "cd9b09df-b63a-4dc0-96f1-bbbfb87c0e9d")
+    )
+    (fp_line
+        (start 1.07 0.36)
+        (end 1.07 -0.33)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "6dfc4b7f-9a3c-4729-b87e-3e77853bfd78")
+    )
+    (fp_line
+        (start 1.07 -0.33)
+        (end 0.91 -0.49)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "38c8cf83-b46e-46e5-9c43-543eccc1ebb2")
+    )
+    (fp_line
+        (start 0.91 -0.49)
+        (end 0.13 -0.49)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "f22407eb-ff5c-47c2-b5bb-c432d19896ab")
+    )
+    (fp_circle
+        (center -0.5 0.25)
+        (end -0.47 0.25)
+        (stroke
+            (width 0.06)
+            (type solid)
+        )
+        (fill no)
+        (layer "F.Fab")
+        (uuid "80e4b3f2-a566-488e-80a9-f167d9f31497")
+    )
+    (fp_text user "%R"
+        (at 0 0 0)
+        (layer "F.Fab")
+        (uuid "23dc9d05-2e51-4407-9b60-29989fbefc5b")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (fp_text user "${REFERENCE}"
+        (at 0 -4 0)
+        (layer "F.SilkS")
+        (uuid "938bfb5c-f040-404c-a008-fa9add5184e2")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (pad "2" smd rect
+        (at 0.42 0 0)
+        (size 0.54 0.54)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "9a387ad8-80b4-4123-972e-e3659d8e84a9")
+    )
+    (pad "1" smd rect
+        (at -0.42 0 0)
+        (size 0.54 0.54)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "138ac627-1fc2-4762-8a36-f0d8b429fb30")
+    )
+    (model "${KIPRJMOD}/../../parts/Murata_Electronics_LQG15HS4N3S02D/L0402_L1.0-W0.5-H0.5_BEAD.step"
+        (offset
+            (xyz 0 0 0)
+        )
+        (scale
+            (xyz 1 1 1)
+        )
+        (rotate
+            (xyz 0 0 0)
+        )
+    )
+)

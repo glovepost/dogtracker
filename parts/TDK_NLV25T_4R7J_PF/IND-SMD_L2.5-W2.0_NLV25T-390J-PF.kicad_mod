@@ -1,0 +1,144 @@
+(footprint "TDK_NLV25T_4R7J_PF:IND-SMD_L2.5-W2.0_NLV25T-390J-PF"
+    (layer "F.Cu")
+    (descr "")
+    (version 20241229)
+    (generator "faebryk")
+    (generator_version "v5")
+    (tedit "5DC5F6A4")
+    (property "Reference" "REF**"
+        (at 0 -4 0)
+        (layer "F.SilkS")
+        (hide no)
+        (uuid "e58d68d9-1d4e-439f-9535-74c5beb1f844")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "Value" "IND-SMD_L2.5-W2.0_NLV25T-390J-PF"
+        (at 0 4 0)
+        (layer "F.Fab")
+        (hide no)
+        (uuid "a66de96b-cd07-43b4-8a88-06ae4bad9272")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "checksum" "07d1853d01fb73521633407219169e33be5f2f2151f37abae3c38c84e6cdb395"
+        (at 0 0 0)
+        (layer "User.9")
+        (hide no)
+        (uuid "7009eb59-6e8b-4580-902e-56169fc573a1")
+        (effects
+            (font
+                (size 0.125 0.125)
+                (thickness 0.01875)
+            )
+            (hide yes)
+        )
+    )
+    (attr smd)
+    (fp_line
+        (start -1.06 -1.11)
+        (end 1.07 -1.11)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "83c7229d-dc7e-463e-b84f-cab78a08fbcb")
+    )
+    (fp_line
+        (start 1.07 -1.11)
+        (end 1.07 -1.11)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "dff20875-6be2-44d5-b2a5-f731c753cb36")
+    )
+    (fp_line
+        (start -1.07 1.13)
+        (end 1.06 1.13)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "14b79056-2471-403d-85b4-627026992a5e")
+    )
+    (fp_line
+        (start 1.06 1.13)
+        (end 1.07 1.12)
+        (stroke
+            (width 0.15)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "8fea146e-8a65-4bff-8534-bdf2ff5b58e0")
+    )
+    (fp_circle
+        (center 1.25 -1)
+        (end 1.28 -1)
+        (stroke
+            (width 0.06)
+            (type solid)
+        )
+        (fill no)
+        (layer "F.Fab")
+        (uuid "4952bab8-2290-4601-8c67-58d5eb7d93a2")
+    )
+    (fp_text user "%R"
+        (at 0 0 0)
+        (layer "F.Fab")
+        (uuid "75047c5d-a348-44ea-808d-da926b0b09bc")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (fp_text user "${REFERENCE}"
+        (at 0 -4 0)
+        (layer "F.SilkS")
+        (uuid "e58d68d9-1d4e-439f-9535-74c5beb1f844")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (pad "1" smd rect
+        (at 1.13 0 0)
+        (size 1 1.9)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "6fa7e51c-b3e7-4354-b0c7-7b00c9b30f20")
+    )
+    (pad "2" smd rect
+        (at -1.13 0 0)
+        (size 1 1.9)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "6e299d98-04ec-469e-b446-0b45ded167be")
+    )
+    (model "${KIPRJMOD}/../../parts/TDK_NLV25T_4R7J_PF/IND-SMD_L2.5-W2.0_NLV25T-390J-PF.step"
+        (offset
+            (xyz 0 0 0)
+        )
+        (scale
+            (xyz 1 1 1)
+        )
+        (rotate
+            (xyz 0 0 0)
+        )
+    )
+)

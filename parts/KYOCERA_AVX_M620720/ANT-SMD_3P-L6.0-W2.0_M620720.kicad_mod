@@ -1,0 +1,160 @@
+(footprint "KYOCERA_AVX_M620720:ANT-SMD_3P-L6.0-W2.0_M620720"
+    (layer "F.Cu")
+    (descr "")
+    (version 20241229)
+    (generator "faebryk")
+    (generator_version "v5")
+    (tedit "5DC5F6A4")
+    (property "Reference" "REF**"
+        (at 0 -4 0)
+        (layer "F.SilkS")
+        (hide no)
+        (uuid "f3cf310e-15ea-4028-a6dc-8abef2aa6cce")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "Value" "ANT-SMD_3P-L6.0-W2.0_M620720"
+        (at 0 4 0)
+        (layer "F.Fab")
+        (hide no)
+        (uuid "8bfab5cd-20e7-446c-8699-ee57c3c7df13")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "checksum" "3a4dfdc07bacb446d854334666fb7e54ffed2240567105653c982e67b9c00920"
+        (at 0 0 0)
+        (layer "User.9")
+        (hide no)
+        (uuid "a33f432c-7218-4e6e-8d77-a801aa2f04ab")
+        (effects
+            (font
+                (size 0.125 0.125)
+                (thickness 0.01875)
+            )
+            (hide yes)
+        )
+    )
+    (attr smd)
+    (fp_line
+        (start -3.3 -1.33)
+        (end -3.3 1.33)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "871d55b3-24ff-4d21-ae8e-6697cbc3c36b")
+    )
+    (fp_line
+        (start -3.3 1.33)
+        (end 3.17 1.33)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "88a91f40-9bc6-4d6f-a80f-ef8884ea408d")
+    )
+    (fp_line
+        (start 3.17 1.33)
+        (end 3.3 1.33)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "9bf89b1d-d2a0-4e1f-b291-3befd066ace1")
+    )
+    (fp_line
+        (start 3.3 1.33)
+        (end 3.3 -1.33)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "47e0801f-5647-4bb4-b8f2-1fcf2d4d8757")
+    )
+    (fp_line
+        (start 3.3 -1.33)
+        (end -3.3 -1.33)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "77b4f25d-faad-4a94-9e2a-bd5e1e4042a4")
+    )
+    (fp_circle
+        (center -3 1)
+        (end -2.97 1)
+        (stroke
+            (width 0.06)
+            (type solid)
+        )
+        (fill no)
+        (layer "F.Fab")
+        (uuid "6f5cfd2d-6887-4687-8321-8623b2b99cff")
+    )
+    (fp_text user "%R"
+        (at 0 0 0)
+        (layer "F.Fab")
+        (uuid "704e15f3-b86e-4b2d-aa39-bfbcd0c3a4a7")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (fp_text user "${REFERENCE}"
+        (at 0 -4 0)
+        (layer "F.SilkS")
+        (uuid "f3cf310e-15ea-4028-a6dc-8abef2aa6cce")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (pad "3" smd rect
+        (at 2.44 0 0)
+        (size 1.1 2)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "d12055d8-a5ab-46f9-94c3-ee8e18312b34")
+    )
+    (pad "2" smd rect
+        (at 0 0 0)
+        (size 1.1 2)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "e1809836-a65a-4af4-9fad-8196d9b6fe6f")
+    )
+    (pad "1" smd rect
+        (at -2.44 0 0)
+        (size 1.1 2)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "3f4f58da-ae3e-48a2-8ab0-4a76287c642b")
+    )
+    (model "${KIPRJMOD}/../../parts/KYOCERA_AVX_M620720/ANT-SMD_3P-L6.0-W2.0_M620720.STEP"
+        (offset
+            (xyz 0 0 0)
+        )
+        (scale
+            (xyz 1 1 1)
+        )
+        (rotate
+            (xyz 0 0 0)
+        )
+    )
+)

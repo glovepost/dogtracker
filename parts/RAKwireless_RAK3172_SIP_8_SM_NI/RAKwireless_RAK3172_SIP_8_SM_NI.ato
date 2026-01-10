@@ -1,0 +1,85 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component RAKwireless_RAK3172_SIP_8_SM_NI_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C19818882", date="2026-01-09T20:21:25.628290+00:00", checksum="d567847f554e6f45def0ca002671d76abc9e65de3dd187e5b558c335ee96b54b">
+
+    trait is_atomic_part<manufacturer="RAKwireless", partnumber="RAK3172-SIP-8-SM-NI", footprint="LGA-73_L12.0-W12.0-P0.60-TL.kicad_mod", symbol="RAK3172-SIP-8-SM-NI.kicad_sym", model="LGA-73_L12.0-W12.0-P0.60-TL.STEP">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C19818882", manufacturer="RAKwireless", partno="RAK3172-SIP-8-SM-NI">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    signal BOOT0 ~ pin 43
+    signal GND ~ pin 12
+    GND ~ pin 28
+    GND ~ pin 35
+    GND ~ pin 36
+    GND ~ pin 38
+    GND ~ pin 39
+    GND ~ pin 46
+    GND ~ pin 47
+    GND ~ pin 52
+    GND ~ pin 56
+    GND ~ pin 65
+    GND ~ pin 66
+    GND ~ pin 67
+    GND ~ pin 68
+    GND ~ pin 69
+    GND ~ pin 70
+    GND ~ pin 71
+    GND ~ pin 72
+    GND ~ pin 73
+    signal NRST ~ pin 44
+    signal PA2_UART2_TX ~ pin 29
+    signal PA3_UART2_RX ~ pin 30
+    signal PA4 ~ pin 31
+    signal PA5 ~ pin 32
+    signal PA6 ~ pin 33
+    signal PA7 ~ pin 34
+    signal PA8 ~ pin 51
+    signal PA9 ~ pin 50
+    signal PA10 ~ pin 62
+    signal PA11 ~ pin 63
+    signal PA12 ~ pin 64
+    signal PA13 ~ pin 1
+    signal PA14 ~ pin 2
+    signal PA15 ~ pin 8
+    signal PB1 ~ pin 57
+    signal PB2 ~ pin 58
+    signal PB3 ~ pin 14
+    signal PB4 ~ pin 15
+    signal PB5 ~ pin 16
+    signal PB6_UART1_TX ~ pin 17
+    signal PB7_UART1_RX ~ pin 18
+    signal PB8 ~ pin 19
+    signal PB9 ~ pin 20
+    signal PB10 ~ pin 49
+    signal PB11 ~ pin 48
+    signal PB12 ~ pin 59
+    signal PB13 ~ pin 60
+    signal PB14 ~ pin 61
+    signal PB15 ~ pin 9
+    signal PC0 ~ pin 21
+    signal PC1 ~ pin 22
+    signal PC2 ~ pin 23
+    signal PC3 ~ pin 24
+    signal PC4 ~ pin 25
+    signal PC5 ~ pin 26
+    signal PC6 ~ pin 27
+    signal PC13 ~ pin 5
+    signal RF_OUT ~ pin 37
+    signal VBAT ~ pin 4
+    signal VDD ~ pin 3
+    VDD ~ pin 55
+    signal VDDA ~ pin 7
+    signal VDDMPS ~ pin 11
+    signal VDDPA ~ pin 53
+    signal VDDRF ~ pin 54
+    signal VFBSMPS ~ pin 10
+    signal VLXSMPS ~ pin 13
+    signal VREFpos ~ pin 6

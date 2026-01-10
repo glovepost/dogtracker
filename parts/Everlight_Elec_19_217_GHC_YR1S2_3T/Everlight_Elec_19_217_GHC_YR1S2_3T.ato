@@ -1,0 +1,20 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Everlight_Elec_19_217_GHC_YR1S2_3T_package:
+    """0603"""
+
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C72043", date="2026-01-09T21:04:28.217161+00:00", checksum="06998ec42decb594448305d38a196c68bb334acd370be609b9809341fcf55fa7">
+
+    trait is_atomic_part<manufacturer="Everlight Elec", partnumber="19-217/GHC-YR1S2/3T", footprint="LED0603-RD.kicad_mod", symbol="19-217_GHC-YR1S2_3T.kicad_sym", model="LED0603-RD-YELLOW.STEP">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C72043", manufacturer="Everlight Elec", partno="19-217/GHC-YR1S2/3T">
+    trait has_designator_prefix<prefix="LED">
+
+    # pins
+    signal A ~ pin 2
+    signal C ~ pin 1

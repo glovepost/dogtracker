@@ -1,0 +1,24 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Texas_Instruments_LM431ACMX_package:
+    """Adjustable Precision Zener Shunt Regulator, 8-pin Narrow SOIC"""
+
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C7957", date="2026-01-09T21:09:00.672589+00:00", checksum="316fa71b8a41fc007216e9e063a1704c1c7415058b4a3ab977ec383b9451a769">
+
+    trait is_atomic_part<manufacturer="Texas Instruments", partnumber="LM431ACMX", footprint="SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL.kicad_mod", symbol="LM431ACMX.kicad_sym", model="SOIC-8_L4.9-W3.9-H1.7-LS6.0-P1.27.STEP">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C7957", manufacturer="Texas Instruments", partno="LM431ACMX">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    signal A ~ pin 2
+    A ~ pin 3
+    A ~ pin 6
+    A ~ pin 7
+    signal C ~ pin 1
+    signal Ref ~ pin 8

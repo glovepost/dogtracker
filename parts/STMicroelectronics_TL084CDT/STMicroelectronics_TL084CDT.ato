@@ -1,0 +1,30 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component STMicroelectronics_TL084CDT_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C11130", date="2026-01-09T21:04:49.257606+00:00", checksum="3434681eaa1977591f6ba0cbd89b927fbda6d3dfc38c57204078950cf872e68b">
+
+    trait is_atomic_part<manufacturer="STMicroelectronics", partnumber="TL084CDT", footprint="SOIC-14_L8.7-W3.9-P1.27-LS6.0-BL.kicad_mod", symbol="TL084CDT.kicad_sym", model="SOIC-14_L8.6-W3.9-H1.8-LS6.0-P1.27.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C11130", manufacturer="STMicroelectronics", partno="TL084CDT">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    signal NEG3 ~ pin 9
+    signal NEG_1 ~ pin 2
+    signal NEG_2 ~ pin 6
+    signal NEG_4 ~ pin 13
+    signal OUT1 ~ pin 1
+    signal OUT2 ~ pin 7
+    signal OUT3 ~ pin 8
+    signal OUT4 ~ pin 14
+    signal POS_1 ~ pin 3
+    signal POS_2 ~ pin 5
+    signal POS_3 ~ pin 10
+    signal POS_4 ~ pin 12
+    signal VCCneg ~ pin 11
+    signal VCCpos ~ pin 4

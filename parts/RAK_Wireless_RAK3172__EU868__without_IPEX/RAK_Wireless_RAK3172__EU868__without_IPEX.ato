@@ -1,0 +1,48 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component RAK_Wireless_RAK3172__EU868__without_IPEX_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C2886287", date="2026-01-09T20:09:50.190447+00:00", checksum="e05dc7ffa9200fc64e80b539947f2ea32fe727324fc1d33cd24e442b545e0fba">
+
+    trait is_atomic_part<manufacturer="RAK Wireless", partnumber="RAK3172 (EU868, without IPEX)", footprint="LCC-40_L15.6-W15.0-P1.00_RAK3172.kicad_mod", symbol="RAK3172(EU868,WITHOUTIPEX).kicad_sym", model="LCC-40_L15.6-W15.0-P1.00_RAK3172.STEP">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C2886287", manufacturer="RAK Wireless", partno="RAK3172 (EU868, without IPEX)">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    signal BOOT0 ~ pin 21
+    signal GND ~ pin 11
+    GND ~ pin 17
+    GND ~ pin 18
+    GND ~ pin 23
+    GND ~ pin 28
+    signal PA0 ~ pin 29
+    signal PA0_ADC4 ~ pin 25
+    signal PA1 ~ pin 6
+    signal PA2_UART2_TX ~ pin 2
+    signal PA3_UART2_RX ~ pin 1
+    signal PA4_SPI1_NSS ~ pin 16
+    signal PA5_SPI1_CLK ~ pin 15
+    signal PA6_SPI1_MISO ~ pin 14
+    signal PA7_SPI1_MOSI ~ pin 13
+    signal PA8 ~ pin 19
+    signal PA9 ~ pin 20
+    signal PA11_I2C_SDA ~ pin 10
+    signal PA12_I2C_SCL ~ pin 9
+    signal PA13_SWDIO ~ pin 7
+    signal PA14_SWCLK ~ pin 8
+    signal PA15_ADC5 ~ pin 3
+    signal PB2_ADC3 ~ pin 26
+    signal PB3_ADC1 ~ pin 32
+    signal PB4_ADC2 ~ pin 31
+    signal PB5 ~ pin 30
+    signal PB6_UART1_TX ~ pin 4
+    signal PB7_UART1_RX ~ pin 5
+    signal PB12 ~ pin 27
+    signal RF ~ pin 12
+    signal RST ~ pin 22
+    signal VDD ~ pin 24

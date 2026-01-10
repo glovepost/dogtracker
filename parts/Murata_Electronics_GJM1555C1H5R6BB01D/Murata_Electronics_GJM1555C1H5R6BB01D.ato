@@ -1,0 +1,18 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Murata_Electronics_GJM1555C1H5R6BB01D_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C161329", date="2026-01-09T22:05:20.864127+00:00", checksum="4307847acc2120e7f12776ab9ed3e32961a49fd29bfb3f089de76187fdaef9ba">
+
+    trait is_atomic_part<manufacturer="Murata Electronics", partnumber="GJM1555C1H5R6BB01D", footprint="C0402.kicad_mod", symbol="GJM1555C1H5R6BB01D.kicad_sym", model="C0402_L1.0-W0.5-H0.5.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C161329", manufacturer="Murata Electronics", partno="GJM1555C1H5R6BB01D">
+    trait has_designator_prefix<prefix="C">
+
+    # pins
+    pin 1
+    pin 2

@@ -1,0 +1,20 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component FH_CBG160808U820T_package:
+    """82Ω ±25% 100MHz"""
+
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C1005", date="2026-01-09T19:28:18.952213+00:00", checksum="76592218403af061e6d6213ac729d0b5e4f0343de1188cef907199bde145c1f5">
+
+    trait is_atomic_part<manufacturer="FH", partnumber="CBG160808U820T", footprint="L0603.kicad_mod", symbol="CBG160808U820T.kicad_sym", model="L0603_L1.6-W0.8-H0.5_BEAD.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C1005", manufacturer="FH", partno="CBG160808U820T">
+    trait has_designator_prefix<prefix="L">
+
+    # pins
+    pin 2
+    pin 1

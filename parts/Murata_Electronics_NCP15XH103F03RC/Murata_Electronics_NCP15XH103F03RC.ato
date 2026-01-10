@@ -1,0 +1,18 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Murata_Electronics_NCP15XH103F03RC_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C77131", date="2026-01-09T21:44:58.512663+00:00", checksum="74d95b78b58a93c5439ad77b54c089190c8d0f89d12eb10956af7ab3f897455b">
+
+    trait is_atomic_part<manufacturer="Murata Electronics", partnumber="NCP15XH103F03RC", footprint="R0402.kicad_mod", symbol="NCP15XH103F03RC.kicad_sym", model="R0402_L1.0-W0.5-H0.4.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C77131", manufacturer="Murata Electronics", partno="NCP15XH103F03RC">
+    trait has_designator_prefix<prefix="R">
+
+    # pins
+    pin 2
+    pin 1

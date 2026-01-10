@@ -1,0 +1,164 @@
+(footprint "easyeda2kicad:HDR-TH_5P-P2.54-V-M"
+    (layer "F.Cu")
+    (descr "")
+    (version 20241229)
+    (generator "faebryk")
+    (generator_version "v5")
+    (tedit "5DC5F6A4")
+    (property "Reference" "REF**"
+        (at 0 -4 0)
+        (layer "F.SilkS")
+        (hide no)
+        (uuid "04816475-0e41-41ff-9fc9-1cf8d398509c")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "Value" "HDR-TH_5P-P2.54-V-M"
+        (at 0 4 0)
+        (layer "F.Fab")
+        (hide no)
+        (uuid "4eb32d85-c2f7-43bd-bd5d-4b998c16efe6")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (attr through_hole)
+    (fp_line
+        (start 6.35 -1.27)
+        (end 6.35 1.27)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "d6f6969d-68a7-49a4-99fd-af6e7e690d97")
+    )
+    (fp_line
+        (start 6.35 1.27)
+        (end -6.35 1.27)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "55ac666c-8150-4da8-907d-e101054ae3f3")
+    )
+    (fp_line
+        (start -6.35 1.27)
+        (end -6.35 -1.27)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "c03e76d3-463b-471c-9d74-63e690503f6d")
+    )
+    (fp_line
+        (start -6.35 -1.27)
+        (end 6.35 -1.27)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "6ec3000b-6301-489c-8282-a7ce6a5d29fd")
+    )
+    (fp_line
+        (start -3.79 -1.27)
+        (end -3.79 1.27)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "29b1a974-4bf4-402f-a469-262a95ca7106")
+    )
+    (fp_circle
+        (center -6.35 1.27)
+        (end -6.32 1.27)
+        (stroke
+            (width 0.06)
+            (type solid)
+        )
+        (fill no)
+        (layer "F.Fab")
+        (uuid "99cd84f6-b2f9-4b99-aa62-06d625f37f14")
+    )
+    (fp_text user "%R"
+        (at 0 0 0)
+        (layer "F.Fab")
+        (uuid "9edd9243-8ce2-4f06-b880-dbdbfcd8231c")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (fp_text user "${REFERENCE}"
+        (at 0 -4 0)
+        (layer "F.SilkS")
+        (uuid "04816475-0e41-41ff-9fc9-1cf8d398509c")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (pad "1" thru_hole rect
+        (at -5.08 0 0)
+        (size 1.7 1.7)
+        (drill 1.1000231999999999)
+        (layers "*.Cu" "*.Mask")
+        (uuid "16fd1a8b-2752-468d-9fa8-4df32522daaa")
+    )
+    (pad "2" thru_hole circle
+        (at -2.54 0 0)
+        (size 1.7 1.7)
+        (drill 1.1000231999999999)
+        (layers "*.Cu" "*.Mask")
+        (uuid "acdc62d2-0a8a-42d6-926e-7b8c5b8ff541")
+    )
+    (pad "3" thru_hole circle
+        (at 0 0 0)
+        (size 1.7 1.7)
+        (drill 1.1000231999999999)
+        (layers "*.Cu" "*.Mask")
+        (uuid "110b1afd-bf31-4369-9c9a-1247a330cd92")
+    )
+    (pad "4" thru_hole circle
+        (at 2.54 0 0)
+        (size 1.7 1.7)
+        (drill 1.1000231999999999)
+        (layers "*.Cu" "*.Mask")
+        (uuid "0ccfb98f-822d-48ce-8e43-b844816cbe54")
+    )
+    (pad "5" thru_hole circle
+        (at 5.08 0 0)
+        (size 1.7 1.7)
+        (drill 1.1000231999999999)
+        (layers "*.Cu" "*.Mask")
+        (uuid "4e57e817-0d2d-4308-86c7-19b54ae55245")
+    )
+    (model "${KIPRJMOD}/../../build/cache/parts/easyeda/C124379/HDR-TH_5P-P2.54-M-LI-1X5P.step"
+        (offset
+            (xyz 0 0 0)
+        )
+        (scale
+            (xyz 1 1 1)
+        )
+        (rotate
+            (xyz 0 0 0)
+        )
+    )
+)

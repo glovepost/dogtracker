@@ -1,0 +1,19 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component KYOCERA_AVX_M620720_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C5110126", date="2026-01-09T21:27:26.507866+00:00", checksum="7ff22e356af8032e1f0cf2719a12fd1d5a8677bb206859002710aee8774e0a25">
+
+    trait is_atomic_part<manufacturer="KYOCERA AVX", partnumber="M620720", footprint="ANT-SMD_3P-L6.0-W2.0_M620720.kicad_mod", symbol="M620720.kicad_sym", model="ANT-SMD_3P-L6.0-W2.0_M620720.STEP">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C5110126", manufacturer="KYOCERA AVX", partno="M620720">
+    trait has_designator_prefix<prefix="ANT">
+
+    # pins
+    signal Dummy ~ pin 2
+    signal Feed ~ pin 1
+    signal Ground ~ pin 3

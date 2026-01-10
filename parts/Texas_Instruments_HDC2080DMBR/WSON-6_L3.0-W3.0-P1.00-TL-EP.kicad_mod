@@ -1,0 +1,176 @@
+(footprint "Texas_Instruments_HDC2080DMBR:WSON-6_L3.0-W3.0-P1.00-TL-EP"
+    (layer "F.Cu")
+    (descr "")
+    (version 20241229)
+    (generator "faebryk")
+    (generator_version "v5")
+    (tedit "5DC5F6A4")
+    (property "Reference" "REF**"
+        (at 0 -5 0)
+        (layer "F.SilkS")
+        (hide no)
+        (uuid "25838e5c-7e29-4b76-8ac5-aae4b213894b")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "Value" "WSON-6_L3.0-W3.0-P1.00-TL-EP"
+        (at 0 5 0)
+        (layer "F.Fab")
+        (hide no)
+        (uuid "4b1a845b-fa92-4214-89cd-76dd5f2a35cd")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+    )
+    (property "checksum" "1dde2db9710e5f634e7536ae61098b130303b3fbdf663ae1e74caad66247777a"
+        (at 0 0 0)
+        (layer "User.9")
+        (hide no)
+        (uuid "c3b3be1e-023f-4ffc-9c15-eb6afb2e3da4")
+        (effects
+            (font
+                (size 0.125 0.125)
+                (thickness 0.01875)
+            )
+            (hide yes)
+        )
+    )
+    (attr smd)
+    (fp_line
+        (start 1.5 1.5)
+        (end -1.5 1.5)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "4f034900-6413-4d9f-98e9-77c662209950")
+    )
+    (fp_line
+        (start 1.5 -1.5)
+        (end -1.5 -1.5)
+        (stroke
+            (width 0.25)
+            (type solid)
+        )
+        (layer "F.SilkS")
+        (uuid "204ba34c-3da1-44ba-9df5-c6d54cbd9387")
+    )
+    (fp_circle
+        (center -1.5 -1.5)
+        (end -1.47 -1.5)
+        (stroke
+            (width 0.06)
+            (type solid)
+        )
+        (fill no)
+        (layer "F.Fab")
+        (uuid "161bea62-1dd3-4e17-b352-8578858c78c8")
+    )
+    (fp_circle
+        (center -1.9 -1.6)
+        (end -1.8 -1.6)
+        (stroke
+            (width 0.2)
+            (type solid)
+        )
+        (fill no)
+        (layer "F.SilkS")
+        (uuid "5a3285c3-5ade-4afa-8f7e-6af4c63c7248")
+    )
+    (fp_circle
+        (center -1.8 -1)
+        (end -1.7 -1)
+        (stroke
+            (width 0.2)
+            (type solid)
+        )
+        (fill no)
+        (layer "Cmts.User")
+        (uuid "1e982b2d-bcbf-4675-b5a7-38d5c384198a")
+    )
+    (fp_text user "%R"
+        (at 0 0 0)
+        (layer "F.Fab")
+        (uuid "71cee4cf-fb8a-436b-8474-e1faf2882043")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (fp_text user "${REFERENCE}"
+        (at 0 -5 0)
+        (layer "F.SilkS")
+        (uuid "25838e5c-7e29-4b76-8ac5-aae4b213894b")
+        (effects
+            (font
+                (size 1 1)
+                (thickness 0.15)
+            )
+        )
+        (unlocked no)
+    )
+    (pad "1" smd rect
+        (at -1.5 -1 90)
+        (size 0.5 0.8)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "6e8893f1-2229-4d8c-a0de-0f42474f8725")
+    )
+    (pad "2" smd rect
+        (at -1.5 0 90)
+        (size 0.5 0.8)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "8f3a18db-dcb7-436a-938e-da7709d16107")
+    )
+    (pad "3" smd rect
+        (at -1.5 1 90)
+        (size 0.5 0.8)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "81aa1d35-7c67-4d99-9dee-5c6b2f9dad63")
+    )
+    (pad "4" smd rect
+        (at 1.5 1 90)
+        (size 0.5 0.8)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "243628dd-abf0-4fb4-95f7-e409a930fd61")
+    )
+    (pad "7" smd rect
+        (at 0 0 90)
+        (size 2.4 1.6)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "f0313c44-3b11-474c-b32e-ef9549e66efb")
+    )
+    (pad "6" smd rect
+        (at 1.5 -1 90)
+        (size 0.5 0.8)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "af260d2e-8c2e-443d-826e-5555501fbf83")
+    )
+    (pad "5" smd rect
+        (at 1.5 0 90)
+        (size 0.5 0.8)
+        (layers "F.Cu" "F.Paste" "F.Mask")
+        (uuid "52a8d09e-396e-441a-b07e-26bcb2fb8e45")
+    )
+    (model "${KIPRJMOD}/../../parts/Texas_Instruments_HDC2080DMBR/WSON-6_L3.0-W3.0-P1.00-TL-EP.step"
+        (offset
+            (xyz 0 0 0)
+        )
+        (scale
+            (xyz 1 1 1)
+        )
+        (rotate
+            (xyz 0 0 0)
+        )
+    )
+)

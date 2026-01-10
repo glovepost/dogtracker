@@ -1,0 +1,32 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component WCH_CH340G_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C14267", date="2026-01-09T21:08:46.027750+00:00", checksum="d0b15ab0bc486df5d7dfc1dc0f5d9f86182f8362e3e48424c13d734c5e35a97d">
+
+    trait is_atomic_part<manufacturer="WCH", partnumber="CH340G", footprint="SOIC-16_L9.9-W3.9-P1.27-LS6.0-BL.kicad_mod", symbol="CH340G.kicad_sym", model="SOIC-16_L9.9-W3.9-H1.8-LS6.0-P1.27.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C14267", manufacturer="WCH", partno="CH340G">
+    trait has_designator_prefix<prefix="U">
+
+    # pins
+    signal GND ~ pin 1
+    signal R232 ~ pin 15
+    signal RXD ~ pin 3
+    signal TXD ~ pin 2
+    signal UDneg ~ pin 6
+    signal UDpos ~ pin 5
+    signal V3 ~ pin 4
+    signal VCC ~ pin 16
+    signal XI ~ pin 7
+    signal XO ~ pin 8
+    signal nCTS ~ pin 9
+    signal nDCD ~ pin 12
+    signal nDSR ~ pin 10
+    signal nDTR ~ pin 13
+    signal nRI ~ pin 11
+    signal nRTS ~ pin 14

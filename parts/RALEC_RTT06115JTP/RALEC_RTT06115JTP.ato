@@ -1,0 +1,18 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component RALEC_RTT06115JTP_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C159720", date="2026-01-10T01:18:42.489556+00:00", checksum="514b374824427ca2d1a9fe90dd8a006d21160adbd0a98251708e0e2c386de82b">
+
+    trait is_atomic_part<manufacturer="RALEC", partnumber="RTT06115JTP", footprint="R1206.kicad_mod", symbol="RTT06115JTP.kicad_sym", model="R1206_L3.2-W1.6-H0.6.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C159720", manufacturer="RALEC", partno="RTT06115JTP">
+    trait has_designator_prefix<prefix="R">
+
+    # pins
+    pin 2
+    pin 1

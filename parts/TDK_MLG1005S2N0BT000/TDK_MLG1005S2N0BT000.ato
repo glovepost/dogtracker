@@ -1,0 +1,18 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component TDK_MLG1005S2N0BT000_package:
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C76769", date="2026-01-09T21:48:05.485962+00:00", checksum="2448f56fe71f56a9eaa5456afff04b17fc405e302479921a0e4463f1d4e40289">
+
+    trait is_atomic_part<manufacturer="TDK", partnumber="MLG1005S2N0BT000", footprint="L0402.kicad_mod", symbol="MLG1005S2N0BT000.kicad_sym", model="L0402_L1.0-W0.5-H0.5_BEAD.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C76769", manufacturer="TDK", partno="MLG1005S2N0BT000">
+    trait has_designator_prefix<prefix="L">
+
+    # pins
+    pin 2
+    pin 1
