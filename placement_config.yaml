@@ -1,0 +1,352 @@
+# PCB Component Placement Configuration - COMPACT LAYOUT
+# ================================================================
+# Battery (B1) is on BACK of board - doesn't conflict with front components!
+# This allows a much more compact design
+# ================================================================
+
+board:
+  width: 35.0   # mm - compact since battery is on back
+  height: 30.0  # mm
+  origin: [0.0, 0.0]
+
+# Force-directed algorithm - tuned for compact layout
+force_directed:
+  enabled: true
+  iterations: 200
+  attraction_strength: 0.25
+  repulsion_strength: 350.0    # Reduced from 450 to prevent over-spreading
+  damping: 0.78
+  collision_strength: 60.0
+  min_clearance: 0.65          # Increased from 0.5 for DRC margin
+  random_seed: 42              # For reproducibility
+  auto_rotate: true            # Enable 0/90/180/270 rotation optimization
+  rotation_interval: 50        # Test rotations every 50 iterations
+
+# ================================================================
+# COMPONENT GROUPS - COMPACT FRONT-SIDE LAYOUT
+# ================================================================
+# Battery on back - doesn't affect front component placement
+# All other components on front, densely packed
+# ================================================================
+
+groups:
+  # =============================================================
+  # MCU CORE - CENTER with tight decoupling
+  # =============================================================
+  mcu_core:
+    anchor: U1
+    position: [0.0, 0.0]
+    layer: front
+    components:
+      U1:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [14.0, 14.0]
+      C3:
+        offset: [8.5, 1.5]
+        rotation: 0
+        size: [1.8, 1.2]
+      C4:
+        offset: [8.5, -0.5]
+        rotation: 0
+        size: [1.8, 1.2]
+      C16:
+        offset: [8.5, -2.5]
+        rotation: 0
+        size: [1.8, 1.2]
+      L3:
+        offset: [-8.5, 0.0]
+        rotation: 0
+        size: [2.5, 2.0]
+
+  # =============================================================
+  # SENSORS - LEFT side, vertically stacked
+  # =============================================================
+  accelerometer:
+    anchor: U2
+    position: [-12.0, 4.0]
+    layer: front
+    components:
+      U2:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [4.5, 4.5]
+      C7:
+        offset: [3.0, 0.5]
+        rotation: 0
+        size: [1.8, 1.2]
+      C8:
+        offset: [3.0, -1.0]
+        rotation: 0
+        size: [1.8, 1.2]
+
+  imu:
+    anchor: U4
+    position: [-12.0, -2.0]
+    layer: front
+    components:
+      U4:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [4.5, 4.0]
+      C9:
+        offset: [3.0, 0.5]
+        rotation: 0
+        size: [1.8, 1.2]
+      C10:
+        offset: [3.0, -1.0]
+        rotation: 0
+        size: [1.8, 1.2]
+
+  humidity_sensor:
+    anchor: U5
+    position: [-12.0, -8.0]
+    layer: front
+    components:
+      U5:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [4.5, 4.5]
+      C11:
+        offset: [3.0, 0.0]
+        rotation: 0
+        size: [1.8, 1.2]
+
+  eeprom:
+    anchor: U3
+    position: [-6.0, -10.0]
+    layer: front
+    components:
+      U3:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [4.0, 2.5]
+
+  sensor_power:
+    anchor: L4
+    position: [-8.0, 8.0]   # Moved up more to clear U1 (14mm)
+    layer: front
+    components:
+      L4:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [2.5, 2.0]
+      C5:
+        offset: [-2.5, 0.0]
+        rotation: 0
+        size: [1.8, 1.2]
+      C6:
+        offset: [0.0, -2.5]
+        rotation: 0
+        size: [1.8, 1.2]
+
+  # =============================================================
+  # BATTERY - BACK LAYER (centered, overlaps MCU from behind)
+  # No collision with front components!
+  # =============================================================
+  power_input:
+    anchor: B1
+    position: [0.0, 0.0]
+    layer: back               # BACK OF BOARD
+    components:
+      B1:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [26.0, 26.0]
+        layer: back
+      # Power chain on FRONT, near MCU
+      C12:
+        offset: [0.0, 8.0]
+        rotation: 0
+        size: [2.2, 1.5]
+        layer: front
+      L2:
+        offset: [3.0, 8.0]
+        rotation: 0
+        size: [2.5, 2.0]
+        layer: front
+      C1:
+        offset: [6.0, 8.0]
+        rotation: 0
+        size: [1.8, 1.2]
+        layer: front
+      C2:
+        offset: [9.0, 8.0]
+        rotation: 0
+        size: [1.8, 1.2]
+        layer: front
+
+  # =============================================================
+  # RF PATH - RIGHT edge
+  # =============================================================
+  rf_path:
+    anchor: ANT1
+    position: [14.0, 0.0]
+    layer: front
+    components:
+      ANT1:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [10.0, 5.0]
+      C15:
+        offset: [-6.0, 0.0]
+        rotation: 90
+        size: [1.8, 1.2]
+      L6:
+        offset: [-8.0, 0.0]
+        rotation: 0
+        size: [2.5, 2.0]
+      C14:
+        offset: [-10.5, 0.0]
+        rotation: 90
+        size: [1.8, 1.2]
+      L5:
+        offset: [-12.5, 0.0]
+        rotation: 0
+        size: [2.5, 2.0]
+      C13:
+        offset: [-12.5, -2.5]
+        rotation: 0
+        size: [1.8, 1.2]
+
+  # =============================================================
+  # NTC - Near MCU ADC
+  # =============================================================
+  ntc_circuit:
+    anchor: R1
+    position: [8.0, -6.0]
+    layer: front
+    components:
+      R1:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [1.8, 1.2]
+      R2:
+        offset: [0.0, -2.0]
+        rotation: 0
+        size: [1.8, 1.2]
+
+  # =============================================================
+  # UI - Bottom right
+  # =============================================================
+  user_interface:
+    anchor: LED1
+    position: [10.0, -10.0]
+    layer: front
+    components:
+      LED1:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [2.5, 1.5]
+      R4:
+        offset: [-3.0, 0.0]
+        rotation: 0
+        size: [1.8, 1.2]
+      R3:
+        offset: [-3.0, 2.0]
+        rotation: 0
+        size: [1.8, 1.2]
+
+  # =============================================================
+  # I2C PULL-UPS
+  # =============================================================
+  i2c_pullups:
+    anchor: R5
+    position: [-3.0, 10.0]  # Moved up and right to clear U1
+    layer: front
+    components:
+      R5:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [1.8, 1.2]
+      R6:
+        offset: [0.0, 2.0]
+        rotation: 0
+        size: [1.8, 1.2]
+
+  # =============================================================
+  # DEBUG - Bottom edge
+  # =============================================================
+  debug:
+    anchor: H1
+    position: [-2.0, -14.0]  # Centered at bottom to clear sensors
+    layer: front
+    components:
+      H1:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [15.0, 4.0]
+
+  # =============================================================
+  # RESERVED
+  # =============================================================
+  reserved:
+    anchor: L1
+    position: [12.0, -12.0]  # Moved right to clear H1
+    layer: front
+    components:
+      L1:
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [2.5, 2.0]
+
+# ================================================================
+# NETLIST CONNECTIONS
+# ================================================================
+connections:
+  # MCU decoupling
+  - [U1, C3, 4.0]
+  - [U1, C4, 4.0]
+  - [U1, C16, 4.0]
+  - [U1, L3, 3.0]
+  
+  # Sensor decoupling
+  - [U2, C7, 4.0]
+  - [U2, C8, 4.0]
+  - [U4, C9, 4.0]
+  - [U4, C10, 4.0]
+  - [U5, C11, 4.0]
+  
+  # Sensor cluster
+  - [U2, U4, 2.5]
+  - [U4, U5, 2.5]
+  
+  # Sensors to MCU
+  - [U1, U2, 1.5]
+  - [U1, U4, 1.5]
+  - [U1, U5, 1.2]
+  - [U1, U3, 1.2]
+  
+  # RF path
+  - [U1, L5, 3.0]
+  - [L5, C13, 4.0]
+  - [L5, L6, 4.0]
+  - [L6, C14, 4.0]
+  - [L6, C15, 4.0]
+  - [L6, ANT1, 3.5]
+  
+  # Power
+  - [C12, L2, 3.5]
+  - [L2, C1, 3.5]
+  - [C1, C2, 3.0]
+  
+  # NTC
+  - [U1, R1, 2.0]
+  - [R1, R2, 4.0]
+  
+  # LED
+  - [U1, R4, 1.5]
+  - [R4, LED1, 4.0]
+  
+  # I2C
+  - [U1, R5, 2.0]
+  - [U1, R6, 2.0]
+  - [R5, R6, 3.5]
+  
+  # Sensor power
+  - [L4, C5, 4.0]
+  - [L4, C6, 4.0]
+  - [L3, L4, 2.5]
+  
+  # Debug
+  - [U1, H1, 0.8]

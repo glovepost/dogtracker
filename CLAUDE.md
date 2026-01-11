@@ -27,7 +27,7 @@ ato thus has no procedural code, and no side effects.
 #pragma text
 #pragma func("X")
 # enable for loop syntax feature:
-#pragma experiment("FOR_LOOP")
+#pragma experiment("FOR_LOOP)
 
 # --- Imports ---
 # Standard import (newline terminated)
@@ -514,7 +514,7 @@ A lot of times it's actually `ElectricLogic` for things like GPIOs etc or `Elect
 
 Passive modules (Resistors, Capacitors) are picked automatically by the constraints on their parameters.
 To constrain the package do e.g `package = "0402"`.
-To explicitly pick a part for a module use `lcsc_id = "<LCSC_PART_NUMBER>"`.
+To explictly pick a part for a module use `lcsc = "<LCSC_PART_NUMBER>"`.
 
 
 # Creating a package
@@ -695,7 +695,7 @@ module App:
     usb_connector.power ~ power_vbus
     power_vbus ~> ldo ~> power_3v3
 
-## Communications
+## Communicaions
 
 1. Review packages required interfaces, typically i2c, spi or ElectricLogics
 2. Find suitable pins on the controller, typically a microcontroller or Linux SOC
@@ -705,168 +705,6 @@ module App:
 
 - After making changes, be sure to use 'build_project' to update the PCB
 - Builds will often generate errors/warnings, these should be reviewed and fixed
-- Prioritize packages from 'atopile' over other packages
+- Prioritize pacakges from 'atopile' over other packages
 
-
-# Reference Design Best Practices
-
-When designing with ICs, always consult the manufacturer's datasheet for recommended application circuits.
-
-## Decoupling Capacitors
-
-Each IC should have dedicated decoupling capacitors placed as close as possible to its power pins:
-
-| Component Type | Typical Requirement |
-|----------------|---------------------|
-| Microcontrollers | 100nF per VDD pin + 10µF bulk |
-| Sensors (MEMS) | 100nF + 10µF (per datasheet) |
-| RF Modules | 100nF on each power rail |
-| EEPROMs | 100nF on VCC |
-| Op-Amps | 100nF per supply rail |
-
-Example:
-```ato
-# Dedicated decoupling for sensor U2
-c_u2_decouple = new Capacitor
-c_u2_decouple.value = "100nF"
-c_u2_decouple.lcsc_id = "C131394"
-c_u2_decouple.p1 ~ u2.vcc
-c_u2_decouple.p2 ~ gnd
-```
-
-## Reset Pin Protection
-
-MCUs and modules often require bypass capacitors on reset pins:
-```ato
-# NRST bypass capacitor for noise immunity
-c_nrst = new Capacitor
-c_nrst.value = "100nF"
-c_nrst.lcsc_id = "C131394"
-c_nrst.p1 ~ u1.nrst
-c_nrst.p2 ~ gnd
-```
-
-## I2C Address Configuration
-
-When multiple I2C devices share a bus, verify addresses don't conflict:
-- Use address select pins (SA0, ADDR) to set unique addresses
-- Typical I2C addresses: EEPROM 0x50, Accelerometer 0x18/0x19, Humidity 0x40
-
-```ato
-# Set LIS3DH to address 0x18 (SA0 = GND)
-u2.sa0 ~ gnd
-```
-
-
-# RF Design Considerations
-
-## Antenna Matching Networks
-
-RF paths require careful impedance matching, typically 50Ω:
-
-```ato
-# L-Match network for 868MHz
-l_series = new Inductor; l_series.value = "4.3nH"
-c_match1 = new Capacitor; c_match1.value = "5.6pF"
-c_match2 = new Capacitor; c_match2.value = "5.6pF"
-
-# RF Path: MCU -> Series L -> Antenna
-u1.rf_out ~ l_series.p1
-l_series.p2 ~ ant1.feed
-
-# Shunt caps to ground
-l_series.p1 ~ c_match1.p1; c_match1.p2 ~ gnd
-l_series.p2 ~ c_match2.p1; c_match2.p2 ~ gnd
-```
-
-## Harmonic Suppression
-
-For EMC compliance, add harmonic suppression at RF output:
-```ato
-# Harmonic suppression (8.2nH series + 3.3pF shunt)
-l_harm = new Inductor; l_harm.value = "8.2nH"
-c_harm = new Capacitor; c_harm.value = "3.3pF"
-u1.rf_out ~ l_harm.p1
-l_harm.p2 ~ c_harm.p1; c_harm.p2 ~ gnd
-l_harm.p2 ~ l_series.p1  # Continue to matching network
-```
-
-## PCB Layout Guidelines for RF
-
-- Keep RF traces short and direct
-- Use solid ground plane under RF section
-- Avoid vias in RF traces
-- Place matching components in order from IC to antenna
-- Ground antenna shield/dummy pins
-
-
-# PCB Layout Workflow
-
-## Build Output Files
-
-After running `ato build`, the following files are generated in `build/builds/default/`:
-
-| File | Purpose |
-|------|---------|
-| `default.kicad_pcb` | KiCad PCB file with components |
-| `default.bom.csv` | Bill of Materials for ordering |
-| `default.netlist` | Netlist for verification |
-| `default.variables.md` | Parameter values report |
-| `default.i2c_tree.md` | I2C address tree |
-
-## Opening in KiCad
-
-1. Open KiCad 9.0
-2. File > Open Project > Navigate to `build/builds/default/`
-3. Open the `.kicad_pcb` file
-
-## Layout Steps
-
-1. **Draw Board Outline**: Select `Edge.Cuts` layer, draw rectangle
-2. **Place Components**: Arrange logically (MCU center, sensors nearby, RF at edge)
-3. **Route Traces**: Manual routing for RF, auto-route for digital
-4. **Add Ground Plane**: Fill zones on ground layers
-5. **Run DRC**: Design Rules Check to verify
-
-## Auto-Routing Options
-
-- **Freerouting**: Java-based, works with KiCad DSN export
-  ```bash
-  # Export DSN from KiCad: File > Export > Specctra DSN
-  java -jar ~/Applications/freerouting.jar
-  ```
-- **OrthoRoute**: KiCad 9+ plugin (experimental, GPU-accelerated)
-
-
-# Common Errors and Solutions
-
-## Build Errors
-
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `No attribute X` | Wrong pin name in package | Check package .ato file for correct pin names |
-| `Key Error: No class found` | Missing import | Add `from "lib.ato" import ComponentName` |
-| `LibNotInTable` | Footprint library missing | Run `ato create part` to auto-generate |
-| `No pickers` | Part not in LCSC database | Verify LCSC ID or constrain parameters |
-
-## Picker Warnings
-
-| Warning | Cause | Solution |
-|---------|-------|----------|
-| `missing attributes` | LCSC ID not found | Verify LCSC part number exists |
-| `no constrained parameters` | No value set | Add `value = "X"` and `lcsc_id = "Y"` |
-
-## PCB Warnings
-
-| Warning | Cause | Solution |
-|---------|-------|----------|
-| `No PCB pads for pad` | Unused IC pins | Connect unused pins (e.g., `u5.addr ~ gnd`) |
-| `Net name already used` | Multiple connections to same net | Normal for power rails, can ignore |
-
-## Tips
-
-1. Always use `lcsc_id` for explicit part selection
-2. Use toleranced values: `10kohm +/- 5%` not `10kohm`
-3. Run `ato build` frequently to catch errors early
-4. Check warning logs in `build/logs/latest/default/`
 

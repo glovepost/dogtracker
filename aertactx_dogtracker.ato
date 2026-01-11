@@ -1,13 +1,27 @@
+"""
+AertactxDogtracker - Refactored with Reusable Design Block Modules
+
+This version uses modular design blocks that group ICs with their
+associated passives for layout reuse via Atopile Sync Group.
+"""
+
 import Resistor, Capacitor, Inductor
+
+# Import base components from lib
 from "lib.ato" import RAK3172
-from "lib.ato" import LIS3DH
-from "lib.ato" import QMI8658C
 from "lib.ato" import EEPROM
 from "lib.ato" import CR2032_Holder
-from "lib.ato" import StatusLED
-from "lib.ato" import Antenna
-from "lib.ato" import HDC2080
 from "lib.ato" import SWD_Header
+
+# Import reusable design block modules
+from "elec/modules/lis3dhtr_module.ato" import LIS3DHTR_SensorBlock
+from "elec/modules/qmi8658c_module.ato" import QMI8658C_IMUBlock
+from "elec/modules/hdc2080_module.ato" import HDC2080_SensorBlock
+from "elec/modules/rf_matching_module.ato" import RF_MatchingNetwork
+from "elec/modules/power_filter_module.ato" import PowerFilterBlock
+from "elec/modules/i2c_bus_module.ato" import I2C_BusBlock
+from "elec/modules/status_led_module.ato" import StatusLED_Block
+from "elec/modules/ntc_temp_module.ato" import NTC_TempSensor
 
 module AertactxDogtracker:
     # ==================== POWER RAILS ====================
@@ -21,9 +35,21 @@ module AertactxDogtracker:
     signal i2c_scl
     signal i2c_sda
 
-    # ==================== COMPONENTS ====================
+    # ==================== BATTERY ====================
+    b1 = new CR2032_Holder
+    b1.neg ~ gnd
+    b1.pos ~ vbat
 
-    # --- U1: RAK3172-SIP Microcontroller + LoRa ---
+    # ==================== POWER FILTERING MODULE ====================
+    # This module contains ferrite beads and capacitors for all rails
+    power = new PowerFilterBlock
+    power.vbat ~ vbat
+    power.vcc ~ vcc
+    power.vcc_mcu ~ vcc_mcu
+    power.vcc_sensors ~ vcc_sensors
+    power.gnd ~ gnd
+
+    # ==================== MCU ====================
     u1 = new RAK3172
     u1.vcc ~ vcc_mcu
     u1.vbat ~ vbat
@@ -31,23 +57,38 @@ module AertactxDogtracker:
     u1.i2c_scl ~ i2c_scl
     u1.i2c_sda ~ i2c_sda
 
-    # --- U2: LIS3DH 3-Axis Accelerometer ---
-    u2 = new LIS3DH
-    u2.vcc ~ vcc_sensors
-    u2.gnd ~ gnd
-    u2.i2c_scl ~ i2c_scl
-    u2.i2c_sda ~ i2c_sda
-    u2.int1 ~ u1.g_sensor_int1
-    u2.int2 ~ u1.g_sensor_int2
-    u2.sa0 ~ gnd  # I2C address = 0x18
+    # ==================== SENSOR MODULES ====================
 
-    # LIS3DHTR Dedicated Decoupling (per datasheet: 100nF + 10µF)
-    c_lis3dh_1 = new Capacitor; c_lis3dh_1.value = "100nF"; c_lis3dh_1.lcsc_id = "C131394"
-    c_lis3dh_1.p1 ~ u2.vcc; c_lis3dh_1.p2 ~ gnd
-    c_lis3dh_2 = new Capacitor; c_lis3dh_2.value = "10uF"; c_lis3dh_2.lcsc_id = "C15849"
-    c_lis3dh_2.p1 ~ u2.vcc; c_lis3dh_2.p2 ~ gnd
+    # LIS3DHTR Accelerometer Block (IC + decoupling)
+    accel = new LIS3DHTR_SensorBlock
+    accel.vcc ~ vcc_sensors
+    accel.gnd ~ gnd
+    accel.i2c_scl ~ i2c_scl
+    accel.i2c_sda ~ i2c_sda
+    accel.int1 ~ u1.g_sensor_int1
+    accel.int2 ~ u1.g_sensor_int2
+    accel.sa0 ~ gnd  # I2C address = 0x18
 
-    # --- U3: EEPROM (FT24C02A-KLR-T) ---
+    # QMI8658C IMU Block (IC + decoupling)
+    imu = new QMI8658C_IMUBlock
+    imu.vcc ~ vcc_sensors
+    imu.gnd ~ gnd
+    imu.i2c_scl ~ i2c_scl
+    imu.i2c_sda ~ i2c_sda
+    imu.int1 ~ u1.imu_int1
+    imu.int2 ~ u1.imu_int2
+
+    # HDC2080 Humidity Sensor Block (IC + decoupling)
+    humidity = new HDC2080_SensorBlock
+    humidity.vcc ~ vcc_sensors
+    humidity.gnd ~ gnd
+    humidity.i2c_scl ~ i2c_scl
+    humidity.i2c_sda ~ i2c_sda
+    humidity.int_pin ~ u1.int_humid
+    humidity.addr ~ gnd   # I2C address = 0x40
+    humidity.ep ~ gnd     # Exposed pad to ground
+
+    # ==================== EEPROM ====================
     u3 = new EEPROM
     u3.vcc ~ vcc_sensors
     u3.gnd ~ gnd
@@ -55,145 +96,36 @@ module AertactxDogtracker:
     u3.sda ~ i2c_sda
     u3.wp ~ gnd  # Write protect disabled
 
-    # --- U4: QMI8658C 6D IMU ---
-    u4 = new QMI8658C
-    u4.vcc ~ vcc_sensors
-    u4.gnd ~ gnd
-    u4.i2c_scl ~ i2c_scl
-    u4.i2c_sda ~ i2c_sda
-    u4.int1 ~ u1.imu_int1
-    u4.int2 ~ u1.imu_int2
+    # ==================== RF MATCHING MODULE ====================
+    rf = new RF_MatchingNetwork
+    rf.rf_in ~ u1.rf_out
+    rf.gnd ~ gnd
 
-    # QMI8658C Dedicated Decoupling (per datasheet: 2x 100nF - Cp1, Cp2)
-    c_qmi_1 = new Capacitor; c_qmi_1.value = "100nF"; c_qmi_1.lcsc_id = "C131394"
-    c_qmi_1.p1 ~ u4.vcc; c_qmi_1.p2 ~ gnd
-    c_qmi_2 = new Capacitor; c_qmi_2.value = "100nF"; c_qmi_2.lcsc_id = "C131394"
-    c_qmi_2.p1 ~ u4.vcc; c_qmi_2.p2 ~ gnd
+    # ==================== I2C BUS MODULE ====================
+    i2c = new I2C_BusBlock
+    i2c.vcc ~ vcc
+    i2c.sda ~ i2c_sda
+    i2c.scl ~ i2c_scl
 
-    # --- U5: HDC2080DMBR Temp/Humidity Sensor ---
-    u5 = new HDC2080
-    u5.vcc ~ vcc_sensors
-    u5.gnd ~ gnd
-    u5.scl ~ i2c_scl
-    u5.sda ~ i2c_sda
-    u5.int_pin ~ u1.int_humid
-    u5.addr ~ gnd   # I2C address = 0x40
-    u5.ep ~ gnd     # Exposed pad to ground
+    # ==================== STATUS LED MODULE ====================
+    led = new StatusLED_Block
+    led.gpio_in ~ u1.led_status
+    led.gnd ~ gnd
 
-    # HDC2080 Dedicated Decoupling (per TI datasheet: 100nF X7R)
-    c_hdc = new Capacitor; c_hdc.value = "100nF"; c_hdc.lcsc_id = "C131394"
-    c_hdc.p1 ~ u5.vcc; c_hdc.p2 ~ gnd
+    # ==================== NTC TEMPERATURE MODULE ====================
+    ntc = new NTC_TempSensor
+    ntc.vcc ~ vcc
+    ntc.gnd ~ gnd
+    ntc.adc_out ~ u1.adc_ntc
 
-    # --- B1: CR2032 Battery Holder ---
-    b1 = new CR2032_Holder
-    b1.neg ~ gnd
-    b1.pos ~ vbat
-
-    # ==================== POWER PATH & FILTERING ====================
-
-    # E1: Main Ferrite Bead - Battery to VCC
-    e1 = new Inductor
-    e1.value = "120ohm"
-    e1.lcsc_id = "C76891"
-    vbat ~ e1.p1
-    e1.p2 ~ vcc  # VBAT filtered -> VCC
-
-    # E2: MCU Rail Filter - VCC to VCC_MCU
-    e2 = new Inductor
-    e2.value = "120ohm"
-    e2.lcsc_id = "C76891"
-    vcc ~ e2.p1
-    e2.p2 ~ vcc_mcu  # Secondary filtering for MCU
-
-    # E3: Sensor Rail Filter - VCC to VCC_SENSORS
-    e3 = new Inductor
-    e3.value = "120ohm"
-    e3.lcsc_id = "C76891"
-    vcc ~ e3.p1
-    e3.p2 ~ vcc_sensors  # Secondary filtering for sensors
-
-    # Bulk Capacitor (near battery)
-    c_bulk = new Capacitor
-    c_bulk.value = "22uF"
-    c_bulk.lcsc_id = "C109448"
-    c_bulk.p1 ~ vbat
-    c_bulk.p2 ~ gnd
-
-    # Main VCC Decoupling
-    c1 = new Capacitor; c1.value = "4.7uF"; c1.lcsc_id = "C77004"
-    c1.p1 ~ vcc; c1.p2 ~ gnd
-
-    c2 = new Capacitor; c2.value = "100nF"; c2.lcsc_id = "C131394"
-    c2.p1 ~ vcc; c2.p2 ~ gnd
-
-    # MCU Decoupling (near U1)
-    c3 = new Capacitor; c3.value = "100nF"; c3.lcsc_id = "C131394"
-    c3.p1 ~ vcc_mcu; c3.p2 ~ gnd
-
-    c4 = new Capacitor; c4.value = "4.7uF"; c4.lcsc_id = "C77004"
-    c4.p1 ~ vcc_mcu; c4.p2 ~ gnd
-
-    # Sensor Decoupling (near sensors)
-    c5 = new Capacitor; c5.value = "100nF"; c5.lcsc_id = "C131394"
-    c5.p1 ~ vcc_sensors; c5.p2 ~ gnd
-
-    c6 = new Capacitor; c6.value = "100nF"; c6.lcsc_id = "C131394"
-    c6.p1 ~ vcc_sensors; c6.p2 ~ gnd
-
-    # ==================== SENSING & UI ====================
-
-    # NTC Circuit (R1, R2 form voltage divider for temperature sensing)
-    r1 = new Resistor; r1.value = "10kohm"; r1.lcsc_id = "C60490"  # Fixed resistor
-    r2 = new Resistor; r2.value = "10kohm_ntc"; r2.lcsc_id = "C77131"  # NTC
-    vcc ~ r1.p1
-    r1.p2 ~ u1.adc_ntc  # Divider midpoint to ADC
-    r1.p2 ~ r2.p1
-    r2.p2 ~ gnd
-
-    # Activation Circuit (Reed Switch with pull-up)
-    r3 = new Resistor; r3.value = "10kohm"; r3.lcsc_id = "C60490"
-    vcc ~ r3.p1
-    r3.p2 ~ u1.activation  # Switch pulls to GND when activated
-
-    # Status LED (D1 with current limiting resistor)
-    d1 = new StatusLED
-    r4 = new Resistor; r4.value = "1kohm"; r4.lcsc_id = "C105637"
-    u1.led_status ~ r4.p1
-    r4.p2 ~ d1.anode
-    d1.cathode ~ gnd
-
-    # ==================== RF PATH ====================
-
-    ant1 = new Antenna
-    ant1.ground ~ gnd
-    ant1.dummy ~ gnd   # Ground dummy pin per datasheet
-
-    # Matching Network (L-Match: Series L, Shunt C)
-    # Tuned values: 5.6pF / 4.3nH for 868MHz
-    c_match1 = new Capacitor; c_match1.value = "5.6pF"; c_match1.lcsc_id = "C161329"
-    l_series = new Inductor; l_series.value = "4.3nH"; l_series.lcsc_id = "C97999"
-    c_match2 = new Capacitor; c_match2.value = "5.6pF"; c_match2.lcsc_id = "C161329"
-
-    # Harmonic Suppression (per RAK app note: 8.2nH + 3.3pF for EMC)
-    l_harm = new Inductor; l_harm.value = "8.2nH"; l_harm.lcsc_id = "C76832"  # Murata LQW15AN
-    c_harm = new Capacitor; c_harm.value = "3.3pF"; c_harm.lcsc_id = "C161313"  # Shunt to GND
-
-    # RF Path: MCU -> Harmonic Filter -> Matching Network -> Antenna
-    u1.rf_out ~ l_harm.p1           # RF_OUT to harmonic suppression
-    l_harm.p2 ~ c_harm.p1           # Shunt cap junction
-    c_harm.p2 ~ gnd
-    l_harm.p2 ~ l_series.p1         # Continue to matching network
-    l_series.p2 ~ ant1.feed
-
-    # Shunt capacitors to ground
-    l_series.p1 ~ c_match1.p1  # Shunt C near MCU
-    c_match1.p2 ~ gnd
-
-    l_series.p2 ~ c_match2.p1  # Shunt C near antenna
-    c_match2.p2 ~ gnd
+    # ==================== ACTIVATION CIRCUIT ====================
+    r_activation = new Resistor
+    r_activation.value = "10kohm"
+    r_activation.lcsc_id = "C60490"
+    vcc ~ r_activation.p1
+    r_activation.p2 ~ u1.activation
 
     # ==================== DEBUG INTERFACE ====================
-
     j1 = new SWD_Header
     j1.vcc ~ vcc
     j1.gnd ~ gnd
@@ -201,20 +133,15 @@ module AertactxDogtracker:
     j1.swclk ~ u1.swclk
     j1.nrst ~ u1.nrst
 
-    # NRST Bypass Capacitor (per RAK datasheet: 100nF for noise immunity)
-    c_nrst = new Capacitor; c_nrst.value = "100nF"; c_nrst.lcsc_id = "C131394"
-    c_nrst.p1 ~ u1.nrst; c_nrst.p2 ~ gnd
+    # NRST Bypass Capacitor (per RAK datasheet)
+    c_nrst = new Capacitor
+    c_nrst.value = "100nF"
+    c_nrst.lcsc_id = "C131394"
+    c_nrst.p1 ~ u1.nrst
+    c_nrst.p2 ~ gnd
 
-    # ==================== I2C BUS CONFIGURATION ====================
-
-    # I2C Pull-ups (4.7kΩ for ~400kHz operation)
-    r5 = new Resistor; r5.value = "4.7kohm"; r5.lcsc_id = "C105870"
-    r6 = new Resistor; r6.value = "4.7kohm"; r6.lcsc_id = "C105870"
-    vcc ~ r5.p1; r5.p2 ~ i2c_sda
-    vcc ~ r6.p1; r6.p2 ~ i2c_scl
-
-    # ==================== ADDITIONAL FILTERING ====================
-
-    # L1: RF Choke for analog supply (optional, for ADC noise reduction)
-    l1 = new Inductor; l1.value = "10uH"; l1.lcsc_id = "C86083"
-    # Reserved for future use - connect if ADC noise is an issue
+    # ==================== RESERVED ====================
+    l1 = new Inductor
+    l1.value = "10uH"
+    l1.lcsc_id = "C86083"
+    # Reserved for future use

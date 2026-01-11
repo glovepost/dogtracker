@@ -1,0 +1,341 @@
+# Design Block Templates for PCB Component Autoplacement
+# ========================================================
+# Reusable IC + passive grouping templates
+# Each block defines an IC with its associated passives
+# positioned at optimal distances per reference designs
+# ========================================================
+
+# Block templates define relative component positions
+# that remain fixed when the block is instantiated
+blocks:
+
+  # =============================================================
+  # RAK3172 MCU Block
+  # Reference: RAK3172-SiP Application Note
+  # =============================================================
+  rak3172_mcu:
+    name: "RAK3172 MCU Block"
+    anchor: U1
+    size: [18.0, 18.0]  # Block bounding box
+    components:
+      U1:
+        offset: [0.0, 0.0]
+        size: [14.0, 14.0]
+        note: "RAK3172-SiP MCU module"
+      C3:
+        offset: [8.5, 1.5]
+        size: [1.8, 1.2]
+        note: "100nF VCC_MCU decoupling - within 2mm of VDD"
+      C4:
+        offset: [8.5, -0.5]
+        size: [1.8, 1.2]
+        note: "4.7uF VCC_MCU bulk capacitor"
+      C16:
+        offset: [8.5, -2.5]
+        size: [1.8, 1.2]
+        note: "100nF NRST bypass - noise immunity"
+      L3:
+        offset: [-8.5, 0.0]
+        size: [2.5, 2.0]
+        note: "Ferrite bead VCC to VCC_MCU"
+
+  # =============================================================
+  # LIS3DHTR Accelerometer Block
+  # Reference: ST AN4508 - MEMS layout guidelines
+  # =============================================================
+  lis3dhtr_accel:
+    name: "LIS3DHTR Accelerometer Block"
+    anchor: U2
+    size: [8.0, 6.0]
+    components:
+      U2:
+        offset: [0.0, 0.0]
+        size: [4.5, 4.5]
+        note: "LIS3DHTR 3-axis accelerometer"
+      C7:
+        offset: [3.0, 0.5]
+        size: [1.8, 1.2]
+        note: "100nF on VDD - place closest to IC"
+      C8:
+        offset: [3.0, -1.5]
+        size: [1.8, 1.2]
+        note: "10uF on VDD - larger cap slightly further"
+
+  # =============================================================
+  # QMI8658C IMU Block
+  # Reference: QST QMI8658C Datasheet - Figure 6
+  # =============================================================
+  qmi8658c_imu:
+    name: "QMI8658C IMU Block"
+    anchor: U4
+    size: [8.0, 6.0]
+    components:
+      U4:
+        offset: [0.0, 0.0]
+        size: [4.5, 4.0]
+        note: "QMI8658C 6-axis IMU"
+      C9:
+        offset: [3.0, 0.5]
+        size: [1.8, 1.2]
+        note: "100nF Cp1 - VDD decoupling"
+      C10:
+        offset: [3.0, -1.5]
+        size: [1.8, 1.2]
+        note: "100nF Cp2 - VDD_IO decoupling"
+
+  # =============================================================
+  # HDC2080 Humidity/Temp Sensor Block
+  # Reference: TI HDC2080 Datasheet - Section 7.3.2
+  # =============================================================
+  hdc2080_humidity:
+    name: "HDC2080 Humidity Sensor Block"
+    anchor: U5
+    size: [7.0, 5.0]
+    components:
+      U5:
+        offset: [0.0, 0.0]
+        size: [4.5, 4.5]
+        note: "HDC2080 temperature/humidity sensor"
+      C11:
+        offset: [3.0, 0.0]
+        size: [1.8, 1.2]
+        note: "100nF X7R bypass - TI recommended"
+
+  # =============================================================
+  # RF Matching Network Block
+  # Reference: RAK3172-SiP RF Design Guidelines
+  # =============================================================
+  rf_matching:
+    name: "RF Matching Network Block"
+    anchor: ANT1
+    size: [20.0, 6.0]
+    components:
+      ANT1:
+        offset: [0.0, 0.0]
+        size: [10.0, 5.0]
+        note: "SMD Antenna"
+      C15:
+        offset: [-6.0, 0.0]
+        rotation: 90
+        size: [1.8, 1.2]
+        note: "Shunt C near antenna"
+      L6:
+        offset: [-8.5, 0.0]
+        size: [2.5, 2.0]
+        note: "Series matching inductor"
+      C14:
+        offset: [-11.5, 0.0]
+        rotation: 90
+        size: [1.8, 1.2]
+        note: "Shunt C near MCU"
+      L5:
+        offset: [-14.0, 0.0]
+        size: [2.5, 2.0]
+        note: "Harmonic filter inductor"
+      C13:
+        offset: [-14.0, -2.5]
+        size: [1.8, 1.2]
+        note: "Harmonic shunt capacitor"
+
+  # =============================================================
+  # Power Input Block (CR2032 Battery)
+  # =============================================================
+  power_cr2032:
+    name: "CR2032 Power Input Block"
+    anchor: B1
+    size: [28.0, 28.0]
+    layer: back  # Battery on back of board
+    components:
+      B1:
+        offset: [0.0, 0.0]
+        size: [26.0, 26.0]
+        layer: back
+        note: "CR2032 coin cell holder"
+    # Power chain components are on front, positioned separately
+
+  # =============================================================
+  # Power Filter Block
+  # =============================================================
+  power_filter:
+    name: "Power Filter Block"
+    anchor: L2
+    size: [12.0, 4.0]
+    components:
+      C12:
+        offset: [-4.0, 0.0]
+        size: [2.2, 1.5]
+        note: "22uF bulk capacitor"
+      L2:
+        offset: [0.0, 0.0]
+        size: [2.5, 2.0]
+        note: "Main ferrite VBAT to VCC"
+      C1:
+        offset: [4.0, 0.0]
+        size: [1.8, 1.2]
+        note: "4.7uF VCC decoupling"
+      C2:
+        offset: [7.0, 0.0]
+        size: [1.8, 1.2]
+        note: "100nF VCC decoupling"
+
+  # =============================================================
+  # NTC Voltage Divider Block
+  # =============================================================
+  ntc_divider:
+    name: "NTC Temperature Divider Block"
+    anchor: R1
+    size: [3.0, 5.0]
+    components:
+      R1:
+        offset: [0.0, 0.0]
+        size: [1.8, 1.2]
+        note: "10k fixed resistor (top)"
+      R2:
+        offset: [0.0, -2.0]
+        size: [1.8, 1.2]
+        note: "10k NTC thermistor (bottom)"
+
+  # =============================================================
+  # LED Indicator Block
+  # =============================================================
+  led_indicator:
+    name: "LED Indicator Block"
+    anchor: LED1
+    size: [6.0, 4.0]
+    components:
+      LED1:
+        offset: [0.0, 0.0]
+        size: [2.5, 1.5]
+        note: "Status LED"
+      R4:
+        offset: [-3.0, 0.0]
+        size: [1.8, 1.2]
+        note: "LED current limiting resistor"
+
+  # =============================================================
+  # I2C Pull-up Block
+  # =============================================================
+  i2c_pullups:
+    name: "I2C Pull-up Block"
+    anchor: R5
+    size: [3.0, 5.0]
+    components:
+      R5:
+        offset: [0.0, 0.0]
+        size: [1.8, 1.2]
+        note: "4.7k SDA pull-up"
+      R6:
+        offset: [0.0, 2.0]
+        size: [1.8, 1.2]
+        note: "4.7k SCL pull-up"
+
+  # =============================================================
+  # Sensor Power Filter Block
+  # =============================================================
+  sensor_power_filter:
+    name: "Sensor Power Filter Block"
+    anchor: L4
+    size: [6.0, 6.0]
+    components:
+      L4:
+        offset: [0.0, 0.0]
+        size: [2.5, 2.0]
+        note: "Ferrite VCC to VCC_SENSORS"
+      C5:
+        offset: [-2.5, 0.0]
+        size: [1.8, 1.2]
+        note: "100nF sensor rail decoupling"
+      C6:
+        offset: [0.0, -2.5]
+        size: [1.8, 1.2]
+        note: "100nF additional filtering"
+
+# =============================================================
+# BLOCK INSTANCES - Where to place each block on the board
+# =============================================================
+instances:
+  - block: rak3172_mcu
+    position: [0.0, 0.0]
+    layer: front
+    
+  - block: lis3dhtr_accel
+    position: [-14.0, 4.0]
+    layer: front
+    
+  - block: qmi8658c_imu
+    position: [-14.0, -3.0]
+    layer: front
+    
+  - block: hdc2080_humidity
+    position: [-14.0, -10.0]
+    layer: front
+    
+  - block: rf_matching
+    position: [15.0, 0.0]
+    layer: front
+    
+  - block: power_cr2032
+    position: [0.0, 0.0]
+    layer: back
+    
+  - block: power_filter
+    position: [-5.0, 10.0]
+    layer: front
+    
+  - block: ntc_divider
+    position: [8.0, -8.0]
+    layer: front
+    
+  - block: led_indicator
+    position: [12.0, -12.0]
+    layer: front
+    
+  - block: i2c_pullups
+    position: [-5.0, 8.0]
+    layer: front
+    
+  - block: sensor_power_filter
+    position: [-8.0, 8.0]
+    layer: front
+
+# =============================================================
+# ADDITIONAL STANDALONE COMPONENTS
+# =============================================================
+standalone:
+  U3:  # EEPROM
+    position: [-6.0, -10.0]
+    size: [4.0, 2.5]
+    layer: front
+    
+  H1:  # Debug header
+    position: [-2.0, -14.0]
+    size: [15.0, 4.0]
+    layer: front
+    
+  R3:  # Activation pull-up
+    position: [9.0, -10.0]
+    size: [1.8, 1.2]
+    layer: front
+    
+  L1:  # Reserved
+    position: [10.0, -14.0]
+    size: [2.5, 2.0]
+    layer: front
+
+# =============================================================
+# BOARD SETTINGS
+# =============================================================
+board:
+  width: 35.0
+  height: 32.0
+  origin: [0.0, 0.0]
+
+# Force-directed settings for block placement optimization
+force_directed:
+  enabled: true
+  iterations: 150
+  attraction_strength: 0.20
+  repulsion_strength: 400.0
+  damping: 0.78
+  collision_strength: 50.0
+  min_clearance: 0.5

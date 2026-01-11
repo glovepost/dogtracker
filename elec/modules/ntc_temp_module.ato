@@ -1,0 +1,94 @@
+#pragma experiment("TRAITS")
+import Resistor
+
+"""
+================================================================================
+NTC Temperature Sensing Module
+================================================================================
+
+DESCRIPTION:
+    Voltage divider circuit for temperature measurement using an NTC
+    thermistor. Provides analog output to MCU ADC input.
+
+COMPONENTS:
+    • 10kΩ fixed resistor (0402) - reference divider
+    • 10kΩ NTC thermistor (0402) - temperature sensor
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  NTC PLACEMENT (CRITICAL):                                   │
+    │  • Place NTC exactly where temperature measurement needed    │
+    │  • For ambient: Near board edge, away from heat sources      │
+    │  • For MCU temp: Thermal via to MCU ground pad               │
+    │                                                              │
+    │  THERMAL ISOLATION:                                          │
+    │  • Minimize copper around NTC pads                           │
+    │  • Use narrow traces (0.15mm) to NTC                         │
+    │  • No ground pour directly under NTC                         │
+    │                                                              │
+    │  NOISE REDUCTION:                                            │
+    │  • Keep ADC trace short (minimizes noise pickup)             │
+    │  • Route away from switching nodes and digital signals       │
+    │  • Consider 100nF filter cap at ADC input (optional)         │
+    │                                                              │
+    │  FIXED RESISTOR PLACEMENT:                                   │
+    │  • Near MCU (not thermally coupled to NTC)                   │
+    │  • Use 1% tolerance for accuracy                             │
+    │  • Match resistance to NTC R25 value                         │
+    └─────────────────────────────────────────────────────────────┘
+
+SCHEMATIC:
+            VCC
+             │
+           [10kΩ]  ← Fixed resistor (near MCU)
+             │
+             ├──────────────── ADC_OUT (to MCU ADC pin)
+             │
+           [NTC]   ← NTC thermistor (at measurement point)
+             │
+            GND
+
+TEMPERATURE CALCULATION:
+    R_NTC = R_FIXED × (V_ADC / (VCC - V_ADC))
+
+    For 10kΩ NTC (B=3950):
+    T(°C) = 1 / (1/298.15 + ln(R_NTC/10000)/3950) - 273.15
+
+ADC VOLTAGE vs TEMPERATURE (10k/10k divider, VCC=3.3V):
+    ┌─────────┬────────┬────────┐
+    │ Temp    │ R_NTC  │ V_ADC  │
+    ├─────────┼────────┼────────┤
+    │ -20°C   │ 97.1kΩ │ 2.99V  │
+    │   0°C   │ 32.7kΩ │ 2.53V  │
+    │  25°C   │ 10.0kΩ │ 1.65V  │
+    │  50°C   │  3.6kΩ │ 0.87V  │
+    │  85°C   │  1.2kΩ │ 0.35V  │
+    └─────────┴────────┴────────┘
+
+REFERENCE:
+    NTC Thermistor Application Notes
+    Vishay NTCLE100E3 Datasheet
+================================================================================
+"""
+
+module NTC_TempSensor:
+    # External signals
+    signal vcc
+    signal gnd
+    signal adc_out   # Voltage divider output to ADC
+
+    # Fixed resistor (top of divider)
+    r_fixed = new Resistor
+    r_fixed.value = "10kohm"
+    r_fixed.lcsc_id = "C60490"
+
+    # NTC thermistor (bottom of divider)
+    r_ntc = new Resistor
+    r_ntc.value = "10kohm_ntc"
+    r_ntc.lcsc_id = "C77131"
+
+    # Voltage divider: VCC -> R_fixed -> ADC_out -> R_NTC -> GND
+    vcc ~ r_fixed.p1
+    r_fixed.p2 ~ adc_out
+    adc_out ~ r_ntc.p1
+    r_ntc.p2 ~ gnd

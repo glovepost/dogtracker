@@ -1,0 +1,74 @@
+#pragma experiment("TRAITS")
+import Resistor, Capacitor, Inductor
+
+"""
+================================================================================
+I2C Bus Module with Pull-ups
+================================================================================
+
+DESCRIPTION:
+    I2C bus pull-up resistors for reliable communication at up to 400kHz.
+    Sized for 3.3V operation with typical bus capacitance.
+
+COMPONENTS:
+    • 2x 4.7kΩ resistors (0402) - SDA and SCL pull-ups
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  PLACEMENT:                                                  │
+    │  • Place near I2C master (MCU) for best signal integrity     │
+    │  • Only ONE set of pull-ups per I2C bus                      │
+    │  • Keep pull-ups within 10mm of MCU I2C pins                 │
+    │                                                              │
+    │  TRACE ROUTING:                                              │
+    │  • Route SDA and SCL as differential pair (parallel)         │
+    │  • Keep equal length for SCL and SDA to each device          │
+    │  • Avoid routing over split ground planes                    │
+    │  • Maximum bus length: 1m at 100kHz, 50cm at 400kHz          │
+    │                                                              │
+    │  PULL-UP VALUE SELECTION:                                    │
+    │  • 4.7kΩ: Standard, good for ≤400kHz, <200pF bus cap         │
+    │  • 2.2kΩ: Higher capacitance busses (>200pF)                 │
+    │  • 10kΩ: Lower power, 100kHz only                            │
+    │                                                              │
+    │  NOISE IMMUNITY:                                             │
+    │  • Keep I2C traces away from high-speed digital signals      │
+    │  • Ground plane under I2C traces recommended                 │
+    └─────────────────────────────────────────────────────────────┘
+
+SCHEMATIC:
+            VCC
+             │
+         ┌───┴───┐
+         │       │
+       [4.7k]  [4.7k]
+         │       │
+         │       └──────── SCL
+         │
+         └────────────── SDA
+
+REFERENCE:
+    I2C-bus Specification and User Manual (NXP UM10204)
+    Section 7.1 - Pull-up Resistor Sizing
+================================================================================
+"""
+
+module I2C_BusBlock:
+    # External signals
+    signal vcc
+    signal sda
+    signal scl
+
+    # SDA Pull-up
+    r_sda = new Resistor
+    r_sda.value = "4.7kohm"
+    r_sda.lcsc_id = "C105870"
+    vcc ~ r_sda.p1
+    r_sda.p2 ~ sda
+
+    # SCL Pull-up
+    r_scl = new Resistor
+    r_scl.value = "4.7kohm"
+    r_scl.lcsc_id = "C105870"
+    vcc ~ r_scl.p1
+    r_scl.p2 ~ scl

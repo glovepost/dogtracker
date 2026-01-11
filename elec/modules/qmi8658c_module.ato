@@ -1,0 +1,96 @@
+#pragma experiment("TRAITS")
+import Resistor, Capacitor, Inductor
+from "lib.ato" import QMI8658C
+
+"""
+================================================================================
+QMI8658C 6-Axis IMU Module with Decoupling
+================================================================================
+
+DESCRIPTION:
+    Reusable design block containing the QMI8658C 6-axis IMU (accelerometer
+    + gyroscope) with power supply filtering per QST datasheet Figure 6.
+
+COMPONENTS:
+    • QMI8658C - 6-axis IMU (LGA-14, 3x2.5mm)
+    • Cp1: 100nF ceramic capacitor (0402) - VDD decoupling
+    • Cp2: 100nF ceramic capacitor (0402) - VDD_IO decoupling
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  PLACEMENT:                                                  │
+    │  • Mount on rigid PCB area (avoid flex zones)                │
+    │  • Keep away from motors, speakers, vibration sources        │
+    │  • Place near center of rotation for angular measurements    │
+    │                                                              │
+    │  DECOUPLING:                                                 │
+    │  • Cp1 (VDD): Within 0.5-1mm of VDD pin                      │
+    │  • Cp2 (VDD_IO): Within 0.5-1mm of VDD_IO pin                │
+    │  • Use 0402 or 0201 package for minimum inductance           │
+    │                                                              │
+    │  CRITICAL LAYOUT RULES:                                      │
+    │  • DO NOT route tracks under the IC package                  │
+    │  • Use solid ground plane under entire module                │
+    │  • Minimum 4 vias for ground connection                      │
+    │                                                              │
+    │  ORIENTATION:                                                │
+    │  • Note IC orientation vs accelerometer axes (see datasheet) │
+    │  • Mark X/Y/Z reference on silkscreen                        │
+    └─────────────────────────────────────────────────────────────┘
+
+SCHEMATIC SYMBOL:
+                    VCC_SENSORS
+                        │
+                ┌───────┼───────┐
+                │  Cp1  │  Cp2  │
+                │ 100nF │ 100nF │
+                │  ─┬─  │  ─┬─  │
+    I2C_SCL ────┤SCL│   │   │   │
+    I2C_SDA ────┤SDA│QMI│   │   │
+    INT1 ───────┤IN1│865│   │   │
+    INT2 ───────┤IN2│8C │   │   │
+                │   └───┴───┘   │
+                └───────┬───────┘
+                        │
+                       GND
+
+REFERENCE:
+    QST QMI8658C Datasheet - Figure 6 (Application Circuit)
+    Section 6.1 - Power Supply Decoupling
+
+I2C ADDRESS: 0x6B (fixed)
+================================================================================
+"""
+
+module QMI8658C_IMUBlock:
+    # External signals
+    signal vcc
+    signal gnd
+    signal i2c_scl
+    signal i2c_sda
+    signal int1
+    signal int2
+
+    # Core IC
+    ic = new QMI8658C
+    ic.vcc ~ vcc
+    ic.gnd ~ gnd
+    ic.i2c_scl ~ i2c_scl
+    ic.i2c_sda ~ i2c_sda
+    ic.int1 ~ int1
+    ic.int2 ~ int2
+
+    # Dedicated Decoupling (per QST datasheet)
+    # Cp1: 100nF on VDD
+    cp1 = new Capacitor
+    cp1.value = "100nF"
+    cp1.lcsc_id = "C131394"
+    cp1.p1 ~ vcc
+    cp1.p2 ~ gnd
+
+    # Cp2: 100nF on VDD_IO
+    cp2 = new Capacitor
+    cp2.value = "100nF"
+    cp2.lcsc_id = "C131394"
+    cp2.p1 ~ vcc
+    cp2.p2 ~ gnd

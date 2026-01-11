@@ -1,0 +1,146 @@
+#pragma experiment("TRAITS")
+import Resistor, Capacitor, Inductor
+from "lib.ato" import CR2032_Holder
+
+"""
+================================================================================
+Power Filter Module (Battery Input to Filtered Rails)
+================================================================================
+
+DESCRIPTION:
+    Complete power distribution network for CR2032 battery-powered designs.
+    Provides filtered rails for MCU and sensor subsystems with proper
+    decoupling at each stage.
+
+COMPONENTS:
+    • 3x 120Ω ferrite beads (0402) - rail isolation
+    • 22uF bulk capacitor (0805) - battery input
+    • 2x 4.7uF capacitors (0603) - rail bulk
+    • 4x 100nF capacitors (0402) - high-frequency bypass
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  POWER PATH ROUTING:                                         │
+    │  • Route power in order: Battery → Bulk → Ferrite → Rails    │
+    │  • Use wide traces (≥0.5mm) for power distribution           │
+    │  • Star topology from central VCC node                       │
+    │                                                              │
+    │  FERRITE BEAD PLACEMENT:                                     │
+    │  • Place ferrites BEFORE entering each subsystem             │
+    │  • Keep close to noise source (MCU/sensors)                  │
+    │  • Rated for expected DC current (check datasheet)           │
+    │                                                              │
+    │  CAPACITOR PLACEMENT:                                        │
+    │  • Bulk capacitors: Near battery/power input                 │
+    │  • 4.7uF: At each rail after ferrite                         │
+    │  • 100nF: Distributed near each IC VDD pin                   │
+    │                                                              │
+    │  GROUNDING:                                                  │
+    │  • Single-point ground near battery negative                 │
+    │  • Solid ground plane on layer 2                             │
+    │  • Star ground for analog/digital separation if needed       │
+    └─────────────────────────────────────────────────────────────┘
+
+POWER DISTRIBUTION TREE:
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                              │
+    │  CR2032      22uF                                            │
+    │   VBAT ──────┴────┬───[FB:120Ω]────┬── VCC                  │
+    │                   │                │   │                     │
+    │                  GND             4.7uF 100nF                 │
+    │                                    │   │                     │
+    │                                   GND GND                    │
+    │                                                              │
+    │              ┌────────────────────┴──────────────────┐       │
+    │              │                                        │       │
+    │        [FB:120Ω]                                [FB:120Ω]    │
+    │              │                                        │       │
+    │          VCC_MCU                                 VCC_SENSORS │
+    │              │                                        │       │
+    │         ┌────┴────┐                              ┌────┴────┐ │
+    │       100nF    4.7uF                           100nF   100nF │
+    │         │        │                               │       │   │
+    │        GND      GND                             GND     GND  │
+    │                                                              │
+    └─────────────────────────────────────────────────────────────┘
+
+REFERENCE:
+    CR2032 Power Supply Best Practices
+    Ferrite Bead Selection for Power Filtering (Murata AN)
+================================================================================
+"""
+
+module PowerFilterBlock:
+    # External signals
+    signal vbat       # Raw battery voltage
+    signal vcc        # Main filtered rail
+    signal vcc_mcu    # MCU filtered rail
+    signal vcc_sensors # Sensor filtered rail
+    signal gnd
+
+    # Main Ferrite Bead - Battery to VCC
+    l_main = new Inductor
+    l_main.value = "120ohm"
+    l_main.lcsc_id = "C76891"
+    vbat ~ l_main.p1
+    l_main.p2 ~ vcc
+
+    # MCU Rail Filter
+    l_mcu = new Inductor
+    l_mcu.value = "120ohm"
+    l_mcu.lcsc_id = "C76891"
+    vcc ~ l_mcu.p1
+    l_mcu.p2 ~ vcc_mcu
+
+    # Sensor Rail Filter
+    l_sensors = new Inductor
+    l_sensors.value = "120ohm"
+    l_sensors.lcsc_id = "C76891"
+    vcc ~ l_sensors.p1
+    l_sensors.p2 ~ vcc_sensors
+
+    # Bulk Capacitor (near battery)
+    c_bulk = new Capacitor
+    c_bulk.value = "22uF"
+    c_bulk.lcsc_id = "C109448"
+    c_bulk.p1 ~ vbat
+    c_bulk.p2 ~ gnd
+
+    # Main VCC Decoupling
+    c_vcc_1 = new Capacitor
+    c_vcc_1.value = "4.7uF"
+    c_vcc_1.lcsc_id = "C77004"
+    c_vcc_1.p1 ~ vcc
+    c_vcc_1.p2 ~ gnd
+
+    c_vcc_2 = new Capacitor
+    c_vcc_2.value = "100nF"
+    c_vcc_2.lcsc_id = "C131394"
+    c_vcc_2.p1 ~ vcc
+    c_vcc_2.p2 ~ gnd
+
+    # MCU Decoupling
+    c_mcu_1 = new Capacitor
+    c_mcu_1.value = "100nF"
+    c_mcu_1.lcsc_id = "C131394"
+    c_mcu_1.p1 ~ vcc_mcu
+    c_mcu_1.p2 ~ gnd
+
+    c_mcu_2 = new Capacitor
+    c_mcu_2.value = "4.7uF"
+    c_mcu_2.lcsc_id = "C77004"
+    c_mcu_2.p1 ~ vcc_mcu
+    c_mcu_2.p2 ~ gnd
+
+    # Sensor Decoupling
+    c_sensor_1 = new Capacitor
+    c_sensor_1.value = "100nF"
+    c_sensor_1.lcsc_id = "C131394"
+    c_sensor_1.p1 ~ vcc_sensors
+    c_sensor_1.p2 ~ gnd
+
+    c_sensor_2 = new Capacitor
+    c_sensor_2.value = "100nF"
+    c_sensor_2.lcsc_id = "C131394"
+    c_sensor_2.p1 ~ vcc_sensors
+    c_sensor_2.p2 ~ gnd

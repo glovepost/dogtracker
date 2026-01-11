@@ -1,0 +1,100 @@
+#pragma experiment("TRAITS")
+import Resistor, Capacitor, Inductor
+from "lib.ato" import LIS3DH
+
+"""
+================================================================================
+LIS3DHTR Accelerometer Module with Decoupling
+================================================================================
+
+DESCRIPTION:
+    Reusable design block containing the LIS3DHTR 3-axis accelerometer
+    with optimized power supply filtering per ST datasheet recommendations.
+
+COMPONENTS:
+    • LIS3DHTR - 3-axis MEMS accelerometer (LGA-16, 3x3mm)
+    • 100nF ceramic capacitor (0402) - high-frequency bypass
+    • 10uF ceramic capacitor (0603) - bulk decoupling
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  PLACEMENT:                                                  │
+    │  • Place module away from board edges (vibration coupling)   │
+    │  • Keep at least 5mm from high-current paths                 │
+    │  • Orient IC consistently for pick-and-place                 │
+    │                                                              │
+    │  DECOUPLING CAPACITOR PLACEMENT:                             │
+    │  • 100nF: Within 1mm of VDD pin (high-frequency noise)       │
+    │  • 10uF: Within 2-3mm of VDD pin (bulk capacitance)          │
+    │  • Route VDD -> 100nF -> 10uF -> ferrite (power input)       │
+    │                                                              │
+    │  GROUNDING:                                                  │
+    │  • Connect all GND pins to solid ground plane                │
+    │  • Use multiple vias for low-impedance ground                │
+    │  • Avoid routing under the IC package                        │
+    │                                                              │
+    │  THERMAL:                                                    │
+    │  • Include thermal relief on GND pads if hand soldering      │
+    └─────────────────────────────────────────────────────────────┘
+
+SCHEMATIC SYMBOL:
+                    VCC_SENSORS
+                        │
+                ┌───────┴───────┐
+                │    100nF      │ 10uF
+                │    ┌──┴──┐    ├──┴──┐
+                │    │     │    │     │
+    I2C_SCL ────┤SCL │LIS3D│    │     │
+    I2C_SDA ────┤SDA │HTR  │    │     │
+    INT1 ───────┤INT1│     │    │     │
+    INT2 ───────┤INT2│     │    │     │
+    SA0 ────────┤SA0 └─────┘    │     │
+                │        │      │     │
+                └────────┴──────┴─────┘
+                         │
+                        GND
+
+REFERENCE:
+    ST AN4508 - MEMS accelerometer layout guidelines
+    LIS3DHTR Datasheet - Section 5.2 Power Supply
+
+I2C ADDRESS:
+    SA0 = GND → 0x18
+    SA0 = VCC → 0x19
+================================================================================
+"""
+
+module LIS3DHTR_SensorBlock:
+    # External signals
+    signal vcc
+    signal gnd
+    signal i2c_scl
+    signal i2c_sda
+    signal int1
+    signal int2
+    signal sa0  # Address select
+
+    # Core IC
+    ic = new LIS3DH
+    ic.vcc ~ vcc
+    ic.gnd ~ gnd
+    ic.i2c_scl ~ i2c_scl
+    ic.i2c_sda ~ i2c_sda
+    ic.int1 ~ int1
+    ic.int2 ~ int2
+    ic.sa0 ~ sa0
+
+    # Dedicated Decoupling (per ST datasheet)
+    # C1: 100nF - place closest to IC (high-frequency bypass)
+    c_hf = new Capacitor
+    c_hf.value = "100nF"
+    c_hf.lcsc_id = "C131394"
+    c_hf.p1 ~ vcc
+    c_hf.p2 ~ gnd
+
+    # C2: 10uF - place slightly further (bulk capacitance)
+    c_bulk = new Capacitor
+    c_bulk.value = "10uF"
+    c_bulk.lcsc_id = "C15849"
+    c_bulk.p1 ~ vcc
+    c_bulk.p2 ~ gnd

@@ -1,0 +1,92 @@
+#pragma experiment("TRAITS")
+import Resistor, Capacitor, Inductor
+from "lib.ato" import HDC2080
+
+"""
+================================================================================
+HDC2080 Temperature/Humidity Sensor Module with Decoupling
+================================================================================
+
+DESCRIPTION:
+    Reusable design block containing the HDC2080 digital humidity/temperature
+    sensor with optimized bypass filtering per TI application guidelines.
+
+COMPONENTS:
+    • HDC2080DMBR - Temp/humidity sensor (WSON-6, 3x3mm)
+    • 100nF X7R ceramic capacitor (0402) - power supply bypass
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  PLACEMENT:                                                  │
+    │  • Place at board edge for ambient air exposure              │
+    │  • Keep AWAY from heat sources (MCU, regulators, LEDs)       │
+    │  • Minimum 10mm from any component dissipating >100mW        │
+    │  • Consider airflow path in enclosure design                 │
+    │                                                              │
+    │  THERMAL ISOLATION (CRITICAL):                               │
+    │  • Use thermal relief on all pads                            │
+    │  • Cut copper pour around sensor (3mm radius minimum)        │
+    │  • Route only narrow traces to sensor area                   │
+    │  • Consider slot/cutout under sensor for isolation           │
+    │                                                              │
+    │  DECOUPLING:                                                 │
+    │  • 100nF within 1mm of VDD pin                               │
+    │  • X7R dielectric required (stable over temperature)         │
+    │                                                              │
+    │  EXPOSED PAD:                                                │
+    │  • Connect to GND with thermal vias                          │
+    │  • Provides thermal measurement reference                    │
+    └─────────────────────────────────────────────────────────────┘
+
+SCHEMATIC SYMBOL:
+                    VCC_SENSORS
+                        │
+                    ┌───┴───┐
+                    │ 100nF │ (X7R)
+                    │  ─┬─  │
+    I2C_SCL ────────┤SCL│   │
+    I2C_SDA ────────┤SDA│HDC│
+    INT ────────────┤INT│208│
+    ADDR ───────────┤ADR│0  │
+                    │   └───┘
+                    │    │EP
+                    └────┴────┐
+                         │    │
+                        GND  GND
+
+REFERENCE:
+    TI HDC2080 Datasheet - Section 7.3.2 (Layout Recommendations)
+    TI SNAU238 - Humidity Sensor Layout Guide
+
+I2C ADDRESS:
+    ADDR = GND → 0x40
+    ADDR = VCC → 0x41
+================================================================================
+"""
+
+module HDC2080_SensorBlock:
+    # External signals
+    signal vcc
+    signal gnd
+    signal i2c_scl
+    signal i2c_sda
+    signal int_pin
+    signal addr      # Address select
+    signal ep        # Exposed pad
+
+    # Core IC
+    ic = new HDC2080
+    ic.vcc ~ vcc
+    ic.gnd ~ gnd
+    ic.scl ~ i2c_scl
+    ic.sda ~ i2c_sda
+    ic.int_pin ~ int_pin
+    ic.addr ~ addr
+    ic.ep ~ ep
+
+    # Dedicated Decoupling (per TI datasheet: 100nF X7R)
+    c_bypass = new Capacitor
+    c_bypass.value = "100nF"
+    c_bypass.lcsc_id = "C131394"
+    c_bypass.p1 ~ vcc
+    c_bypass.p2 ~ gnd

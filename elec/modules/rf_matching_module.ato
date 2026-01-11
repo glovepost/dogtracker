@@ -1,0 +1,112 @@
+#pragma experiment("TRAITS")
+import Resistor, Capacitor, Inductor
+from "lib.ato" import Antenna
+
+"""
+================================================================================
+868MHz RF Matching Network Module
+================================================================================
+
+DESCRIPTION:
+    Complete RF front-end for 868MHz LoRa/LoRaWAN applications including
+    impedance matching network and harmonic suppression filter.
+
+COMPONENTS:
+    • SMD Antenna (Kyocera AVX M620720)
+    • 8.2nH inductor - harmonic suppression
+    • 3.3pF capacitor - harmonic filter shunt
+    • 4.3nH inductor - impedance matching
+    • 2x 5.6pF capacitors - pi-match shunt elements
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  RF TRACE REQUIREMENTS:                                      │
+    │  • Target 50Ω characteristic impedance                       │
+    │  • Use coplanar waveguide or microstrip on top layer         │
+    │  • Trace width calculator: https://chemandy.com/calculators  │
+    │  • Typical: 0.4mm width on 1.6mm FR4 (4-layer)               │
+    │                                                              │
+    │  COMPONENT PLACEMENT:                                        │
+    │  • Linear chain from MCU to antenna (no bends in RF path)    │
+    │  • Keep RF path < 20mm total length                          │
+    │  • Place at board edge, antenna toward exterior              │
+    │  • NO copper pour under antenna element                      │
+    │                                                              │
+    │  GROUNDING (CRITICAL):                                       │
+    │  • Solid ground plane on layer 2                             │
+    │  • Via stitching along RF trace (0.5mm spacing)              │
+    │  • Ground shunt cap pins with shortest path possible         │
+    │  • Antenna ground pads: multiple vias (≥4)                   │
+    │                                                              │
+    │  KEEP-OUT ZONES:                                             │
+    │  • 3mm clearance around antenna on all copper layers         │
+    │  • No traces crossing under RF path                          │
+    │  • No digital signals within 5mm of RF trace                 │
+    └─────────────────────────────────────────────────────────────┘
+
+RF PATH TOPOLOGY:
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                              │
+    │  MCU        Harmonic       Matching         Antenna          │
+    │  RF_OUT ──┬─[L:8.2nH]──┬──[L:4.3nH]──┬────[  ANT  ]         │
+    │           │            │             │                       │
+    │          [C:3.3pF]   [C:5.6pF]    [C:5.6pF]                  │
+    │           │            │             │                       │
+    │          GND          GND           GND                      │
+    │                                                              │
+    └─────────────────────────────────────────────────────────────┘
+
+REFERENCE:
+    RAK3172-SiP RF Design Application Note
+    Semtech AN1200.17 - Matching Network Design
+
+FREQUENCY: 868MHz (EU868/IN865/RU864)
+================================================================================
+"""
+
+module RF_MatchingNetwork:
+    # External signals
+    signal rf_in      # From MCU RF_OUT
+    signal gnd
+
+    # Antenna
+    ant = new Antenna
+    ant.ground ~ gnd
+    ant.dummy ~ gnd   # Ground dummy pin per datasheet
+
+    # Harmonic Suppression (per RAK app note: 8.2nH + 3.3pF)
+    l_harmonic = new Inductor
+    l_harmonic.value = "8.2nH"
+    l_harmonic.lcsc_id = "C76832"
+
+    c_harmonic = new Capacitor
+    c_harmonic.value = "3.3pF"
+    c_harmonic.lcsc_id = "C161313"
+
+    # Matching Network (L-match: Series L, Shunt C)
+    l_series = new Inductor
+    l_series.value = "4.3nH"
+    l_series.lcsc_id = "C97999"
+
+    c_match_mcu = new Capacitor
+    c_match_mcu.value = "5.6pF"
+    c_match_mcu.lcsc_id = "C161329"
+
+    c_match_ant = new Capacitor
+    c_match_ant.value = "5.6pF"
+    c_match_ant.lcsc_id = "C161329"
+
+    # RF Path
+    rf_in ~ l_harmonic.p1
+    l_harmonic.p2 ~ c_harmonic.p1
+    c_harmonic.p2 ~ gnd
+
+    l_harmonic.p2 ~ l_series.p1
+    l_series.p2 ~ ant.feed
+
+    # Shunt capacitors
+    l_series.p1 ~ c_match_mcu.p1
+    c_match_mcu.p2 ~ gnd
+
+    l_series.p2 ~ c_match_ant.p1
+    c_match_ant.p2 ~ gnd

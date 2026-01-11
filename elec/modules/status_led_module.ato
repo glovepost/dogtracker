@@ -1,0 +1,74 @@
+#pragma experiment("TRAITS")
+import Resistor, Capacitor
+from "lib.ato" import StatusLED
+
+"""
+================================================================================
+Status LED Module with Current Limiting
+================================================================================
+
+DESCRIPTION:
+    Simple status indicator LED with current limiting resistor.
+    Designed for 3.3V GPIO drive with ~2mA LED current.
+
+COMPONENTS:
+    • Status LED (0603 or 0805 package)
+    • 1kΩ current limiting resistor (0402)
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  PLACEMENT:                                                  │
+    │  • Place LED where visible to user                           │
+    │  • Keep near board edge for visibility through enclosure     │
+    │  • Resistor immediately adjacent to LED (within 3mm)         │
+    │                                                              │
+    │  HEAT CONSIDERATIONS:                                        │
+    │  • Keep LED away from temperature-sensitive components       │
+    │  • HDC2080 should be >10mm from LED if used                  │
+    │                                                              │
+    │  RESISTOR CALCULATION:                                       │
+    │  • R = (VGPIO - VLED_FWD) / I_LED                            │
+    │  • 1kΩ @ 3.3V, 2.0V forward: (3.3-2.0)/1000 = 1.3mA         │
+    │  • For brighter LED, use 470Ω (~2.8mA)                       │
+    │                                                              │
+    │  POLARITY:                                                   │
+    │  • Mark cathode/anode on silkscreen                          │
+    │  • Consistent orientation for pick-and-place                 │
+    └─────────────────────────────────────────────────────────────┘
+
+SCHEMATIC:
+    GPIO ──────[1kΩ]──────┬─── LED(anode)
+                         │
+                    LED(cathode)
+                         │
+                        GND
+
+LED CURRENT TABLE:
+    ┌──────────┬────────┬───────────┐
+    │ Resistor │ I_LED  │ Brightness│
+    ├──────────┼────────┼───────────┤
+    │ 2.2kΩ    │ 0.6mA  │ Dim       │
+    │ 1kΩ      │ 1.3mA  │ Normal    │
+    │ 470Ω     │ 2.8mA  │ Bright    │
+    │ 220Ω     │ 5.9mA  │ Very Bright│
+    └──────────┴────────┴───────────┘
+================================================================================
+"""
+
+module StatusLED_Block:
+    # External signals
+    signal gpio_in   # GPIO driving the LED
+    signal gnd
+
+    # Current limiting resistor
+    r_limit = new Resistor
+    r_limit.value = "1kohm"
+    r_limit.lcsc_id = "C105637"
+
+    # LED
+    led = new StatusLED
+
+    # Connection: GPIO -> R -> LED(anode) -> LED(cathode) -> GND
+    gpio_in ~ r_limit.p1
+    r_limit.p2 ~ led.anode
+    led.cathode ~ gnd
