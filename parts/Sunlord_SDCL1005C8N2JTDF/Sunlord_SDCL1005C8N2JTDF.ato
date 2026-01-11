@@ -1,0 +1,20 @@
+#pragma experiment("TRAITS")
+import has_designator_prefix
+import has_part_picked
+import is_atomic_part
+import is_auto_generated
+
+component Sunlord_SDCL1005C8N2JTDF_package:
+    """8.2nH ±5%"""
+
+    # This trait marks this file as auto-generated
+    # If you want to manually change it, remove the trait
+    trait is_auto_generated<system="ato_part", source="easyeda:C16208", date="2026-01-11T01:15:48.063955+00:00", checksum="2553d83d0667a1c44694a8ae43b0ae8cf7e98767f0132c61cfd2b1bc7515d18c">
+
+    trait is_atomic_part<manufacturer="Sunlord", partnumber="SDCL1005C8N2JTDF", footprint="L0402.kicad_mod", symbol="SDCL1005C8N2JTDF.kicad_sym", model="L0402_L1.0-W0.5-H0.5_BEAD.step">
+    trait has_part_picked::by_supplier<supplier_id="lcsc", supplier_partno="C16208", manufacturer="Sunlord", partno="SDCL1005C8N2JTDF">
+    trait has_designator_prefix<prefix="L">
+
+    # pins
+    pin 2
+    pin 1

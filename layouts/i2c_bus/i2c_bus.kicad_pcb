@@ -89,7 +89,7 @@
 	(footprint "UNI_ROYAL_0402WGF4701TCE:R0402"
 		(layer "F.Cu")
 		(uuid "52cfce6c-b1d4-434e-8fa0-7ae54642524b")
-		(at 100 100)
+		(at 80 115.7643)
 		(property "Reference" "R1"
 			(at 0 -4 0)
 			(layer "F.SilkS")
@@ -368,7 +368,7 @@
 	(footprint "UNI_ROYAL_0402WGF4701TCE:R0402"
 		(layer "F.Cu")
 		(uuid "98414a5b-51c8-4b09-ac9a-cb6a4642524b")
-		(at 96.15 100)
+		(at 80 117.7663)
 		(property "Reference" "R2"
 			(at 0 -4 0)
 			(layer "F.SilkS")
@@ -645,28 +645,12 @@
 		)
 	)
 	(segment
-		(start 99.57 100)
-		(end 99.57 100.5717)
+		(start 79.57 117.7663)
+		(end 79.57 115.7643)
 		(width 0.2)
 		(layer "F.Cu")
 		(net 1)
-		(uuid "0b22d79a-7a9f-47d6-93ec-26adddd51c8d")
-	)
-	(segment
-		(start 96.07 100)
-		(end 96.07 100.5717)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 1)
-		(uuid "5b349844-f363-4abb-b00d-46209b285194")
-	)
-	(segment
-		(start 96.07 100.5717)
-		(end 99.57 100.5717)
-		(width 0.2)
-		(layer "F.Cu")
-		(net 1)
-		(uuid "65c174dd-b2a8-4be8-a412-70c5c147e46c")
+		(uuid "18683a87-b805-4a1f-aa9a-23928aec8366")
 	)
 	(embedded_fonts no)
 )

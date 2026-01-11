@@ -32,6 +32,34 @@ build/builds/**/*.glb
 build/builds/**/*.step
 build/builds/**/*.[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-*.kicad_pcb
 build/builds/**/*_placed.kicad_pcb
+build/builds/**/*_placed.kicad_pro
 build/builds/**/*_placement.png
+build/builds/**/*.pcbnew-*.kicad_pcb
 build/logs/archive/
 build/logs/latest
+
+# Module build outputs (atopile generates these)
+build/builds/eeprom/
+build/builds/hdc2080/
+build/builds/i2c_bus/
+build/builds/lis3dhtr/
+build/builds/ntc_temp/
+build/builds/power_filter/
+build/builds/qmi8658c/
+build/builds/rf_matching/
+build/builds/status_led/
+build/builds/swd_debug/
+
+# Parts cache (downloaded from JLCPCB/EasyEDA)
+build/cache/
+
+# Routing intermediate files (DSN/SES)
+layouts/**/*.dsn
+layouts/**/*.ses
+
+# Tools (downloaded binaries)
+tools/
+*.jar
+
+# Test files
+test_*.py

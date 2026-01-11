@@ -49,11 +49,11 @@
         )
         (comp
             (ref "C1")
-            (value "1µF ±10% 50V X5R")
-            (footprint "Samsung_Electro_Mechanics_CL10A105KB8NNNC:C0603")
+            (value "10µF ±10% 10V X5R")
+            (footprint "Samsung_Electro_Mechanics_CL10A106KP8NNNC:C0603")
             (property
                 (name "LCSC")
-                (value "C15849")
+                (value "C19702")
             )
             (property
                 (name "Manufacturer")
@@ -61,15 +61,15 @@
             )
             (property
                 (name "Partnumber")
-                (value "CL10A105KB8NNNC")
+                (value "CL10A106KP8NNNC")
             )
             (property
                 (name "PARAM_capacitance")
-                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 8.99999999e-07, \"max\": 1.100000001e-06}}]}}, \"unit\": \"farad\"}}")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 8.999999985e-06, \"max\": 1.1000000015e-05}}]}}, \"unit\": \"farad\"}}")
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 10.0, \"max\": 10.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -84,19 +84,19 @@
         )
         (comp
             (ref "C10")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -104,7 +104,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -119,19 +119,19 @@
         )
         (comp
             (ref "C11")
-            (value "4.7µF ±10% 10V X5R")
-            (footprint "Murata_Electronics_GRM155R61A475KEAAD:C0402")
+            (value "4.7µF ±10% 16V X5R")
+            (footprint "Samsung_Electro_Mechanics_CL10A475KO8NNNC:C0603")
             (property
                 (name "LCSC")
-                (value "C77004")
+                (value "C19666")
             )
             (property
                 (name "Manufacturer")
-                (value "Murata Electronics")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "GRM155R61A475KEAAD")
+                (value "CL10A475KO8NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -139,7 +139,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 10.0, \"max\": 10.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -154,19 +154,19 @@
         )
         (comp
             (ref "C12")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -174,7 +174,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -189,11 +189,11 @@
         )
         (comp
             (ref "C13")
-            (value "1.7pF 50V C0G")
-            (footprint "Murata_Electronics_GJM1555C1H1R7BB01D:C0402")
+            (value "3.3pF ±2% 50V C0G")
+            (footprint "Murata_Electronics_GCM1555C1H3R3GA16D:C0402")
             (property
                 (name "LCSC")
-                (value "C161313")
+                (value "C2941931")
             )
             (property
                 (name "Manufacturer")
@@ -201,11 +201,11 @@
             )
             (property
                 (name "Partnumber")
-                (value "GJM1555C1H1R7BB01D")
+                (value "GCM1555C1H3R3GA16D")
             )
             (property
                 (name "PARAM_capacitance")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 1.7e-12, \"max\": 1.7e-12}}]}}, \"unit\": \"farad\"}}")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 3.234e-12, \"max\": 3.366e-12}}]}}, \"unit\": \"farad\"}}")
             )
             (property
                 (name "PARAM_max_voltage")
@@ -224,19 +224,19 @@
         )
         (comp
             (ref "C14")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -244,7 +244,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -259,7 +259,7 @@
         )
         (comp
             (ref "C15")
-            (value "5.6pF 50V C0G")
+            (value "Cap_5p6_RF")
             (footprint "Murata_Electronics_GJM1555C1H5R6BB01D:C0402")
             (property
                 (name "LCSC")
@@ -294,7 +294,7 @@
         )
         (comp
             (ref "C16")
-            (value "5.6pF 50V C0G")
+            (value "Cap_5p6_RF")
             (footprint "Murata_Electronics_GJM1555C1H5R6BB01D:C0402")
             (property
                 (name "LCSC")
@@ -329,19 +329,19 @@
         )
         (comp
             (ref "C2")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -349,7 +349,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -364,19 +364,19 @@
         )
         (comp
             (ref "C3")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -384,7 +384,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -399,19 +399,19 @@
         )
         (comp
             (ref "C4")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -419,7 +419,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -434,19 +434,19 @@
         )
         (comp
             (ref "C5")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -454,7 +454,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -469,19 +469,19 @@
         )
         (comp
             (ref "C6")
-            (value "22µF ±20% 6.3V X5R")
-            (footprint "YAGEO_CC0603MRX5R5BB226:C0603")
+            (value "22µF ±20% 25V X5R")
+            (footprint "Samsung_Electro_Mechanics_CL21A226MAQNNNE:C0805")
             (property
                 (name "LCSC")
-                (value "C109448")
+                (value "C45783")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0603MRX5R5BB226")
+                (value "CL21A226MAQNNNE")
             )
             (property
                 (name "PARAM_capacitance")
@@ -489,7 +489,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 6.3, \"max\": 6.3}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 25.0, \"max\": 25.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -504,19 +504,19 @@
         )
         (comp
             (ref "C7")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -524,7 +524,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -539,19 +539,19 @@
         )
         (comp
             (ref "C8")
-            (value "4.7µF ±10% 10V X5R")
-            (footprint "Murata_Electronics_GRM155R61A475KEAAD:C0402")
+            (value "4.7µF ±10% 16V X5R")
+            (footprint "Samsung_Electro_Mechanics_CL10A475KO8NNNC:C0603")
             (property
                 (name "LCSC")
-                (value "C77004")
+                (value "C19666")
             )
             (property
                 (name "Manufacturer")
-                (value "Murata Electronics")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "GRM155R61A475KEAAD")
+                (value "CL10A475KO8NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -559,7 +559,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 10.0, \"max\": 10.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -574,19 +574,19 @@
         )
         (comp
             (ref "C9")
-            (value "100nF ±10% 50V X7R")
-            (footprint "YAGEO_CC0402KRX7R9BB104:C0402")
+            (value "100nF ±10% 16V X7R")
+            (footprint "Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402")
             (property
                 (name "LCSC")
-                (value "C131394")
+                (value "C1525")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "Samsung Electro-Mechanics")
             )
             (property
                 (name "Partnumber")
-                (value "CC0402KRX7R9BB104")
+                (value "CL05B104KO5NNNC")
             )
             (property
                 (name "PARAM_capacitance")
@@ -594,7 +594,7 @@
             )
             (property
                 (name "PARAM_max_voltage")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 50.0, \"max\": 50.0}}]}}, \"unit\": \"volt\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 16.0, \"max\": 16.0}}]}}, \"unit\": \"volt\"}}")
             )
             (property
                 (name "PARAM_temperature_coefficient")
@@ -675,7 +675,7 @@
         )
         (comp
             (ref "L2")
-            (value "")
+            (value "FerriteBead_120ohm")
             (footprint "Murata_Electronics_BLM15PD121SN1D:L0402")
             (property
                 (name "LCSC")
@@ -698,7 +698,7 @@
         )
         (comp
             (ref "L3")
-            (value "")
+            (value "FerriteBead_120ohm")
             (footprint "Murata_Electronics_BLM15PD121SN1D:L0402")
             (property
                 (name "LCSC")
@@ -721,7 +721,7 @@
         )
         (comp
             (ref "L4")
-            (value "")
+            (value "FerriteBead_120ohm")
             (footprint "Murata_Electronics_BLM15PD121SN1D:L0402")
             (property
                 (name "LCSC")
@@ -744,31 +744,31 @@
         )
         (comp
             (ref "L5")
-            (value "4.7µH ±5% 175mA 2.3Ω")
-            (footprint "TDK_NLV25T_4R7J_PF:IND-SMD_L2.5-W2.0_NLV25T-390J-PF")
+            (value "8.2nH ±5% 3.6GHz 300mA 400mΩ")
+            (footprint "Sunlord_SDCL1005C8N2JTDF:L0402")
             (property
                 (name "LCSC")
-                (value "C76832")
+                (value "C16208")
             )
             (property
                 (name "Manufacturer")
-                (value "TDK")
+                (value "Sunlord")
             )
             (property
                 (name "Partnumber")
-                (value "NLV25T-4R7J-PF")
+                (value "SDCL1005C8N2JTDF")
             )
             (property
                 (name "PARAM_dc_resistance")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 2.3, \"max\": 2.3}}]}}, \"unit\": \"ohm\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.4, \"max\": 0.4}}]}}, \"unit\": \"ohm\"}}")
             )
             (property
                 (name "PARAM_inductance")
-                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4.464999996e-06, \"max\": 4.935000004e-06}}]}}, \"unit\": \"henry\"}}")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 7.79e-09, \"max\": 8.61e-09}}]}}, \"unit\": \"henry\"}}")
             )
             (property
                 (name "PARAM_max_current")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.175, \"max\": 0.175}}]}}, \"unit\": \"ampere\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.3, \"max\": 0.3}}]}}, \"unit\": \"ampere\"}}")
             )
             (property
                 (name "PARAM_saturation_current")
@@ -776,7 +776,7 @@
             )
             (property
                 (name "PARAM_self_resonant_frequency")
-                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0, \"max\": null}}]}}, \"unit\": \"hertz\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 3600000000.0, \"max\": 3600000000.0}}]}}, \"unit\": \"hertz\"}}")
             )
             (property
                 (name "atopile_address")
@@ -787,11 +787,11 @@
         )
         (comp
             (ref "L6")
-            (value "4.3nH 6GHz 750mA 140mΩ")
-            (footprint "Murata_Electronics_LQG15HS4N3S02D:L0402")
+            (value "4.2nH ±2% 1.8A 44mΩ")
+            (footprint "Murata_Electronics_LQW15AN4N2G80D:IND-SMD_L1.0-W0.5-2")
             (property
                 (name "LCSC")
-                (value "C97999")
+                (value "C412282")
             )
             (property
                 (name "Manufacturer")
@@ -799,19 +799,19 @@
             )
             (property
                 (name "Partnumber")
-                (value "LQG15HS4N3S02D")
+                (value "LQW15AN4N2G80D")
             )
             (property
                 (name "PARAM_dc_resistance")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.14, \"max\": 0.14}}]}}, \"unit\": \"ohm\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.044, \"max\": 0.044}}]}}, \"unit\": \"ohm\"}}")
             )
             (property
                 (name "PARAM_inductance")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4.3e-09, \"max\": 4.3e-09}}]}}, \"unit\": \"henry\"}}")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4.116e-09, \"max\": 4.284e-09}}]}}, \"unit\": \"henry\"}}")
             )
             (property
                 (name "PARAM_max_current")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.75, \"max\": 0.75}}]}}, \"unit\": \"ampere\"}}")
+                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 1.8, \"max\": 1.8}}]}}, \"unit\": \"ampere\"}}")
             )
             (property
                 (name "PARAM_saturation_current")
@@ -819,7 +819,7 @@
             )
             (property
                 (name "PARAM_self_resonant_frequency")
-                (value "{\"type\": \"Quantity_Set_Discrete\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 6000000000.0, \"max\": 6000000000.0}}]}}, \"unit\": \"hertz\"}}")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 0.0, \"max\": null}}]}}, \"unit\": \"hertz\"}}")
             )
             (property
                 (name "atopile_address")
@@ -853,19 +853,19 @@
         )
         (comp
             (ref "R1")
-            (value "4.7kΩ ±5% 62.5mW")
-            (footprint "YAGEO_RC0402JR_074K7L:R0402")
+            (value "4.7kΩ ±1% 62.5mW")
+            (footprint "UNI_ROYAL_0402WGF4701TCE:R0402")
             (property
                 (name "LCSC")
-                (value "C105870")
+                (value "C25900")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "UNI-ROYAL(Uniroyal Elec)")
             )
             (property
                 (name "Partnumber")
-                (value "RC0402JR-074K7L")
+                (value "0402WGF4701TCE")
             )
             (property
                 (name "PARAM_max_power")
@@ -877,7 +877,7 @@
             )
             (property
                 (name "PARAM_resistance")
-                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4464.999996498227, \"max\": 4935.000003501773}}]}}, \"unit\": \"ohm\"}}")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4653.000001050532, \"max\": 4746.999998949468}}]}}, \"unit\": \"ohm\"}}")
             )
             (property
                 (name "atopile_address")
@@ -888,19 +888,19 @@
         )
         (comp
             (ref "R2")
-            (value "4.7kΩ ±5% 62.5mW")
-            (footprint "YAGEO_RC0402JR_074K7L:R0402")
+            (value "4.7kΩ ±1% 62.5mW")
+            (footprint "UNI_ROYAL_0402WGF4701TCE:R0402")
             (property
                 (name "LCSC")
-                (value "C105870")
+                (value "C25900")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "UNI-ROYAL(Uniroyal Elec)")
             )
             (property
                 (name "Partnumber")
-                (value "RC0402JR-074K7L")
+                (value "0402WGF4701TCE")
             )
             (property
                 (name "PARAM_max_power")
@@ -912,7 +912,7 @@
             )
             (property
                 (name "PARAM_resistance")
-                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4464.999996498227, \"max\": 4935.000003501773}}]}}, \"unit\": \"ohm\"}}")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 4653.000001050532, \"max\": 4746.999998949468}}]}}, \"unit\": \"ohm\"}}")
             )
             (property
                 (name "atopile_address")
@@ -923,19 +923,19 @@
         )
         (comp
             (ref "R3")
-            (value "1kΩ ±5% 62.5mW")
-            (footprint "YAGEO_RC0402JR_071KL:R0402")
+            (value "1kΩ ±1% 62.5mW")
+            (footprint "UNI_ROYAL_0402WGF1001TCE:R0402")
             (property
                 (name "LCSC")
-                (value "C105637")
+                (value "C11702")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "UNI-ROYAL(Uniroyal Elec)")
             )
             (property
                 (name "Partnumber")
-                (value "RC0402JR-071KL")
+                (value "0402WGF1001TCE")
             )
             (property
                 (name "PARAM_max_power")
@@ -947,7 +947,7 @@
             )
             (property
                 (name "PARAM_resistance")
-                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 949.9999992549419, \"max\": 1050.000000745058}}]}}, \"unit\": \"ohm\"}}")
+                (value "{\"type\": \"Quantity_Interval_Disjoint\", \"data\": {\"intervals\": {\"type\": \"Numeric_Interval_Disjoint\", \"data\": {\"intervals\": [{\"type\": \"Numeric_Interval\", \"data\": {\"min\": 990.0000002235174, \"max\": 1009.9999997764826}}]}}, \"unit\": \"ohm\"}}")
             )
             (property
                 (name "atopile_address")
@@ -959,18 +959,18 @@
         (comp
             (ref "R4")
             (value "10kΩ ±1% 62.5mW")
-            (footprint "YAGEO_RC0402FR_0710KL:R0402")
+            (footprint "UNI_ROYAL_0402WGF1002TCE:R0402")
             (property
                 (name "LCSC")
-                (value "C60490")
+                (value "C25744")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "UNI-ROYAL(Uniroyal Elec)")
             )
             (property
                 (name "Partnumber")
-                (value "RC0402FR-0710KL")
+                (value "0402WGF1002TCE")
             )
             (property
                 (name "PARAM_max_power")
@@ -993,7 +993,7 @@
         )
         (comp
             (ref "R5")
-            (value "")
+            (value "NTC_10k")
             (footprint "Murata_Electronics_NCP15XH103F03RC:R0402")
             (property
                 (name "LCSC")
@@ -1017,18 +1017,18 @@
         (comp
             (ref "R6")
             (value "10kΩ ±1% 62.5mW")
-            (footprint "YAGEO_RC0402FR_0710KL:R0402")
+            (footprint "UNI_ROYAL_0402WGF1002TCE:R0402")
             (property
                 (name "LCSC")
-                (value "C60490")
+                (value "C25744")
             )
             (property
                 (name "Manufacturer")
-                (value "YAGEO")
+                (value "UNI-ROYAL(Uniroyal Elec)")
             )
             (property
                 (name "Partnumber")
-                (value "RC0402FR-0710KL")
+                (value "0402WGF1002TCE")
             )
             (property
                 (name "PARAM_max_power")
@@ -1544,6 +1544,26 @@
         )
         (net
             (code 46)
+            (name "_1")
+            (node
+                (ref "C13")
+                (pin "1")
+            )
+            (node
+                (ref "C16")
+                (pin "1")
+            )
+            (node
+                (ref "L5")
+                (pin "2")
+            )
+            (node
+                (ref "L6")
+                (pin "1")
+            )
+        )
+        (net
+            (code 47)
             (name "accel-CS")
             (node
                 (ref "U3")
@@ -1551,7 +1571,7 @@
             )
         )
         (net
-            (code 47)
+            (code 48)
             (name "accel-int2")
             (node
                 (ref "U1")
@@ -1563,7 +1583,7 @@
             )
         )
         (net
-            (code 48)
+            (code 49)
             (name "accel-net-0")
             (node
                 (ref "U3")
@@ -1571,7 +1591,7 @@
             )
         )
         (net
-            (code 49)
+            (code 50)
             (name "accel-net-1")
             (node
                 (ref "U3")
@@ -1579,7 +1599,7 @@
             )
         )
         (net
-            (code 50)
+            (code 51)
             (name "accel-vcc")
             (node
                 (ref "C1")
@@ -1639,7 +1659,7 @@
             )
         )
         (net
-            (code 51)
+            (code 52)
             (name "activation")
             (node
                 (ref "R6")
@@ -1651,7 +1671,7 @@
             )
         )
         (net
-            (code 52)
+            (code 53)
             (name "adc_ntc")
             (node
                 (ref "R4")
@@ -1664,26 +1684,6 @@
             (node
                 (ref "U1")
                 (pin "45")
-            )
-        )
-        (net
-            (code 53)
-            (name "c_harmonic-net")
-            (node
-                (ref "C13")
-                (pin "1")
-            )
-            (node
-                (ref "C16")
-                (pin "1")
-            )
-            (node
-                (ref "L5")
-                (pin "2")
-            )
-            (node
-                (ref "L6")
-                (pin "1")
             )
         )
         (net

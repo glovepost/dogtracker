@@ -89,7 +89,7 @@
 	(footprint "Murata_Electronics_NCP15XH103F03RC:R0402"
 		(layer "F.Cu")
 		(uuid "87567d99-25bc-4c9d-8fee-55074642524b")
-		(at 100 100)
+		(at 97.9381 83.5799)
 		(property "Reference" "R2"
 			(at 0 -4 0)
 			(layer "F.SilkS")
@@ -332,7 +332,7 @@
 	(footprint "UNI_ROYAL_0402WGF1002TCE:R0402"
 		(layer "F.Cu")
 		(uuid "c2ce5104-1a4e-4b1f-82d4-dab44642524b")
-		(at 96.15 100)
+		(at 97.916 85.5795)
 		(property "Reference" "R1"
 			(at 0 -4 0)
 			(layer "F.SilkS")
@@ -609,12 +609,28 @@
 		)
 	)
 	(segment
-		(start 99.57 100)
-		(end 96.93 100)
+		(start 97.5081 84.1516)
+		(end 98.346 84.9895)
 		(width 0.2)
 		(layer "F.Cu")
 		(net 1)
-		(uuid "ef121dcb-881d-4c97-97ec-e22a9265a0ad")
+		(uuid "6dd7751c-f737-43ba-8d9c-9b03ee4fd8cd")
+	)
+	(segment
+		(start 98.346 84.9895)
+		(end 98.346 85.5795)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 1)
+		(uuid "c96b4203-4d5f-454b-94dd-c75c4f4a4b6f")
+	)
+	(segment
+		(start 97.5081 83.5799)
+		(end 97.5081 84.1516)
+		(width 0.2)
+		(layer "F.Cu")
+		(net 1)
+		(uuid "d33a60b7-f7c4-4734-8d63-080138f208e6")
 	)
 	(embedded_fonts no)
 )

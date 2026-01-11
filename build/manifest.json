@@ -1,8 +1,8 @@
 {
     "version": "2.0",
     "by-layout": {
-        "/Users/glovepost/Projects/aertactx-dogtracker/layouts/default/default.kicad_pcb": {
-            "layouts": "/Users/glovepost/Projects/aertactx-dogtracker/build/builds/default/default.layouts.json"
+        "/Users/glovepost/Projects/aertactx-dogtracker/layouts/swd_debug/swd_debug.kicad_pcb": {
+            "layouts": "/Users/glovepost/Projects/aertactx-dogtracker/build/builds/swd_debug/swd_debug.layouts.json"
         }
     }
 }

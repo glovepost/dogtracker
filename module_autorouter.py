@@ -104,6 +104,228 @@ class RoutingResult:
     settings: Optional[RoutingSettings] = None
 
 
+@dataclass
+class ValidationIssue:
+    """A single validation issue"""
+    severity: str  # "error", "warning", "info"
+    category: str  # "unconnected", "overlap", "placement", "netlist"
+    message: str
+    component: str = ""
+
+
+class PreRoutingValidator:
+    """Validates PCB before sending to autorouter
+
+    Checks for common issues that cause routing failures:
+    - Unconnected pads
+    - Overlapping footprints
+    - Components at origin (unplaced)
+    - Missing or incomplete netlists
+    """
+
+    def __init__(self, board):
+        self.board = board
+        self.issues: List[ValidationIssue] = []
+
+    def validate(self) -> List[ValidationIssue]:
+        """Run all validation checks
+
+        Returns:
+            List of ValidationIssue objects
+        """
+        self.issues = []
+
+        if not PCBNEW_AVAILABLE or not self.board:
+            self.issues.append(ValidationIssue(
+                severity="error",
+                category="system",
+                message="Board not loaded or pcbnew unavailable"
+            ))
+            return self.issues
+
+        self._check_unconnected_pads()
+        self._check_overlapping_footprints()
+        self._check_unplaced_components()
+        self._check_netlist_completeness()
+
+        return self.issues
+
+    def _check_unconnected_pads(self):
+        """Check for pads without net assignments"""
+        for fp in self.board.GetFootprints():
+            ref = fp.GetReference()
+            for pad in fp.Pads():
+                net = pad.GetNet()
+                pad_name = pad.GetNumber()
+
+                # Skip pads that are intentionally unconnected (NC, mounting holes)
+                if pad_name.upper() in ['NC', 'SHIELD', 'MP', 'MH']:
+                    continue
+
+                if not net or not net.GetNetname():
+                    self.issues.append(ValidationIssue(
+                        severity="warning",
+                        category="unconnected",
+                        message=f"Pad {pad_name} has no net assignment",
+                        component=ref
+                    ))
+
+    def _check_overlapping_footprints(self):
+        """Check for overlapping footprint pad areas
+
+        Uses pad-based bounds instead of full bounding box to avoid
+        false positives from silkscreen/courtyard overlaps.
+        """
+        footprints = list(self.board.GetFootprints())
+        checked_pairs = set()
+
+        for i, fp1 in enumerate(footprints):
+            ref1 = fp1.GetReference()
+            bbox1 = self._get_pad_bounds(fp1)
+            if bbox1 is None:
+                continue
+
+            for fp2 in footprints[i+1:]:
+                ref2 = fp2.GetReference()
+                pair_key = tuple(sorted([ref1, ref2]))
+
+                if pair_key in checked_pairs:
+                    continue
+                checked_pairs.add(pair_key)
+
+                bbox2 = self._get_pad_bounds(fp2)
+                if bbox2 is None:
+                    continue
+
+                # Check for intersection with clearance margin
+                if self._boxes_overlap(bbox1, bbox2):
+                    self.issues.append(ValidationIssue(
+                        severity="error",
+                        category="overlap",
+                        message=f"Overlaps with {ref2}",
+                        component=ref1
+                    ))
+
+    def _get_pad_bounds(self, fp):
+        """Get bounding box based on pads only (tighter than full bounding box)"""
+        pads = list(fp.Pads())
+        if not pads:
+            return None
+
+        # Initialize with first pad
+        first_pad = pads[0]
+        pos = first_pad.GetPosition()
+        size = first_pad.GetSize()
+
+        min_x = pos.x - size.x // 2
+        max_x = pos.x + size.x // 2
+        min_y = pos.y - size.y // 2
+        max_y = pos.y + size.y // 2
+
+        # Expand to include all pads
+        for pad in pads[1:]:
+            pos = pad.GetPosition()
+            size = pad.GetSize()
+
+            min_x = min(min_x, pos.x - size.x // 2)
+            max_x = max(max_x, pos.x + size.x // 2)
+            min_y = min(min_y, pos.y - size.y // 2)
+            max_y = max(max_y, pos.y + size.y // 2)
+
+        # Create a BOX2I from the bounds
+        bbox = pcbnew.BOX2I(
+            pcbnew.VECTOR2I(min_x, min_y),
+            pcbnew.VECTOR2I(max_x - min_x, max_y - min_y)
+        )
+        return bbox
+
+    def _boxes_overlap(self, bbox1, bbox2) -> bool:
+        """Check if two bounding boxes overlap with clearance margin"""
+        # Use design rule clearance margin (0.2mm typical)
+        margin = pcbnew.FromMM(0.15)
+
+        return not (
+            bbox1.GetRight() + margin < bbox2.GetLeft() or
+            bbox1.GetLeft() - margin > bbox2.GetRight() or
+            bbox1.GetBottom() + margin < bbox2.GetTop() or
+            bbox1.GetTop() - margin > bbox2.GetBottom()
+        )
+
+    def _check_unplaced_components(self):
+        """Check for components still at origin or with default placement"""
+        origin_threshold = pcbnew.FromMM(1.0)  # Within 1mm of origin
+
+        for fp in self.board.GetFootprints():
+            ref = fp.GetReference()
+            pos = fp.GetPosition()
+
+            # Check if at origin
+            if abs(pos.x) < origin_threshold and abs(pos.y) < origin_threshold:
+                self.issues.append(ValidationIssue(
+                    severity="warning",
+                    category="placement",
+                    message="Component appears to be at origin (unplaced?)",
+                    component=ref
+                ))
+
+    def _check_netlist_completeness(self):
+        """Check for basic netlist issues"""
+        net_count = 0
+        nets_with_single_pad = 0
+
+        # Count nets and check for single-pad nets
+        netinfo = self.board.GetNetInfo()
+        for net in netinfo.NetsByNetcode():
+            if net == 0:  # Skip unconnected net
+                continue
+            net_count += 1
+
+        # Check for very low net count (possible netlist issue)
+        footprint_count = len(list(self.board.GetFootprints()))
+        if footprint_count > 2 and net_count < 2:
+            self.issues.append(ValidationIssue(
+                severity="error",
+                category="netlist",
+                message=f"Very few nets ({net_count}) for {footprint_count} components - netlist may be incomplete"
+            ))
+
+    def get_errors(self) -> List[ValidationIssue]:
+        """Get only error-level issues"""
+        return [i for i in self.issues if i.severity == "error"]
+
+    def get_warnings(self) -> List[ValidationIssue]:
+        """Get only warning-level issues"""
+        return [i for i in self.issues if i.severity == "warning"]
+
+    def has_blocking_issues(self) -> bool:
+        """Check if there are any error-level issues that should block routing"""
+        return len(self.get_errors()) > 0
+
+    def print_report(self):
+        """Print validation report to logger"""
+        errors = self.get_errors()
+        warnings = self.get_warnings()
+
+        if not self.issues:
+            logger.info("  Validation: All checks passed")
+            return
+
+        if errors:
+            logger.warning(f"  Validation: {len(errors)} errors, {len(warnings)} warnings")
+            for issue in errors:
+                comp_str = f"[{issue.component}] " if issue.component else ""
+                logger.error(f"    ERROR: {comp_str}{issue.message}")
+        else:
+            logger.info(f"  Validation: {len(warnings)} warnings (no blocking errors)")
+
+        for issue in warnings[:5]:  # Limit warning output
+            comp_str = f"[{issue.component}] " if issue.component else ""
+            logger.warning(f"    WARN: {comp_str}{issue.message}")
+
+        if len(warnings) > 5:
+            logger.warning(f"    ... and {len(warnings) - 5} more warnings")
+
+
 class FreeroutingManager:
     """Manages Freerouting JAR download and execution"""
 
@@ -232,12 +454,15 @@ class ModuleDSNExporter:
 
         return deleted
 
-    def export_dsn(self, module_name: str, clear_traces: bool = True) -> Tuple[bool, str]:
+    def export_dsn(self, module_name: str, clear_traces: bool = True,
+                   validate: bool = True, block_on_errors: bool = True) -> Tuple[bool, str]:
         """Export a module PCB to DSN format
 
         Args:
             module_name: Name of the module
             clear_traces: If True, delete existing traces before export
+            validate: If True, run pre-routing validation
+            block_on_errors: If True, fail on validation errors
 
         Returns:
             Tuple of (success, dsn_path or error_message)
@@ -253,6 +478,21 @@ class ModuleDSNExporter:
 
         try:
             logger.info(f"Exporting DSN: {module_name}")
+
+            # Run pre-routing validation
+            if validate:
+                board = pcbnew.LoadBoard(pcb_path)
+                validator = PreRoutingValidator(board)
+                validator.validate()
+                validator.print_report()
+
+                if block_on_errors and validator.has_blocking_issues():
+                    errors = validator.get_errors()
+                    error_msgs = [f"{e.component}: {e.message}" for e in errors[:3]]
+                    del board
+                    return False, f"Validation failed: {'; '.join(error_msgs)}"
+
+                del board
 
             # Clear existing traces before exporting
             if clear_traces:

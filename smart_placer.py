@@ -37,6 +37,17 @@ except ImportError:
     PCBNEW_AVAILABLE = False
     logger.warning("pcbnew not available - run with KiCad's Python")
 
+# Optional: simulated annealing support
+try:
+    from simanneal import Annealer
+    SIMANNEAL_AVAILABLE = True
+except ImportError:
+    SIMANNEAL_AVAILABLE = False
+    Annealer = None  # Placeholder for type hints
+    logger.debug("simanneal not available - install with: pip install simanneal")
+
+import random  # For simulated annealing
+
 
 # ============================================================================
 # DATA STRUCTURES
@@ -99,6 +110,146 @@ class ModuleDesignRules:
     has_ic: bool = False
     rf_path: List[str] = field(default_factory=list)
     power_path: List[str] = field(default_factory=list)
+
+
+# ============================================================================
+# SIMULATED ANNEALING PLACER
+# ============================================================================
+
+class PCBPlacementAnnealer:
+    """Simulated annealing optimizer for PCB component placement
+
+    This class implements the simanneal interface to optimize component
+    positions by minimizing total wire length while avoiding overlaps.
+
+    If simanneal is not installed, this class will not be functional.
+    """
+
+    def __init__(self, positions: Dict[str, Tuple[float, float]],
+                 netlist_analyzer, center: Tuple[float, float],
+                 min_distance: float = 2.0):
+        """Initialize the annealer
+
+        Args:
+            positions: Initial positions dict {ref: (x, y)}
+            netlist_analyzer: NetlistAnalyzer instance for wire length calculation
+            center: Center point for bounds
+            min_distance: Minimum distance between components (mm)
+        """
+        self.netlist_analyzer = netlist_analyzer
+        self.center = center
+        self.min_distance = min_distance
+        self.refs = list(positions.keys())
+
+        # Convert positions dict to state (list of coordinates for mutability)
+        self.state = positions.copy()
+
+        # Annealing parameters (can be overridden)
+        self.Tmax = 25.0
+        self.Tmin = 0.1
+        self.steps = 10000
+        self.updates = 0
+
+    def move(self):
+        """Make a random move: adjust one component's position"""
+        # Pick a random component
+        ref = random.choice(self.refs)
+        x, y = self.state[ref]
+
+        # Random displacement (larger at high temperature)
+        # Temperature is handled by simanneal, so use fixed range
+        dx = random.uniform(-1.5, 1.5)
+        dy = random.uniform(-1.5, 1.5)
+
+        new_x = x + dx
+        new_y = y + dy
+
+        # Keep within bounds
+        new_x = max(self.center[0] - 20, min(self.center[0] + 20, new_x))
+        new_y = max(self.center[1] - 20, min(self.center[1] + 20, new_y))
+
+        self.state[ref] = (new_x, new_y)
+
+    def energy(self) -> float:
+        """Calculate energy (cost) of current state
+
+        Lower energy = better placement
+        Energy = wire_length + overlap_penalty
+        """
+        # Wire length component
+        wire_length = self.netlist_analyzer.calculate_wire_length(self.state)
+
+        # Overlap penalty component
+        overlap_penalty = 0.0
+        refs_list = list(self.state.keys())
+
+        for i, ref1 in enumerate(refs_list):
+            x1, y1 = self.state[ref1]
+            for ref2 in refs_list[i+1:]:
+                x2, y2 = self.state[ref2]
+
+                dist = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+                if dist < self.min_distance:
+                    # Strong penalty for overlap
+                    overlap_penalty += (self.min_distance - dist) ** 2 * 100
+
+        return wire_length + overlap_penalty
+
+    def anneal(self) -> Tuple[Dict[str, Tuple[float, float]], float]:
+        """Run simulated annealing optimization
+
+        Returns:
+            Tuple of (final_positions, final_energy)
+        """
+        if not SIMANNEAL_AVAILABLE:
+            return self.state, self.energy()
+
+        # Create actual Annealer subclass instance
+        class _Annealer(Annealer):
+            def __init__(inner_self, state, parent):
+                inner_self.parent = parent
+                super().__init__(state)
+
+            def move(inner_self):
+                # Pick a random component
+                ref = random.choice(inner_self.parent.refs)
+                x, y = inner_self.state[ref]
+
+                dx = random.uniform(-1.5, 1.5)
+                dy = random.uniform(-1.5, 1.5)
+
+                new_x = max(inner_self.parent.center[0] - 20,
+                           min(inner_self.parent.center[0] + 20, x + dx))
+                new_y = max(inner_self.parent.center[1] - 20,
+                           min(inner_self.parent.center[1] + 20, y + dy))
+
+                inner_self.state[ref] = (new_x, new_y)
+
+            def energy(inner_self) -> float:
+                wire_length = inner_self.parent.netlist_analyzer.calculate_wire_length(inner_self.state)
+
+                overlap_penalty = 0.0
+                refs_list = list(inner_self.state.keys())
+
+                for i, ref1 in enumerate(refs_list):
+                    x1, y1 = inner_self.state[ref1]
+                    for ref2 in refs_list[i+1:]:
+                        x2, y2 = inner_self.state[ref2]
+
+                        dist = math.sqrt((x2-x1)**2 + (y2-y1)**2)
+                        if dist < inner_self.parent.min_distance:
+                            overlap_penalty += (inner_self.parent.min_distance - dist) ** 2 * 100
+
+                return wire_length + overlap_penalty
+
+        annealer = _Annealer(self.state.copy(), self)
+        annealer.Tmax = self.Tmax
+        annealer.Tmin = self.Tmin
+        annealer.steps = self.steps
+        annealer.updates = self.updates
+
+        final_state, final_energy = annealer.anneal()
+        return final_state, final_energy
 
 
 # ============================================================================
@@ -812,13 +963,15 @@ class SmartPlacer:
         self.placement_mgr: Optional[PlacementManager] = None
 
     def place_module(self, module_name: str, center: Tuple[float, float] = (100.0, 100.0),
-                     use_netlist: bool = True) -> int:
+                     use_netlist: bool = True, refine_method: str = "anneal") -> int:
         """Place components in a module PCB according to design rules
 
         Args:
             module_name: Name of the module to place
             center: Center point for placement (mm)
             use_netlist: Use netlist connectivity for optimization
+            refine_method: Refinement method - "force" (force-directed),
+                          "anneal" (simulated annealing), or "none"
 
         Returns:
             Number of components placed
@@ -867,6 +1020,16 @@ class SmartPlacer:
             placed = self._place_bridge_netlist(mapper, design_rules, center, use_netlist)
         else:
             placed = self._place_netlist_aware(mapper, design_rules, center)
+
+        # Run placement refinement to optimize placement
+        if use_netlist and placed > 1 and refine_method != "none":
+            if refine_method == "anneal":
+                self._refine_with_annealing(mapper, center)
+            else:  # Default to force-directed
+                self._refine_placement(mapper, center)
+
+        # Adjust silkscreen text to avoid overlapping components
+        self._adjust_silkscreen_text(mapper)
 
         # Save PCB
         mapper.board.Save(pcb_path)
@@ -1333,6 +1496,93 @@ class SmartPlacer:
 
         return placed
 
+    def _get_current_positions(self, mapper: PCBComponentMapper) -> Dict[str, Tuple[float, float]]:
+        """Get current positions of all components from the board
+
+        Returns:
+            Dict mapping ref -> (x, y) position in mm
+        """
+        positions = {}
+        for ref in mapper.get_all_refs():
+            fp = mapper.get_footprint(ref)
+            if fp:
+                pos = fp.GetPosition()
+                positions[ref] = (pcbnew.ToMM(pos.x), pcbnew.ToMM(pos.y))
+        return positions
+
+    def _refine_placement(self, mapper: PCBComponentMapper, center: Tuple[float, float],
+                          iterations: int = 50, convergence_threshold: float = 0.1) -> bool:
+        """Run force-directed optimization to refine component placement
+
+        This method collects current positions, runs iterative force-directed
+        optimization, and applies the refined positions.
+
+        Args:
+            mapper: PCB component mapper with netlist analyzer
+            center: Center point for bounds checking
+            iterations: Maximum number of optimization iterations
+            convergence_threshold: Stop if max movement is below this (mm)
+
+        Returns:
+            True if refinement was applied, False if skipped
+        """
+        if not mapper.netlist_analyzer:
+            logger.debug("  No netlist analyzer, skipping refinement")
+            return False
+
+        # Get current positions
+        positions = self._get_current_positions(mapper)
+        if len(positions) < 2:
+            logger.debug("  Too few components for refinement")
+            return False
+
+        # Calculate initial wire length
+        initial_wire_length = mapper.netlist_analyzer.calculate_wire_length(positions)
+        logger.info(f"  Force-directed refinement: {iterations} iterations max")
+        logger.debug(f"    Initial wire length: {initial_wire_length:.1f}mm")
+
+        # Run optimization iterations
+        for i in range(iterations):
+            new_positions = self._optimize_placement_iteration(mapper, positions, center)
+
+            # Check convergence (max movement)
+            max_movement = 0.0
+            for ref in positions:
+                if ref in new_positions:
+                    old_x, old_y = positions[ref]
+                    new_x, new_y = new_positions[ref]
+                    movement = math.sqrt((new_x - old_x)**2 + (new_y - old_y)**2)
+                    max_movement = max(max_movement, movement)
+
+            positions = new_positions
+
+            if max_movement < convergence_threshold:
+                logger.debug(f"    Converged after {i+1} iterations (movement={max_movement:.3f}mm)")
+                break
+
+        # Calculate final wire length
+        final_wire_length = mapper.netlist_analyzer.calculate_wire_length(positions)
+        improvement = initial_wire_length - final_wire_length
+        logger.info(f"    Wire length: {initial_wire_length:.1f}mm -> {final_wire_length:.1f}mm "
+                    f"({improvement:+.1f}mm)")
+
+        # Only apply if there's improvement
+        if final_wire_length >= initial_wire_length:
+            logger.info("    No improvement from refinement, keeping original positions")
+            return False
+
+        # Apply refined positions with collision avoidance
+        # Clear placement manager to re-register positions
+        if self.placement_mgr:
+            self.placement_mgr.placed_boxes.clear()
+
+        for ref, (x, y) in positions.items():
+            fp = mapper.get_footprint(ref)
+            if fp:
+                self._set_position_safe(fp, ref, x, y)
+
+        return True
+
     def _optimize_placement_iteration(self, mapper: PCBComponentMapper,
                                        positions: Dict[str, Tuple[float, float]],
                                        center: Tuple[float, float]) -> Dict[str, Tuple[float, float]]:
@@ -1346,12 +1596,43 @@ class SmartPlacer:
 
         analyzer = mapper.netlist_analyzer
         new_positions = positions.copy()
+        
+        # Pre-fetch component info to avoid repeated calls
+        comp_info = {}
+        for ref in positions:
+            fp = mapper.get_footprint(ref)
+            if fp:
+                # Calculate approximate radius from bounding box
+                bbox = self.placement_mgr.get_footprint_bbox(fp)
+                width = bbox.x_max - bbox.x_min
+                height = bbox.y_max - bbox.y_min
+                radius = max(width, height) / 2.0
+                
+                # Check directly if locked
+                is_locked = fp.IsLocked()
+                
+                comp_info[ref] = {
+                    'radius': radius,
+                    'locked': is_locked
+                }
+            else:
+                comp_info[ref] = {'radius': 1.0, 'locked': False}
+
+        # Constants for force calculation
+        attraction_strength = 0.2  # Increased from 0.1
+        repulsion_strength = 5.0   # Stronger repulsion
+        damping = 0.4
 
         for ref, (x, y) in positions.items():
-            # Calculate force from connected components (attraction)
+            # Skip if component is locked
+            if comp_info[ref]['locked']:
+                continue
+                
             fx, fy = 0.0, 0.0
-            connections = analyzer.get_connected_components(ref)
+            my_radius = comp_info[ref]['radius']
 
+            # Attraction forces from connected components
+            connections = analyzer.get_connected_components(ref)
             for connected_ref, weight in connections.items():
                 if connected_ref in positions:
                     cx, cy = positions[connected_ref]
@@ -1359,23 +1640,264 @@ class SmartPlacer:
                     dy = cy - y
                     dist = math.sqrt(dx*dx + dy*dy) + 0.1
 
-                    # Attraction proportional to weight, inversely to distance
-                    force = weight * 0.1 / dist
-                    fx += force * dx
-                    fy += force * dy
+                    # Attraction proportional to weight
+                    # F = k * x (Hooke's law)
+                    force = weight * attraction_strength
+                    fx += force * dx / dist
+                    fy += force * dy / dist
+
+            # Repulsion forces from all nearby components (prevent overlap)
+            for other_ref, (ox, oy) in positions.items():
+                if other_ref == ref:
+                    continue
+
+                dx = x - ox
+                dy = y - oy
+                dist = math.sqrt(dx*dx + dy*dy) + 0.01 # Avoid div/0
+                
+                other_radius = comp_info[other_ref]['radius']
+                min_separation = my_radius + other_radius + 0.5 # 0.5mm extra clearance
+                
+                if dist < min_separation:
+                    # Repulsion force should be very strong when overlapping
+                    # F = k / r^2
+                    overlap_ratio = min_separation / dist
+                    repulsion = repulsion_strength * (overlap_ratio ** 2)
+                    fx += repulsion * dx / dist
+                    fy += repulsion * dy / dist
 
             # Apply force with damping
-            damping = 0.5
             new_x = x + fx * damping
             new_y = y + fy * damping
 
             # Keep within reasonable bounds
-            new_x = max(center[0] - 20, min(center[0] + 20, new_x))
-            new_y = max(center[1] - 20, min(center[1] + 20, new_y))
+            new_x = max(center[0] - 25, min(center[0] + 25, new_x))
+            new_y = max(center[1] - 25, min(center[1] + 25, new_y))
 
             new_positions[ref] = (new_x, new_y)
 
         return new_positions
+
+    def _refine_with_annealing(self, mapper: PCBComponentMapper, center: Tuple[float, float],
+                                steps: int = 10000, t_max: float = 25.0, t_min: float = 0.1) -> bool:
+        """Run simulated annealing optimization to refine component placement
+
+        Simulated annealing can escape local minima better than force-directed
+        methods, potentially finding better global solutions.
+
+        Args:
+            mapper: PCB component mapper with netlist analyzer
+            center: Center point for bounds checking
+            steps: Number of annealing steps
+            t_max: Maximum (starting) temperature
+            t_min: Minimum (ending) temperature
+
+        Returns:
+            True if refinement was applied, False if skipped
+        """
+        if not SIMANNEAL_AVAILABLE:
+            logger.warning("  simanneal not installed, skipping annealing refinement")
+            logger.warning("    Install with: pip install simanneal")
+            return False
+
+        if not mapper.netlist_analyzer:
+            logger.debug("  No netlist analyzer, skipping annealing refinement")
+            return False
+
+        # Get current positions
+        positions = self._get_current_positions(mapper)
+        if len(positions) < 2:
+            logger.debug("  Too few components for annealing refinement")
+            return False
+
+        # Calculate initial wire length
+        initial_wire_length = mapper.netlist_analyzer.calculate_wire_length(positions)
+        logger.info(f"  Simulated annealing refinement: {steps} steps")
+        logger.debug(f"    Initial wire length: {initial_wire_length:.1f}mm")
+
+        # Create and run the annealer
+        annealer = PCBPlacementAnnealer(
+            positions=positions,
+            netlist_analyzer=mapper.netlist_analyzer,
+            center=center,
+            min_distance=2.0
+        )
+        annealer.Tmax = t_max
+        annealer.Tmin = t_min
+        annealer.steps = steps
+        annealer.updates = 0  # Disable progress output
+
+        # Run annealing
+        final_positions, final_energy = annealer.anneal()
+
+        # Calculate final wire length
+        final_wire_length = mapper.netlist_analyzer.calculate_wire_length(final_positions)
+        improvement = initial_wire_length - final_wire_length
+        logger.info(f"    Wire length: {initial_wire_length:.1f}mm -> {final_wire_length:.1f}mm "
+                    f"({improvement:+.1f}mm)")
+
+        # Only apply if there's improvement
+        if final_wire_length >= initial_wire_length:
+            logger.info("    No improvement from annealing, keeping original positions")
+            return False
+
+        # Apply refined positions with collision avoidance
+        if self.placement_mgr:
+            self.placement_mgr.placed_boxes.clear()
+
+        for ref, (x, y) in final_positions.items():
+            fp = mapper.get_footprint(ref)
+            if fp:
+                self._set_position_safe(fp, ref, x, y)
+
+        return True
+
+    def _adjust_silkscreen_text(self, mapper: PCBComponentMapper) -> int:
+        """Adjust silkscreen reference text to avoid overlapping components
+
+        Checks each footprint's reference designator text and moves it if
+        it overlaps with any component pads.
+
+        Args:
+            mapper: PCB component mapper
+
+        Returns:
+            Number of text elements adjusted
+        """
+        if not mapper.board:
+            return 0
+
+        adjusted = 0
+        footprints = list(mapper.board.GetFootprints())
+
+        # Build list of all pad bounding boxes for overlap checking
+        all_pad_bounds = []
+        for fp in footprints:
+            for pad in fp.Pads():
+                pos = pad.GetPosition()
+                size = pad.GetSize()
+                # Store as (min_x, min_y, max_x, max_y) in internal units
+                bounds = (
+                    pos.x - size.x // 2,
+                    pos.y - size.y // 2,
+                    pos.x + size.x // 2,
+                    pos.y + size.y // 2
+                )
+                all_pad_bounds.append(bounds)
+
+        # Also add component body bounds (approximate from footprint position and size)
+        component_bounds = []
+        for fp in footprints:
+            bbox = fp.GetBoundingBox()
+            # Use a smaller estimate for the body (not full courtyard)
+            center_x = (bbox.GetLeft() + bbox.GetRight()) // 2
+            center_y = (bbox.GetTop() + bbox.GetBottom()) // 2
+            half_w = (bbox.GetRight() - bbox.GetLeft()) // 3  # Approximate body as 2/3 of bbox
+            half_h = (bbox.GetBottom() - bbox.GetTop()) // 3
+            component_bounds.append((
+                center_x - half_w,
+                center_y - half_h,
+                center_x + half_w,
+                center_y + half_h
+            ))
+
+        all_bounds = all_pad_bounds + component_bounds
+
+        # Check and adjust each footprint's reference text
+        for fp in footprints:
+            ref = fp.GetReference()
+            ref_text = fp.Reference()
+
+            if not ref_text:
+                continue
+
+            # Get text bounding box
+            text_bbox = ref_text.GetBoundingBox()
+            text_bounds = (
+                text_bbox.GetLeft(),
+                text_bbox.GetTop(),
+                text_bbox.GetRight(),
+                text_bbox.GetBottom()
+            )
+
+            # Check for overlaps
+            has_overlap = False
+            for bounds in all_bounds:
+                if self._bounds_overlap(text_bounds, bounds):
+                    has_overlap = True
+                    break
+
+            if has_overlap:
+                # Try to find a clear position
+                fp_pos = fp.GetPosition()
+                fp_bbox = fp.GetBoundingBox()
+
+                # Calculate offsets to try (around the component)
+                offsets = [
+                    (0, -pcbnew.FromMM(2.5)),   # Above
+                    (0, pcbnew.FromMM(2.5)),    # Below
+                    (-pcbnew.FromMM(3.0), 0),   # Left
+                    (pcbnew.FromMM(3.0), 0),    # Right
+                    (-pcbnew.FromMM(2.0), -pcbnew.FromMM(2.0)),  # Top-left
+                    (pcbnew.FromMM(2.0), -pcbnew.FromMM(2.0)),   # Top-right
+                    (-pcbnew.FromMM(2.0), pcbnew.FromMM(2.0)),   # Bottom-left
+                    (pcbnew.FromMM(2.0), pcbnew.FromMM(2.0)),    # Bottom-right
+                ]
+
+                best_pos = None
+                for dx, dy in offsets:
+                    test_x = fp_pos.x + dx
+                    test_y = fp_pos.y + dy
+
+                    # Create test bounds for text at this position
+                    text_w = text_bbox.GetRight() - text_bbox.GetLeft()
+                    text_h = text_bbox.GetBottom() - text_bbox.GetTop()
+                    test_bounds = (
+                        test_x - text_w // 2,
+                        test_y - text_h // 2,
+                        test_x + text_w // 2,
+                        test_y + text_h // 2
+                    )
+
+                    # Check if this position is clear
+                    is_clear = True
+                    for bounds in all_bounds:
+                        if self._bounds_overlap(test_bounds, bounds):
+                            is_clear = False
+                            break
+
+                    if is_clear:
+                        best_pos = (test_x, test_y)
+                        break
+
+                if best_pos:
+                    # Move text to clear position
+                    new_pos = pcbnew.VECTOR2I(int(best_pos[0]), int(best_pos[1]))
+                    ref_text.SetPosition(new_pos)
+                    adjusted += 1
+                    logger.debug(f"    Moved {ref} silkscreen to clear position")
+
+        if adjusted > 0:
+            logger.info(f"  Adjusted {adjusted} silkscreen text positions")
+
+        return adjusted
+
+    def _bounds_overlap(self, bounds1: Tuple, bounds2: Tuple) -> bool:
+        """Check if two bounds tuples overlap
+
+        Args:
+            bounds1, bounds2: Tuples of (min_x, min_y, max_x, max_y)
+
+        Returns:
+            True if they overlap
+        """
+        margin = pcbnew.FromMM(0.2)  # Small clearance margin
+        return not (
+            bounds1[2] + margin < bounds2[0] or  # bounds1 right < bounds2 left
+            bounds1[0] - margin > bounds2[2] or  # bounds1 left > bounds2 right
+            bounds1[3] + margin < bounds2[1] or  # bounds1 bottom < bounds2 top
+            bounds1[1] - margin > bounds2[3]     # bounds1 top > bounds2 bottom
+        )
 
     def _fallback_placement(self, module_name: str, center: Tuple[float, float]) -> int:
         """Fallback to simple grid placement if parsing fails"""
@@ -1475,8 +1997,16 @@ Note: Run with KiCad's Python interpreter:
                         help='Verbose output')
     parser.add_argument('--analyze-only', action='store_true',
                         help='Only analyze and print design rules, do not place')
+    parser.add_argument('--refine', choices=['force', 'anneal', 'none'], default='anneal',
+                        help='Refinement method: anneal (simulated annealing, default), force (force-directed), none')
 
     args = parser.parse_args()
+
+    # Check simanneal availability if requested
+    if args.refine == 'anneal' and not SIMANNEAL_AVAILABLE:
+        logger.warning("simanneal not installed, falling back to force-directed")
+        logger.warning("Install with: pip install simanneal")
+        args.refine = 'force'
 
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
@@ -1521,7 +2051,7 @@ Note: Run with KiCad's Python interpreter:
                           f"(dist={comp.placement_distance:.1f}mm)")
 
         if not args.analyze_only:
-            placed = placer.place_module(module_name)
+            placed = placer.place_module(module_name, refine_method=args.refine)
             results[module_name] = placed
             print(f"  Placed: {placed} components")
         else:
