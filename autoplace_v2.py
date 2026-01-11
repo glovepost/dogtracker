@@ -32,9 +32,11 @@ import math
 import random
 import argparse
 import logging
+import glob as glob_module
+import re
+import traceback
 from dataclasses import dataclass, field
 from typing import Dict, List, Tuple, Optional, Set
-from enum import Enum
 from pathlib import Path
 
 # Configure logging
@@ -62,14 +64,14 @@ except ImportError:
     logger.warning("For best results, run from KiCad's Python environment")
 
 # Try to import matplotlib for visualization
-MATLOTPLIB_AVAILABLE = False
+MATPLOTLIB_AVAILABLE = False
 try:
     import matplotlib.pyplot as plt
     import matplotlib.patches as patches
     from matplotlib.collections import PatchCollection
     MATPLOTLIB_AVAILABLE = True
 except ImportError:
-    MATPLOTLIB_AVAILABLE = False
+    pass  # MATPLOTLIB_AVAILABLE remains False
     logger.debug("matplotlib not available - visualization disabled")
 
 
@@ -122,9 +124,9 @@ class ConfigValidationError(Exception):
 def validate_config(config: dict) -> None:
     """Validate YAML configuration schema."""
     # Check required fields
-    for field in REQUIRED_YAML_FIELDS:
-        if field not in config:
-            raise ConfigValidationError(f"Missing required field: '{field}'\n{YAML_SCHEMA}")
+    for field_name in REQUIRED_YAML_FIELDS:
+        if field_name not in config:
+            raise ConfigValidationError(f"Missing required field: '{field_name}'\n{YAML_SCHEMA}")
     
     # Validate board
     board = config.get('board', {})
@@ -336,28 +338,44 @@ class Component:
             self.top + margin > other.bottom - margin
         )
     
-    def get_optimal_rotation(self, neighbors: List['Component'], 
-                              rotations: List[float] = [0, 90, 180, 270]) -> float:
+    def get_base_dimensions(self) -> Tuple[float, float]:
+        """Get the base (unrotated) dimensions of this component.
+
+        Returns (base_width, base_height) as if rotation were 0.
+        """
+        if self.rotation in [90, 270]:
+            # Dimensions are currently swapped, so swap back
+            return (self.height, self.width)
+        else:
+            return (self.width, self.height)
+
+    def get_optimal_rotation(self, neighbors: List['Component'],
+                              rotations: Optional[List[float]] = None) -> float:
         """Find rotation that minimizes overlap with neighbors."""
+        if rotations is None:
+            rotations = [0, 90, 180, 270]
+
         best_rotation = self.rotation
         min_overlap = float('inf')
-        
+
+        # Get base dimensions (as if rotation=0)
+        base_w, base_h = self.get_base_dimensions()
         original_w, original_h = self.width, self.height
-        
+
         for rot in rotations:
-            # Swap dimensions for 90/270
+            # Set dimensions based on target rotation
             if rot in [90, 270]:
-                self.width, self.height = original_h, original_w
+                self.width, self.height = base_h, base_w
             else:
-                self.width, self.height = original_w, original_h
-            
+                self.width, self.height = base_w, base_h
+
             overlap_count = sum(1 for n in neighbors if self.overlaps(n, margin=0.1))
-            
+
             if overlap_count < min_overlap:
                 min_overlap = overlap_count
                 best_rotation = rot
-        
-        # Restore original
+
+        # Restore original dimensions
         self.width, self.height = original_w, original_h
         return best_rotation
 
@@ -487,55 +505,58 @@ class ForceDirectedPlacer:
         return [self.components[ref] for ref, _ in candidates 
                 if ref != comp.ref and ref in self.components]
     
-    def calculate_forces(self) -> Dict[str, Tuple[float, float]]:
+    def calculate_forces(self, layer: str = "front") -> Dict[str, Tuple[float, float]]:
         """Calculate all forces on each component.
-        
-        Note: Quadtree should be built before calling this method (in run()).
+
+        Args:
+            layer: The layer to calculate forces for. Quadtree should be built
+                   for this layer before calling.
         """
         forces = {ref: [0.0, 0.0] for ref in self.components}
-        
-        # Attraction forces (from connections)
+
+        # Attraction forces (from connections) - these work across layers
         for ref1, ref2, weight in self.connections:
             c1, c2 = self.components[ref1], self.components[ref2]
             dx = c2.x - c1.x
             dy = c2.y - c1.y
             distance = math.sqrt(dx * dx + dy * dy)
-            
+
             if distance > 0.1:
                 force = self.config.attraction_strength * weight * distance
                 fx = (dx / distance) * force
                 fy = (dy / distance) * force
-                
+
                 if not c1.fixed:
                     forces[ref1][0] += fx
                     forces[ref1][1] += fy
                 if not c2.fixed:
                     forces[ref2][0] -= fx
                     forces[ref2][1] -= fy
-        
+
         # Repulsion and collision forces (using quadtree for efficiency)
+        # Only process components on the specified layer
         for ref, comp in self.components.items():
-            if comp.fixed:
+            if comp.fixed or comp.layer != layer:
                 continue
-            
+
             nearby = self.get_nearby_components(comp)
-            
+
             for other in nearby:
                 dx = comp.x - other.x
                 dy = comp.y - other.y
                 distance = math.sqrt(dx * dx + dy * dy)
-                
+
                 if distance < 0.1:
                     angle = random.uniform(0, 2 * math.pi)
                     dx, dy = math.cos(angle), math.sin(angle)
                     distance = 0.1
-                
+
                 # Collision force
                 if comp.overlaps(other, margin=self.config.min_clearance):
                     overlap_x = min(comp.right, other.right) - max(comp.left, other.left)
                     overlap_y = min(comp.top, other.top) - max(comp.bottom, other.bottom)
                     overlap = max(overlap_x, overlap_y) + self.config.min_clearance
-                    
+
                     force = self.config.collision_strength * overlap
                     forces[ref][0] += (dx / distance) * force
                     forces[ref][1] += (dy / distance) * force
@@ -546,17 +567,18 @@ class ForceDirectedPlacer:
                         force = self.config.repulsion_strength / (distance * distance)
                         forces[ref][0] += (dx / distance) * force
                         forces[ref][1] += (dy / distance) * force
-        
+
         return {ref: tuple(f) for ref, f in forces.items()}
     
     def constrain_to_board(self, comp: Component):
         """Keep component within board boundaries."""
-        margin_x = comp.width / 2 + 1.0
-        margin_y = comp.height / 2 + 1.0
-        
+        edge_margin = self.config.board_edge_margin
+        margin_x = comp.width / 2 + edge_margin
+        margin_y = comp.height / 2 + edge_margin
+
         half_w = self.board_width / 2 - margin_x
         half_h = self.board_height / 2 - margin_y
-        
+
         comp.x = max(-half_w, min(half_w, comp.x))
         comp.y = max(-half_h, min(half_h, comp.y))
     
@@ -596,41 +618,34 @@ class ForceDirectedPlacer:
     def optimize_rotations(self):
         """Optimize component rotations to minimize overlaps."""
         rotations_changed = 0
-        
+
         for ref, comp in self.components.items():
             if comp.fixed:
                 continue
-            
+
             # Get nearby components
             neighbors = self.get_nearby_components(comp)
             if not neighbors:
                 continue
-            
-            # Store original oriented dimensions before testing rotations
-            # When rotation is 0/180, width/height are as-is
-            # When rotation is 90/270, they were already swapped
-            if comp.rotation in [0, 180]:
-                original_width = comp.width
-                original_height = comp.height
-            else:  # 90, 270
-                original_width = comp.height
-                original_height = comp.width
-            
+
+            # Get base dimensions (unrotated)
+            base_w, base_h = comp.get_base_dimensions()
+
             # Find best rotation
-            best_rot = comp.get_optimal_rotation(neighbors, rotations=[0, 90, 180, 270])
-            
+            best_rot = comp.get_optimal_rotation(neighbors)
+
             if best_rot != comp.rotation:
                 # Apply rotation with correct dimension handling
                 if best_rot in [90, 270]:
-                    comp.width = original_height
-                    comp.height = original_width
+                    comp.width = base_h
+                    comp.height = base_w
                 else:  # 0, 180
-                    comp.width = original_width
-                    comp.height = original_height
-                
+                    comp.width = base_w
+                    comp.height = base_h
+
                 comp.rotation = best_rot
                 rotations_changed += 1
-        
+
         return rotations_changed
     
     def run(self) -> Dict[str, Component]:
@@ -647,10 +662,18 @@ class ForceDirectedPlacer:
         logger.info(f"  Initial overlaps: {initial_overlaps}")
         
         for iteration in range(self.config.iterations):
-            # Build quadtree ONCE per iteration (not inside calculate_forces)
-            self.build_quadtree("front")
-            
-            forces = self.calculate_forces()
+            # Calculate forces for each layer separately
+            # Build quadtree and calculate forces per layer to handle both front and back
+            all_forces = {ref: [0.0, 0.0] for ref in self.components}
+
+            for layer in ["front", "back"]:
+                self.build_quadtree(layer)
+                layer_forces = self.calculate_forces(layer)
+                for ref, (fx, fy) in layer_forces.items():
+                    all_forces[ref][0] += fx
+                    all_forces[ref][1] += fy
+
+            forces = {ref: tuple(f) for ref, f in all_forces.items()}
             
             # Apply forces
             for ref, (fx, fy) in forces.items():
@@ -757,28 +780,27 @@ class NetlistParser:
         
         return ('signal', 1.0)
     
-    def _sample_power_net_connections(self, refs: List[str], weight: float, 
+    def _sample_power_net_connections(self, refs: List[str], weight: float,
                                        max_connections: int) -> List[Tuple[str, str, float]]:
         """Sample representative connections from a large power/ground net.
-        
+
         Strategy: Prioritize connections between different component types,
         especially decoupling capacitors (C*) near ICs (U*).
-        
+
         Args:
             refs: List of component references on this net
             weight: Base weight for connections
             max_connections: Maximum number of connections to return
-            
+
         Returns:
             List of (ref1, ref2, weight) tuples
         """
-        import random
         connections = []
-        
+
         # Categorize components
         ics = [r for r in refs if r.startswith('U')]
         caps = [r for r in refs if r.startswith('C')]
-        others = [r for r in refs if not r.startswith('U') and not r.startswith('C')]
+        # Note: 'others' could be used for additional connection strategies
         
         # Priority 1: Connect each cap to nearest IC (decoupling placement)
         # Use higher weight for these critical connections
@@ -894,7 +916,6 @@ class NetlistParser:
             
         except Exception as e:
             logger.error(f"Error parsing netlist: {e}")
-            import traceback
             traceback.print_exc()
         
         return self.connections
@@ -1045,41 +1066,56 @@ class KiCadPCBUpdater:
         logger.info(f"Loaded PCB with regex parser: {self.pcb_path}")
     
     def update_footprint_position(self, ref: str, x: float, y: float,
-                                   rotation: float = None) -> bool:
-        """Update component position."""
+                                   rotation: float = None,
+                                   layer: str = None) -> bool:
+        """Update component position and optionally layer."""
         if self.use_pcbnew:
-            return self._update_with_pcbnew(ref, x, y, rotation)
+            return self._update_with_pcbnew(ref, x, y, rotation, layer)
         else:
-            return self._update_with_regex(ref, x, y, rotation)
-    
+            return self._update_with_regex(ref, x, y, rotation, layer)
+
     def _update_with_pcbnew(self, ref: str, x: float, y: float,
-                             rotation: float = None) -> bool:
+                             rotation: float = None,
+                             layer: str = None) -> bool:
         """Update position using pcbnew API (robust)."""
         try:
             fp = self.board.FindFootprintByReference(ref)
             if fp is None:
                 logger.warning(f"Footprint not found: {ref}")
                 return False
-            
+
             # Convert mm to native units (nanometers in KiCad 7+)
             # Use pcbnew.FromMM() for proper conversion
             pos = pcbnew.VECTOR2I(int(pcbnew.FromMM(x)), int(pcbnew.FromMM(y)))
             fp.SetPosition(pos)
-            
+
             if rotation is not None:
                 # KiCad uses decidegrees (1/10 degree)
                 fp.SetOrientationDegrees(rotation)
-            
+
+            if layer is not None:
+                # Set footprint layer (front = F.Cu, back = B.Cu)
+                if layer.lower() == "back":
+                    fp.SetLayerAndFlip(pcbnew.B_Cu)
+                    logger.debug(f"  {ref}: Flipped to back layer")
+                elif layer.lower() == "front":
+                    fp.SetLayerAndFlip(pcbnew.F_Cu)
+
             return True
         except Exception as e:
             logger.error(f"Error updating {ref}: {e}")
             return False
     
     def _update_with_regex(self, ref: str, x: float, y: float,
-                            rotation: float = None) -> bool:
-        """Fallback: Update position using regex (fragile)."""
-        import re
-        
+                            rotation: float = None,
+                            layer: str = None) -> bool:
+        """Fallback: Update position using regex (fragile).
+
+        Note: Layer changes are not supported in regex mode.
+        """
+        if layer is not None:
+            logger.warning(f"  {ref}: Layer change requires pcbnew API (ignored)")
+
         ref_pattern = rf'\(property "Reference" "{re.escape(ref)}"'
         ref_matches = list(re.finditer(ref_pattern, self.content))
         
@@ -1130,6 +1166,136 @@ class KiCadPCBUpdater:
             with open(output_path, 'w') as f:
                 f.write(self.content)
             logger.info(f"Saved with regex: {output_path}")
+
+
+# ============================================================================
+# COMPONENT SIZE EXTRACTION
+# ============================================================================
+
+class ComponentSizeExtractor:
+    """Extract actual component sizes from KiCad PCB file.
+
+    Uses pcbnew API to get accurate footprint dimensions:
+    - GetFpPadsLocalBbox(): Pad-only bounding box (tightest fit)
+    - GetCourtyard(): Courtyard polygon (includes clearance)
+    - GetBoundingBox(): Full bounding box (includes silkscreen, too large)
+
+    Per IPC-7351C / KiCad KLC F5.3:
+    - Standard courtyard clearance: 0.25mm
+    - Parts ≤0603: 0.15mm clearance
+    - Connectors: 0.5mm clearance
+    - BGAs: 1.0mm clearance
+    """
+
+    # Clearance based on package size (mm)
+    CLEARANCE_SMALL = 0.15  # 0402, 0201
+    CLEARANCE_STANDARD = 0.25  # Most parts
+    CLEARANCE_CONNECTOR = 0.5
+    CLEARANCE_BGA = 1.0
+
+    def __init__(self, pcb_path: str):
+        self.pcb_path = pcb_path
+        self.board = None
+        self.sizes: Dict[str, Tuple[float, float]] = {}
+        self._load_pcb()
+
+    def _load_pcb(self):
+        """Load PCB using pcbnew API."""
+        if not PCBNEW_AVAILABLE:
+            logger.warning("pcbnew not available - cannot extract component sizes")
+            return
+
+        try:
+            self.board = pcbnew.LoadBoard(self.pcb_path)
+            logger.info(f"Loaded PCB for size extraction: {self.pcb_path}")
+        except Exception as e:
+            logger.error(f"Failed to load PCB: {e}")
+
+    def _get_clearance_for_ref(self, ref: str) -> float:
+        """Determine appropriate clearance based on reference designator."""
+        # Connectors
+        if ref.startswith('J') or ref.startswith('P'):
+            return self.CLEARANCE_CONNECTOR
+        # BGAs (usually U* with large pin count)
+        # For now, use standard clearance for ICs
+        return self.CLEARANCE_STANDARD
+
+    def extract_sizes(self, use_courtyard: bool = False,
+                      add_clearance: bool = True) -> Dict[str, Tuple[float, float]]:
+        """Extract component sizes from the PCB.
+
+        Args:
+            use_courtyard: If True, use courtyard bounds. If False, use pad bounds.
+            add_clearance: If True, add appropriate clearance margin.
+
+        Returns:
+            Dict mapping reference designator to (width, height) in mm.
+        """
+        if not self.board:
+            return {}
+
+        for fp in self.board.GetFootprints():
+            ref = fp.GetReference()
+
+            try:
+                if use_courtyard:
+                    # Try courtyard first
+                    fp.BuildCourtyardCaches()
+                    layer = pcbnew.F_CrtYd if fp.GetLayer() == pcbnew.F_Cu else pcbnew.B_CrtYd
+                    courtyard = fp.GetCourtyard(layer)
+                    if not courtyard.IsEmpty():
+                        bbox = courtyard.BBox()
+                    else:
+                        # Fallback to pad bbox
+                        bbox = fp.GetFpPadsLocalBbox()
+                else:
+                    # Use pad-only bounding box (tightest fit)
+                    bbox = fp.GetFpPadsLocalBbox()
+
+                # Convert from KiCad internal units (nm) to mm
+                width = pcbnew.ToMM(bbox.GetWidth())
+                height = pcbnew.ToMM(bbox.GetHeight())
+
+                # Add clearance if requested
+                if add_clearance:
+                    clearance = self._get_clearance_for_ref(ref)
+                    width += 2 * clearance
+                    height += 2 * clearance
+
+                # Ensure minimum size (some footprints report 0)
+                width = max(width, 0.5)
+                height = max(height, 0.5)
+
+                self.sizes[ref] = (width, height)
+                logger.debug(f"  {ref}: {width:.2f} x {height:.2f} mm")
+
+            except Exception as e:
+                logger.warning(f"  {ref}: Failed to extract size: {e}")
+                # Use default fallback
+                self.sizes[ref] = get_component_size(ref)
+
+        logger.info(f"Extracted sizes for {len(self.sizes)} components")
+        return self.sizes
+
+    def compare_with_config(self, config_sizes: Dict[str, Tuple[float, float]]) -> None:
+        """Compare extracted sizes with config sizes and log differences."""
+        logger.info("\n=== Component Size Comparison ===")
+        logger.info(f"{'Ref':<8} {'Config':>12} {'Actual':>12} {'Diff':>8}")
+        logger.info("-" * 44)
+
+        for ref, (cw, ch) in config_sizes.items():
+            if ref in self.sizes:
+                aw, ah = self.sizes[ref]
+                config_area = cw * ch
+                actual_area = aw * ah
+                diff_pct = ((config_area - actual_area) / actual_area) * 100 if actual_area > 0 else 0
+
+                if abs(diff_pct) > 20:  # Flag significant differences
+                    flag = " ***" if diff_pct > 50 else " *"
+                else:
+                    flag = ""
+
+                logger.info(f"{ref:<8} {cw:.1f}x{ch:.1f}  {aw:.1f}x{ah:.1f}  {diff_pct:+.0f}%{flag}")
 
 
 # ============================================================================
@@ -1329,13 +1495,15 @@ class PlacementVisualizer:
             return '#CCCCCC'
         
         def draw_components(ax, positions: Dict, title: str):
+            import matplotlib.transforms as transforms
+
             ax.set_xlim(-self.board_width/2 - 2, self.board_width/2 + 2)
             ax.set_ylim(-self.board_height/2 - 2, self.board_height/2 + 2)
             ax.set_aspect('equal')
             ax.set_title(title, fontsize=14, fontweight='bold')
             ax.set_xlabel('X (mm)')
             ax.set_ylabel('Y (mm)')
-            
+
             # Draw board outline
             board_rect = patches.Rectangle(
                 (-self.board_width/2, -self.board_height/2),
@@ -1343,24 +1511,27 @@ class PlacementVisualizer:
                 linewidth=2, edgecolor='black', facecolor='#F5F5DC', alpha=0.3
             )
             ax.add_patch(board_rect)
-            
+
             # Draw components
             for ref, (x, y, w, h, rot) in positions.items():
                 color = get_color(ref)
-                
-                # Create rotated rectangle
+
+                # Create rectangle with rotation around center
+                # matplotlib Rectangle rotates around corner, so we use a transform
                 rect = patches.Rectangle(
-                    (x - w/2, y - h/2), w, h,
-                    linewidth=1, edgecolor='black', facecolor=color, alpha=0.7,
-                    angle=rot
+                    (-w/2, -h/2), w, h,
+                    linewidth=1, edgecolor='black', facecolor=color, alpha=0.7
                 )
+                # Apply rotation around center, then translate to position
+                t = transforms.Affine2D().rotate_deg(rot).translate(x, y) + ax.transData
+                rect.set_transform(t)
                 ax.add_patch(rect)
-                
+
                 # Add label for larger components
                 if w > 3 or h > 3:
                     ax.annotate(ref, (x, y), ha='center', va='center', fontsize=7,
                                fontweight='bold', color='black')
-            
+
             # Draw grid
             ax.grid(True, alpha=0.3, linestyle='--')
             ax.axhline(y=0, color='gray', linewidth=0.5)
@@ -1398,9 +1569,8 @@ class PlacementVisualizer:
 
 def find_latest_pcb(build_dir: str) -> Optional[str]:
     """Find the latest KiCad PCB file."""
-    import glob
     pattern = os.path.join(build_dir, "*.kicad_pcb")
-    files = glob.glob(pattern)
+    files = glob_module.glob(pattern)
     files = [f for f in files if not f.endswith("_placed.kicad_pcb")]
     if not files:
         return None
@@ -1429,6 +1599,12 @@ def main():
                         help='Auto-extract connections from PCB netlist (requires pcbnew)')
     parser.add_argument('--drc', action='store_true',
                         help='Run design rule check after placement')
+    parser.add_argument('--auto-size', action='store_true',
+                        help='Auto-detect component sizes from KiCad (requires pcbnew)')
+    parser.add_argument('--compare-sizes', action='store_true',
+                        help='Compare config sizes with actual KiCad sizes')
+    parser.add_argument('--use-courtyard', action='store_true',
+                        help='Use courtyard bounds instead of pad bounds for sizing')
     parser.add_argument('--seed', type=int, help='Random seed for reproducibility')
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='Verbose output')
@@ -1471,7 +1647,34 @@ def main():
     if not pcb_path or not os.path.exists(pcb_path):
         logger.error("PCB file not found")
         sys.exit(1)
-    
+
+    # Auto-detect component sizes from KiCad
+    if args.auto_size or args.compare_sizes:
+        logger.info("\n=== Extracting Component Sizes from KiCad ===")
+        size_extractor = ComponentSizeExtractor(pcb_path)
+        extracted_sizes = size_extractor.extract_sizes(
+            use_courtyard=args.use_courtyard,
+            add_clearance=True
+        )
+
+        if args.compare_sizes:
+            # Build config sizes dict for comparison
+            config_sizes = {ref: (c.width, c.height) for ref, c in engine.components.items()}
+            size_extractor.compare_with_config(config_sizes)
+
+        if args.auto_size and extracted_sizes:
+            # Update component sizes with extracted values
+            updated_count = 0
+            for ref, (w, h) in extracted_sizes.items():
+                if ref in engine.components:
+                    old_w, old_h = engine.components[ref].width, engine.components[ref].height
+                    engine.components[ref].width = w
+                    engine.components[ref].height = h
+                    if abs(old_w - w) > 0.1 or abs(old_h - h) > 0.1:
+                        logger.debug(f"  {ref}: {old_w:.1f}x{old_h:.1f} -> {w:.1f}x{h:.1f}")
+                        updated_count += 1
+            logger.info(f"Updated {updated_count} component sizes from KiCad")
+
     # Parse netlist for auto-connections
     netlist_connections = []
     if args.parse_netlist:
@@ -1511,8 +1714,9 @@ def main():
     not_found = []
     
     for ref, comp in engine.components.items():
-        if updater.update_footprint_position(ref, comp.x, comp.y, comp.rotation):
-            logger.info(f"  ✓ {ref}: ({comp.x:.1f}, {comp.y:.1f}, {comp.rotation}°)")
+        if updater.update_footprint_position(ref, comp.x, comp.y, comp.rotation, comp.layer):
+            layer_info = f" [{comp.layer}]" if comp.layer == "back" else ""
+            logger.info(f"  ✓ {ref}: ({comp.x:.1f}, {comp.y:.1f}, {comp.rotation}°){layer_info}")
             updated += 1
         else:
             not_found.append(ref)

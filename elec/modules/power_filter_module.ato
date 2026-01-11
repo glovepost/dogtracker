@@ -1,6 +1,7 @@
 #pragma experiment("TRAITS")
-import Resistor, Capacitor, Inductor
-from "lib.ato" import CR2032_Holder, FerriteBead_120ohm
+#pragma experiment("BRIDGE_CONNECT")
+import Resistor, Capacitor, Inductor, ElectricPower
+from "lib.ato" import FerriteBead_120ohm
 
 """
 ================================================================================
@@ -71,70 +72,73 @@ REFERENCE:
 """
 
 module PowerFilterBlock:
-    # External signals
-    signal vbat       # Raw battery voltage
-    signal vcc        # Main filtered rail
-    signal vcc_mcu    # MCU filtered rail
-    signal vcc_sensors # Sensor filtered rail
-    signal gnd
+    # External power interfaces using standard ElectricPower
+    power_battery = new ElectricPower
+    power_main = new ElectricPower
+    power_mcu = new ElectricPower
+    power_sensors = new ElectricPower
+
+    # Voltage assertions for CR2032 (2.0V - 3.0V typical)
+    assert power_battery.voltage within 2.0V to 3.3V
+    assert power_main.voltage within 2.0V to 3.3V
+    assert power_mcu.voltage within 2.0V to 3.3V
+    assert power_sensors.voltage within 2.0V to 3.3V
+
+    # All grounds are common
+    power_battery.lv ~ power_main.lv
+    power_main.lv ~ power_mcu.lv
+    power_main.lv ~ power_sensors.lv
 
     # Main Ferrite Bead - Battery to VCC (120ohm@100MHz)
     l_main = new FerriteBead_120ohm
-    vbat ~ l_main.p1
-    l_main.p2 ~ vcc
+    power_battery.hv ~ l_main.p1
+    l_main.p2 ~ power_main.hv
 
     # MCU Rail Filter (120ohm@100MHz)
     l_mcu = new FerriteBead_120ohm
-    vcc ~ l_mcu.p1
-    l_mcu.p2 ~ vcc_mcu
+    power_main.hv ~ l_mcu.p1
+    l_mcu.p2 ~ power_mcu.hv
 
     # Sensor Rail Filter (120ohm@100MHz)
     l_sensors = new FerriteBead_120ohm
-    vcc ~ l_sensors.p1
-    l_sensors.p2 ~ vcc_sensors
+    power_main.hv ~ l_sensors.p1
+    l_sensors.p2 ~ power_sensors.hv
 
-    # Bulk Capacitor (near battery)
+    # Bulk Capacitor (near battery) - using bridge operator
     c_bulk = new Capacitor
     c_bulk.capacitance = 22uF +/- 20%
     c_bulk.package = "0805"
-    c_bulk.p1 ~ vbat
-    c_bulk.p2 ~ gnd
+    power_battery.hv ~> c_bulk ~> power_battery.lv
 
     # Main VCC Decoupling
     c_vcc_1 = new Capacitor
     c_vcc_1.capacitance = 4.7uF +/- 20%
     c_vcc_1.package = "0603"
-    c_vcc_1.p1 ~ vcc
-    c_vcc_1.p2 ~ gnd
+    power_main.hv ~> c_vcc_1 ~> power_main.lv
 
     c_vcc_2 = new Capacitor
     c_vcc_2.capacitance = 100nF +/- 20%
     c_vcc_2.package = "0402"
-    c_vcc_2.p1 ~ vcc
-    c_vcc_2.p2 ~ gnd
+    power_main.hv ~> c_vcc_2 ~> power_main.lv
 
     # MCU Decoupling
     c_mcu_1 = new Capacitor
     c_mcu_1.capacitance = 100nF +/- 20%
     c_mcu_1.package = "0402"
-    c_mcu_1.p1 ~ vcc_mcu
-    c_mcu_1.p2 ~ gnd
+    power_mcu.hv ~> c_mcu_1 ~> power_mcu.lv
 
     c_mcu_2 = new Capacitor
     c_mcu_2.capacitance = 4.7uF +/- 20%
     c_mcu_2.package = "0603"
-    c_mcu_2.p1 ~ vcc_mcu
-    c_mcu_2.p2 ~ gnd
+    power_mcu.hv ~> c_mcu_2 ~> power_mcu.lv
 
     # Sensor Decoupling
     c_sensor_1 = new Capacitor
     c_sensor_1.capacitance = 100nF +/- 20%
     c_sensor_1.package = "0402"
-    c_sensor_1.p1 ~ vcc_sensors
-    c_sensor_1.p2 ~ gnd
+    power_sensors.hv ~> c_sensor_1 ~> power_sensors.lv
 
     c_sensor_2 = new Capacitor
     c_sensor_2.capacitance = 100nF +/- 20%
     c_sensor_2.package = "0402"
-    c_sensor_2.p1 ~ vcc_sensors
-    c_sensor_2.p2 ~ gnd
+    power_sensors.hv ~> c_sensor_2 ~> power_sensors.lv

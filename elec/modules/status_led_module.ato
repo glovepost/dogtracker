@@ -1,5 +1,6 @@
 #pragma experiment("TRAITS")
-import Resistor, Capacitor
+#pragma experiment("BRIDGE_CONNECT")
+import Resistor, Capacitor, ElectricPower, ElectricLogic
 from "lib.ato" import StatusLED
 
 """
@@ -10,6 +11,7 @@ Status LED Module with Current Limiting
 DESCRIPTION:
     Simple status indicator LED with current limiting resistor.
     Designed for 3.3V GPIO drive with ~2mA LED current.
+    Uses standard atopile interfaces for power and logic signals.
 
 COMPONENTS:
     • Status LED (0603 or 0805 package)
@@ -56,9 +58,12 @@ LED CURRENT TABLE:
 """
 
 module StatusLED_Block:
-    # External signals
-    signal gpio_in   # GPIO driving the LED
-    signal gnd
+    # Standard power interface (for ground reference)
+    power = new ElectricPower
+
+    # GPIO input as ElectricLogic
+    gpio_in = new ElectricLogic
+    gpio_in.reference ~ power
 
     # Current limiting resistor
     r_limit = new Resistor
@@ -69,6 +74,5 @@ module StatusLED_Block:
     led = new StatusLED
 
     # Connection: GPIO -> R -> LED(anode) -> LED(cathode) -> GND
-    gpio_in ~ r_limit.p1
-    r_limit.p2 ~ led.anode
-    led.cathode ~ gnd
+    gpio_in.line ~> r_limit ~> led.anode
+    led.cathode ~ power.lv

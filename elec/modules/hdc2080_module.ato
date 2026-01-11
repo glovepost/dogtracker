@@ -1,5 +1,6 @@
 #pragma experiment("TRAITS")
-import Resistor, Capacitor, Inductor
+#pragma experiment("BRIDGE_CONNECT")
+import Resistor, Capacitor, Inductor, I2C, ElectricPower, ElectricLogic, Electrical
 from "lib.ato" import HDC2080
 
 """
@@ -10,6 +11,7 @@ HDC2080 Temperature/Humidity Sensor Module with Decoupling
 DESCRIPTION:
     Reusable design block containing the HDC2080 digital humidity/temperature
     sensor with optimized bypass filtering per TI application guidelines.
+    Uses standard atopile interfaces for I2C and power.
 
 COMPONENTS:
     • HDC2080DMBR - Temp/humidity sensor (WSON-6, 3x3mm)
@@ -65,22 +67,35 @@ I2C ADDRESS:
 """
 
 module HDC2080_SensorBlock:
-    # External signals
-    signal vcc
-    signal gnd
-    signal i2c_scl
-    signal i2c_sda
-    signal int_pin
-    signal addr      # Address select
-    signal ep        # Exposed pad
+    # Standard power interface
+    power = new ElectricPower
+    assert power.voltage within 1.62V to 3.6V
+
+    # Standard I2C interface
+    i2c = new I2C
+    i2c.address = 0x40  # Default with ADDR=GND
+
+    # Connect I2C logic reference to power
+    i2c.scl.reference ~ power
+    i2c.sda.reference ~ power
+
+    # Interrupt output (data ready / alert)
+    int_out = new ElectricLogic
+    int_out.reference ~ power
+
+    # Address select pin (directly exposed as Electrical)
+    addr = new Electrical
+
+    # Exposed pad (thermal connection to ground)
+    ep = new Electrical
 
     # Core IC
     ic = new HDC2080
-    ic.vcc ~ vcc
-    ic.gnd ~ gnd
-    ic.scl ~ i2c_scl
-    ic.sda ~ i2c_sda
-    ic.int_pin ~ int_pin
+    ic.vcc ~ power.hv
+    ic.gnd ~ power.lv
+    ic.scl ~ i2c.scl.line
+    ic.sda ~ i2c.sda.line
+    ic.int_pin ~ int_out.line
     ic.addr ~ addr
     ic.ep ~ ep
 
@@ -88,5 +103,4 @@ module HDC2080_SensorBlock:
     c_bypass = new Capacitor
     c_bypass.capacitance = 100nF +/- 20%
     c_bypass.package = "0402"
-    c_bypass.p1 ~ vcc
-    c_bypass.p2 ~ gnd
+    power.hv ~> c_bypass ~> power.lv

@@ -1,0 +1,49 @@
+(session ntc_temp
+  (base_design ntc_temp)
+  (placement
+    (resolution um 10)
+    (component Murata_Electronics_NCP15XH103F03RC:R0402
+      (place R2 1000000 -1000000 front 0)
+      (place R1 965000 -1000000 front 0)
+    )
+  )
+  (was_is
+  )
+  (routes 
+    (resolution um 10)
+    (parser
+      (host_cad "KiCad's Pcbnew")
+      (host_version 9.0.7)
+    )
+    (library_out 
+      (padstack "Via[0-1]_600:300_um"
+        (shape
+          (circle F.Cu 6000 0 0)
+        )
+        (shape
+          (circle B.Cu 6000 0 0)
+        )
+        (attach off)
+      )
+      (padstack "Via[0-1]_600:300_um"
+        (shape
+          (circle F.Cu 6000 0 0)
+        )
+        (shape
+          (circle B.Cu 6000 0 0)
+        )
+        (attach off)
+      )
+    )
+    (network_out 
+      (net adc_out
+        (wire
+          (path F.Cu 2000
+            995700 -1000000
+            969300 -1000000
+          )
+        )
+      )
+    )
+  )
+)

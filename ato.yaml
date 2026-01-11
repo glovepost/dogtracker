@@ -5,16 +5,56 @@ paths:
   layout: ./layouts
 
 builds:
+  # Main project build
   default:
     entry: "aertactx_dogtracker.ato:AertactxDogtracker"
+
+  # ==================== REUSABLE MODULE BUILDS ====================
+  # These enable layout reuse via Sync Groups in KiCad
+
+  # Power Management
+  power_filter:
+    entry: "elec/modules/power_filter_module.ato:PowerFilterBlock"
+
+  # Communication
+  i2c_bus:
+    entry: "elec/modules/i2c_bus_module.ato:I2C_BusBlock"
+
+  # Sensors
+  lis3dhtr:
+    entry: "elec/modules/lis3dhtr_module.ato:LIS3DHTR_SensorBlock"
+  qmi8658c:
+    entry: "elec/modules/qmi8658c_module.ato:QMI8658C_IMUBlock"
+  hdc2080:
+    entry: "elec/modules/hdc2080_module.ato:HDC2080_SensorBlock"
+
+  # Storage
+  eeprom:
+    entry: "elec/modules/eeprom_module.ato:EEPROM_Block"
+
+  # RF
+  rf_matching:
+    entry: "elec/modules/rf_matching_module.ato:RF_MatchingNetwork"
+
+  # User Interface
+  status_led:
+    entry: "elec/modules/status_led_module.ato:StatusLED_Block"
+
+  # Analog
+  ntc_temp:
+    entry: "elec/modules/ntc_temp_module.ato:NTC_TempSensor"
+
+  # Debug
+  swd_debug:
+    entry: "elec/modules/swd_debug_module.ato:SWD_DebugBlock"
 
 package:
   identifier: "glovepost/aertactx-dogtracker"
   repository: "https://github.com/glovepost/aertactx-dogtracker"
-  version: "0.1.0"  # recommended first version
+  version: "0.1.0"
   authors:
     - name: "Glovepost"
       email: "lawrence@glovepost.com"
-  summary: "A brand new atopile project!"
+  summary: "CR2032-powered dog tracker with LoRa, accelerometer, IMU, and environmental sensors"
   license: "MIT license"
-  homepage: # fill me!
+  homepage: "https://github.com/glovepost/aertactx-dogtracker"

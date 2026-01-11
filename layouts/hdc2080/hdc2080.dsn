@@ -1,0 +1,148 @@
+(pcb "/Users/glovepost/Projects/aertactx-dogtracker/layouts/hdc2080/hdc2080.dsn"
+  (parser
+    (string_quote ")
+    (space_in_quoted_tokens on)
+    (host_cad "KiCad's Pcbnew")
+    (host_version "9.0.7")
+  )
+  (resolution um 10)
+  (unit um)
+  (structure
+    (layer F.Cu
+      (type signal)
+      (property
+        (index 0)
+      )
+    )
+    (layer B.Cu
+      (type signal)
+      (property
+        (index 1)
+      )
+    )
+    (boundary
+      (path pcb 0  107021 -105263  89914.3 -105263  89914.3 -92366.1  107021 -92366.1
+            107021 -105263)
+    )
+    (via "Via[0-1]_600:300_um")
+    (rule
+      (width 200)
+      (clearance 200)
+      (clearance 50 (type smd_smd))
+    )
+  )
+  (placement
+    (component "Texas_Instruments_HDC2080DMBR:WSON-6_L3.0-W3.0-P1.00-TL-EP"
+      (place U1 100000.000000 -100000.000000 front 0.000000)
+    )
+    (component Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402
+      (place C1 98467.900000 -97214.400000 front 0.000000 (PN "100nF ±10% 16V X7R"))
+    )
+  )
+  (library
+    (image "Texas_Instruments_HDC2080DMBR:WSON-6_L3.0-W3.0-P1.00-TL-EP"
+      (outline (path signal 250  1500 1500  -1500 1500))
+      (outline (path signal 250  1500 -1500  -1500 -1500))
+      (outline (path signal 200  -1800 1600  -1815.88 1545.94  -1858.46 1509.04  -1914.23 1501.02
+            -1965.49 1524.42  -1995.95 1571.83  -1995.95 1628.17  -1965.49 1675.58
+            -1914.23 1698.98  -1858.46 1690.96  -1815.88 1654.06  -1800 1600))
+      (outline (path signal 200  -1700 1000  -1715.88 945.936  -1758.46 909.037  -1814.23 901.018
+            -1865.49 924.425  -1895.95 971.827  -1895.95 1028.17  -1865.49 1075.58
+            -1814.23 1098.98  -1758.46 1090.96  -1715.88 1054.06  -1700 1000))
+      (outline (path signal 60  -1470 1500  -1477.02 1480.72  -1494.79 1470.46  -1515 1474.02
+            -1528.19 1489.74  -1528.19 1510.26  -1515 1525.98  -1494.79 1529.54
+            -1477.02 1519.28  -1470 1500))
+      (pin Rect[T]Pad_500.000000x800.000000_um (rotate 90) 1 -1500 1000)
+      (pin Rect[T]Pad_500.000000x800.000000_um (rotate 90) 2 -1500 0)
+      (pin Rect[T]Pad_500.000000x800.000000_um (rotate 90) 3 -1500 -1000)
+      (pin Rect[T]Pad_500.000000x800.000000_um (rotate 90) 4 1500 -1000)
+      (pin Rect[T]Pad_500.000000x800.000000_um (rotate 90) 5 1500 0)
+      (pin Rect[T]Pad_500.000000x800.000000_um (rotate 90) 6 1500 1000)
+      (pin Rect[T]Pad_2400.000000x1600.000000_um (rotate 90) 7 0 0)
+    )
+    (image Samsung_Electro_Mechanics_CL05B104KO5NNNC:C0402
+      (outline (path signal 150  -870 -350  -870 350))
+      (outline (path signal 150  -720 500  -220 500))
+      (outline (path signal 150  -220 -500  -720 -500))
+      (outline (path signal 150  220 500  720 500))
+      (outline (path signal 150  720 -500  220 -500))
+      (outline (path signal 150  870 350  870 -350))
+      (outline (polygon signal 0  -795 350  -809.324 305.916  -846.824 278.671  -893.176 278.671
+            -930.676 305.916  -945 350  -933.988 419.529  -902.029 482.252
+            -852.252 532.029  -789.529 563.988  -720 575  -675.916 560.676
+            -648.671 523.176  -648.671 476.824  -675.916 439.324  -720 425
+            -740.096 425  -774.904 404.904  -795 370.096  -795 350))
+      (outline (polygon signal 0  -720 -425  -675.916 -439.324  -648.671 -476.824  -648.671 -523.176
+            -675.916 -560.676  -720 -575  -789.529 -563.988  -852.252 -532.029
+            -902.029 -482.252  -933.988 -419.529  -945 -350  -930.676 -305.916
+            -893.176 -278.671  -846.824 -278.671  -809.324 -305.916  -795 -350
+            -795 -370.096  -774.904 -404.904  -740.096 -425  -720 -425))
+      (outline (polygon signal 0  720 425  675.916 439.324  648.671 476.824  648.671 523.176
+            675.916 560.676  720 575  789.529 563.988  852.252 532.029  902.029 482.252
+            933.988 419.529  945 350  930.676 305.916  893.176 278.671  846.824 278.671
+            809.324 305.916  795 350  795 370.096  774.904 404.904  740.096 425
+            720 425))
+      (outline (polygon signal 0  795 -350  809.324 -305.916  846.824 -278.671  893.176 -278.671
+            930.676 -305.916  945 -350  933.988 -419.529  902.029 -482.252
+            852.252 -532.029  789.529 -563.988  720 -575  675.916 -560.676
+            648.671 -523.176  648.671 -476.824  675.916 -439.324  720 -425
+            740.096 -425  774.904 -404.904  795 -370.096  795 -350))
+      (outline (path signal 60  -470 -250  -477.019 -269.284  -494.791 -279.544  -515 -275.981
+            -528.191 -260.261  -528.191 -239.739  -515 -224.019  -494.791 -220.456
+            -477.019 -230.716  -470 -250))
+      (pin Rect[T]Pad_500.000000x540.000000_um 1 -420 0)
+      (pin Rect[T]Pad_500.000000x540.000000_um 2 420 0)
+    )
+    (padstack Rect[T]Pad_2400.000000x1600.000000_um
+      (shape (rect F.Cu -1200 -800 1200 800))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_500.000000x540.000000_um
+      (shape (rect F.Cu -250 -270 250 270))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_500.000000x800.000000_um
+      (shape (rect F.Cu -250 -400 250 400))
+      (attach off)
+    )
+    (padstack "Via[0-1]_600:300_um"
+      (shape (circle F.Cu 600))
+      (shape (circle B.Cu 600))
+      (attach off)
+    )
+  )
+  (network
+    (net i2c_scl
+      (pins U1-6)
+    )
+    (net ep
+      (pins U1-7)
+    )
+    (net gnd
+      (pins U1-2 C1-2)
+    )
+    (net int_pin
+      (pins U1-4)
+    )
+    (net i2c_sda
+      (pins U1-1)
+    )
+    (net vcc
+      (pins U1-5 C1-1)
+    )
+    (net addr
+      (pins U1-3)
+    )
+    (class kicad_default addr ep gnd i2c_scl i2c_sda int_pin vcc
+      (circuit
+        (use_via "Via[0-1]_600:300_um")
+      )
+      (rule
+        (width 200)
+        (clearance 200)
+      )
+    )
+  )
+  (wiring
+  )
+)

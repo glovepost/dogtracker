@@ -1,0 +1,94 @@
+#pragma experiment("TRAITS")
+#pragma experiment("BRIDGE_CONNECT")
+import Capacitor, SWD, ElectricPower, ElectricLogic
+from "lib.ato" import SWD_Header
+
+"""
+================================================================================
+SWD Debug Interface Module
+================================================================================
+
+DESCRIPTION:
+    Reusable design block containing SWD debug header with proper interface
+    support for ARM Cortex-M debugging and programming.
+    Uses standard atopile SWD interface for consistent connections.
+
+COMPONENTS:
+    • 1x5 2.54mm pin header (SWD pinout)
+    • 100nF ceramic capacitor (0402) - NRST bypass
+
+PINOUT (Standard ARM SWD):
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Pin 1: VCC      - Target voltage reference (3.3V)          │
+    │  Pin 2: SWDIO    - Serial Wire Debug Data I/O               │
+    │  Pin 3: SWCLK    - Serial Wire Debug Clock                  │
+    │  Pin 4: NRST     - Target Reset (active low)                │
+    │  Pin 5: GND      - Ground                                   │
+    └─────────────────────────────────────────────────────────────┘
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  PLACEMENT:                                                  │
+    │  • Place at board edge for easy probe access                 │
+    │  • Keep clear of enclosure obstructions                      │
+    │  • Consider pogo-pin test fixture alignment                  │
+    │                                                              │
+    │  ROUTING:                                                    │
+    │  • Keep SWDIO and SWCLK traces short (<50mm)                 │
+    │  • Route away from high-speed signals and power traces       │
+    │  • Add ground guard traces if noise is a concern             │
+    │                                                              │
+    │  RESET CIRCUIT:                                              │
+    │  • 100nF cap on NRST for noise immunity                      │
+    │  • Optional 10k pull-up if not provided by MCU               │
+    │                                                              │
+    │  ESD PROTECTION:                                             │
+    │  • Consider TVS diodes on exposed debug pins                 │
+    │  • Especially important for field-accessible headers         │
+    └─────────────────────────────────────────────────────────────┘
+
+SCHEMATIC:
+           VCC ────────┬──── Pin 1
+                       │
+           SWDIO ──────┼──── Pin 2
+                       │
+           SWCLK ──────┼──── Pin 3
+                       │
+           NRST ───┬───┼──── Pin 4
+                   │   │
+                 100nF │
+                   │   │
+           GND ────┴───┴──── Pin 5
+
+REFERENCE:
+    ARM Debug Interface Architecture Specification (ADIv5)
+    STM32 Programming Manual - SWD Protocol
+================================================================================
+"""
+
+module SWD_DebugBlock:
+    # Standard power interface (for reference voltage)
+    power = new ElectricPower
+
+    # Standard SWD interface
+    swd = new SWD
+
+    # Connect SWD logic references to power
+    swd.clk.reference ~ power
+    swd.dio.reference ~ power
+    swd.reset.reference ~ power
+    # Note: swo not connected (not exposed on 5-pin header)
+
+    # Physical header
+    header = new SWD_Header
+    header.vcc ~ power.hv
+    header.gnd ~ power.lv
+    header.swdio ~ swd.dio.line
+    header.swclk ~ swd.clk.line
+    header.nrst ~ swd.reset.line
+
+    # NRST Bypass Capacitor (for noise immunity)
+    c_nrst = new Capacitor
+    c_nrst.capacitance = 100nF +/- 20%
+    c_nrst.package = "0402"
+    swd.reset.line ~> c_nrst ~> power.lv

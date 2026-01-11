@@ -1,5 +1,6 @@
 #pragma experiment("TRAITS")
-import Resistor, Capacitor, Inductor
+#pragma experiment("BRIDGE_CONNECT")
+import Resistor, Capacitor, Inductor, I2C, ElectricPower
 
 """
 ================================================================================
@@ -9,6 +10,7 @@ I2C Bus Module with Pull-ups
 DESCRIPTION:
     I2C bus pull-up resistors for reliable communication at up to 400kHz.
     Sized for 3.3V operation with typical bus capacitance.
+    Uses standard atopile I2C interface for proper address and frequency tracking.
 
 COMPONENTS:
     • 2x 4.7kΩ resistors (0402) - SDA and SCL pull-ups
@@ -54,21 +56,27 @@ REFERENCE:
 """
 
 module I2C_BusBlock:
-    # External signals
-    signal vcc
-    signal sda
-    signal scl
+    # Standard I2C interface
+    i2c = new I2C
 
-    # SDA Pull-up
+    # Power reference for pull-ups
+    power = new ElectricPower
+
+    # Set I2C frequency for fast mode (400kHz)
+    i2c.frequency = 400kHz
+
+    # Connect I2C logic reference to power
+    i2c.scl.reference ~ power
+    i2c.sda.reference ~ power
+
+    # SDA Pull-up - connects power.hv to sda line via resistor
     r_sda = new Resistor
     r_sda.resistance = 4.7kohm +/- 5%
     r_sda.package = "0402"
-    vcc ~ r_sda.p1
-    r_sda.p2 ~ sda
+    power.hv ~> r_sda ~> i2c.sda.line
 
-    # SCL Pull-up
+    # SCL Pull-up - connects power.hv to scl line via resistor
     r_scl = new Resistor
     r_scl.resistance = 4.7kohm +/- 5%
     r_scl.package = "0402"
-    vcc ~ r_scl.p1
-    r_scl.p2 ~ scl
+    power.hv ~> r_scl ~> i2c.scl.line

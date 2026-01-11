@@ -1,0 +1,86 @@
+(pcb "/Users/glovepost/Projects/aertactx-dogtracker/layouts/ntc_temp/ntc_temp.dsn"
+  (parser
+    (string_quote ")
+    (space_in_quoted_tokens on)
+    (host_cad "KiCad's Pcbnew")
+    (host_version "9.0.7")
+  )
+  (resolution um 10)
+  (unit um)
+  (structure
+    (layer F.Cu
+      (type signal)
+      (property
+        (index 0)
+      )
+    )
+    (layer B.Cu
+      (type signal)
+      (property
+        (index 1)
+      )
+    )
+    (boundary
+      (path pcb 0  103887 -104848  89113.1 -104848  89113.1 -95151.8  103887 -95151.8
+            103887 -104848)
+    )
+    (via "Via[0-1]_600:300_um")
+    (rule
+      (width 200)
+      (clearance 200)
+      (clearance 50 (type smd_smd))
+    )
+  )
+  (placement
+    (component Murata_Electronics_NCP15XH103F03RC:R0402
+      (place R2 100000.000000 -100000.000000 front 0.000000)
+      (place R1 96500.000000 -100000.000000 front 0.000000 (PN "10kΩ ±1% 62.5mW"))
+    )
+  )
+  (library
+    (image Murata_Electronics_NCP15XH103F03RC:R0402
+      (outline (path signal 150  -940 500  -230 500))
+      (outline (path signal 150  -940 -500  -940 500))
+      (outline (path signal 150  -230 -500  -940 -500))
+      (outline (path signal 150  230 -500  940 -500))
+      (outline (path signal 150  940 500  230 500))
+      (outline (path signal 150  940 -500  940 500))
+      (outline (path signal 60  -470 -250  -477.019 -269.284  -494.791 -279.544  -515 -275.981
+            -528.191 -260.261  -528.191 -239.739  -515 -224.019  -494.791 -220.456
+            -477.019 -230.716  -470 -250))
+      (pin Rect[T]Pad_570.000000x540.000000_um 1 -430 0)
+      (pin Rect[T]Pad_570.000000x540.000000_um 2 430 0)
+    )
+    (padstack Rect[T]Pad_570.000000x540.000000_um
+      (shape (rect F.Cu -285 -270 285 270))
+      (attach off)
+    )
+    (padstack "Via[0-1]_600:300_um"
+      (shape (circle F.Cu 600))
+      (shape (circle B.Cu 600))
+      (attach off)
+    )
+  )
+  (network
+    (net adc_out
+      (pins R2-1 R1-2)
+    )
+    (net vcc
+      (pins R1-1)
+    )
+    (net gnd
+      (pins R2-2)
+    )
+    (class kicad_default adc_out gnd vcc
+      (circuit
+        (use_via "Via[0-1]_600:300_um")
+      )
+      (rule
+        (width 200)
+        (clearance 200)
+      )
+    )
+  )
+  (wiring
+  )
+)

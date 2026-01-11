@@ -1,0 +1,87 @@
+#pragma experiment("TRAITS")
+#pragma experiment("BRIDGE_CONNECT")
+import Capacitor, I2C, ElectricPower, Electrical
+from "lib.ato" import EEPROM
+
+"""
+================================================================================
+EEPROM Module (FT24C02A - 2Kbit I2C EEPROM)
+================================================================================
+
+DESCRIPTION:
+    Reusable design block containing the FT24C02A 2Kbit I2C EEPROM with
+    proper bypass capacitor and standard atopile interfaces.
+    Uses I2C interface for proper address tracking.
+
+COMPONENTS:
+    • FT24C02A - 2Kbit I2C EEPROM (SOT-23-5)
+    • 100nF ceramic capacitor (0402) - power supply bypass
+
+LAYOUT GUIDELINES:
+    ┌─────────────────────────────────────────────────────────────┐
+    │  PLACEMENT:                                                  │
+    │  • Place near MCU to minimize I2C trace length               │
+    │  • Keep bypass capacitor within 2mm of VCC pin               │
+    │                                                              │
+    │  I2C ROUTING:                                                │
+    │  • Route SCL and SDA together                                │
+    │  • Keep traces short (<50mm recommended)                     │
+    │  • Avoid routing near high-speed signals                     │
+    │                                                              │
+    │  WRITE PROTECTION:                                           │
+    │  • WP pin LOW = Write enabled                                │
+    │  • WP pin HIGH = Write protected                             │
+    │  • Can leave floating (internal pull-down)                   │
+    └─────────────────────────────────────────────────────────────┘
+
+SCHEMATIC:
+                VCC_SENSORS
+                    │
+                ┌───┴───┐
+                │ 100nF │
+                │  ─┬─  │
+    I2C_SCL ────┤SCL│   │
+    I2C_SDA ────┤SDA│EEP│
+    WP ─────────┤WP │ROM│
+                │   └───┘
+                └───┬───┘
+                    │
+                   GND
+
+REFERENCE:
+    FMD FT24C02A Datasheet
+    I2C EEPROM Application Note
+
+I2C ADDRESS: 0x50 (fixed for SOT-23-5 variant, no address pins)
+================================================================================
+"""
+
+module EEPROM_Block:
+    # Standard power interface
+    power = new ElectricPower
+    assert power.voltage within 1.7V to 5.5V
+
+    # Standard I2C interface with address tracking
+    i2c = new I2C
+    i2c.address = 0x50  # Fixed address for SOT-23-5 variant
+
+    # Connect I2C logic reference to power
+    i2c.scl.reference ~ power
+    i2c.sda.reference ~ power
+
+    # Write protect pin (directly exposed as Electrical)
+    wp = new Electrical
+
+    # Core IC
+    ic = new EEPROM
+    ic.vcc ~ power.hv
+    ic.gnd ~ power.lv
+    ic.scl ~ i2c.scl.line
+    ic.sda ~ i2c.sda.line
+    ic.wp ~ wp
+
+    # Bypass capacitor (per datasheet recommendation)
+    c_bypass = new Capacitor
+    c_bypass.capacitance = 100nF +/- 20%
+    c_bypass.package = "0402"
+    power.hv ~> c_bypass ~> power.lv

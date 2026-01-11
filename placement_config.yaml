@@ -1,7 +1,7 @@
-# PCB Component Placement Configuration - COMPACT LAYOUT
+# PCB Component Placement Configuration - MODULE-BASED LAYOUT
 # ================================================================
-# Battery (B1) is on BACK of board - doesn't conflict with front components!
-# This allows a much more compact design
+# Organized by atopile module structure for Sync Group compatibility
+# Battery (B1) is on BACK of board - doesn't conflict with front components
 # ================================================================
 
 board:
@@ -9,344 +9,376 @@ board:
   height: 30.0  # mm
   origin: [0.0, 0.0]
 
-# Force-directed algorithm - tuned for compact layout
+# Force-directed algorithm - tuned for DENSE packing
+# Based on IPC-7351C courtyard guidelines:
+#   - Standard clearance: 0.25mm
+#   - Small parts (0402): 0.15mm
 force_directed:
   enabled: true
-  iterations: 200
-  attraction_strength: 0.25
-  repulsion_strength: 350.0    # Reduced from 450 to prevent over-spreading
-  damping: 0.78
-  collision_strength: 60.0
-  min_clearance: 0.65          # Increased from 0.5 for DRC margin
+  iterations: 300              # More iterations for convergence
+  attraction_strength: 0.4     # Stronger attraction for grouping
+  repulsion_strength: 150.0    # REDUCED for denser packing
+  damping: 0.85                # Higher damping for stability
+  collision_strength: 120.0    # INCREASED for faster overlap resolution
+  min_clearance: 0.25          # Per IPC-7351C standard
   random_seed: 42              # For reproducibility
   auto_rotate: true            # Enable 0/90/180/270 rotation optimization
   rotation_interval: 50        # Test rotations every 50 iterations
+  board_edge_margin: 0.5       # Keep components 0.5mm from edge
 
 # ================================================================
-# COMPONENT GROUPS - COMPACT FRONT-SIDE LAYOUT
+# MODULE GROUPS - Organized by atopile module hierarchy
 # ================================================================
-# Battery on back - doesn't affect front component placement
-# All other components on front, densely packed
+# Each group corresponds to a module in elec/modules/
+# Component designators from build output
 # ================================================================
 
 groups:
   # =============================================================
-  # MCU CORE - CENTER with tight decoupling
+  # MCU CORE - CENTER
+  # Module: RAK3172 (main component, not a separate module)
   # =============================================================
   mcu_core:
     anchor: U1
     position: [0.0, 0.0]
     layer: front
     components:
-      U1:
+      U1:  # RAK3172 MCU
         offset: [0.0, 0.0]
         rotation: 0
         size: [14.0, 14.0]
-      C3:
-        offset: [8.5, 1.5]
-        rotation: 0
-        size: [1.8, 1.2]
-      C4:
-        offset: [8.5, -0.5]
-        rotation: 0
-        size: [1.8, 1.2]
-      C16:
-        offset: [8.5, -2.5]
-        rotation: 0
-        size: [1.8, 1.2]
-      L3:
-        offset: [-8.5, 0.0]
-        rotation: 0
-        size: [2.5, 2.0]
 
   # =============================================================
-  # SENSORS - LEFT side, vertically stacked
+  # POWER FILTER MODULE
+  # Module: elec/modules/power_filter_module.ato:PowerFilterBlock
   # =============================================================
-  accelerometer:
-    anchor: U2
-    position: [-12.0, 4.0]
+  power_filter:
+    anchor: L2
+    position: [0.0, 9.0]
     layer: front
     components:
-      U2:
+      L2:  # l_main - main ferrite bead
         offset: [0.0, 0.0]
         rotation: 0
-        size: [4.5, 4.5]
-      C7:
-        offset: [3.0, 0.5]
-        rotation: 0
-        size: [1.8, 1.2]
-      C8:
-        offset: [3.0, -1.0]
-        rotation: 0
-        size: [1.8, 1.2]
-
-  imu:
-    anchor: U4
-    position: [-12.0, -2.0]
-    layer: front
-    components:
-      U4:
-        offset: [0.0, 0.0]
-        rotation: 0
-        size: [4.5, 4.0]
-      C9:
-        offset: [3.0, 0.5]
-        rotation: 0
-        size: [1.8, 1.2]
-      C10:
-        offset: [3.0, -1.0]
-        rotation: 0
-        size: [1.8, 1.2]
-
-  humidity_sensor:
-    anchor: U5
-    position: [-12.0, -8.0]
-    layer: front
-    components:
-      U5:
-        offset: [0.0, 0.0]
-        rotation: 0
-        size: [4.5, 4.5]
-      C11:
-        offset: [3.0, 0.0]
-        rotation: 0
-        size: [1.8, 1.2]
-
-  eeprom:
-    anchor: U3
-    position: [-6.0, -10.0]
-    layer: front
-    components:
-      U3:
-        offset: [0.0, 0.0]
-        rotation: 0
-        size: [4.0, 2.5]
-
-  sensor_power:
-    anchor: L4
-    position: [-8.0, 8.0]   # Moved up more to clear U1 (14mm)
-    layer: front
-    components:
-      L4:
-        offset: [0.0, 0.0]
-        rotation: 0
-        size: [2.5, 2.0]
-      C5:
+        size: [1.6, 0.8]
+      L3:  # l_mcu - MCU rail ferrite
         offset: [-2.5, 0.0]
         rotation: 0
-        size: [1.8, 1.2]
-      C6:
-        offset: [0.0, -2.5]
+        size: [1.6, 0.8]
+      L4:  # l_sensors - sensor rail ferrite
+        offset: [2.5, 0.0]
         rotation: 0
-        size: [1.8, 1.2]
+        size: [1.6, 0.8]
+      C6:  # c_bulk - 22uF battery bulk
+        offset: [-5.0, 0.0]
+        rotation: 0
+        size: [2.2, 1.5]
+      C11:  # c_vcc_1 - 4.7uF main VCC
+        offset: [0.0, 2.0]
+        rotation: 0
+        size: [1.8, 1.0]
+      C12:  # c_vcc_2 - 100nF main VCC
+        offset: [2.0, 2.0]
+        rotation: 0
+        size: [1.0, 0.5]
+      C7:  # c_mcu_1 - 100nF MCU
+        offset: [-3.5, 2.0]
+        rotation: 0
+        size: [1.0, 0.5]
+      C8:  # c_mcu_2 - 4.7uF MCU
+        offset: [-5.5, 2.0]
+        rotation: 0
+        size: [1.8, 1.0]
+      C9:  # c_sensor_1 - 100nF sensor
+        offset: [4.0, 2.0]
+        rotation: 0
+        size: [1.0, 0.5]
+      C10:  # c_sensor_2 - 100nF sensor
+        offset: [5.5, 2.0]
+        rotation: 0
+        size: [1.0, 0.5]
 
   # =============================================================
-  # BATTERY - BACK LAYER (centered, overlaps MCU from behind)
-  # No collision with front components!
+  # BATTERY - BACK LAYER
+  # Component: CR2032_Holder (centered, overlaps MCU from behind)
   # =============================================================
-  power_input:
+  battery:
     anchor: B1
     position: [0.0, 0.0]
-    layer: back               # BACK OF BOARD
+    layer: back
     components:
-      B1:
+      B1:  # CR2032 holder
         offset: [0.0, 0.0]
         rotation: 0
         size: [26.0, 26.0]
         layer: back
-      # Power chain on FRONT, near MCU
-      C12:
-        offset: [0.0, 8.0]
-        rotation: 0
-        size: [2.2, 1.5]
-        layer: front
-      L2:
-        offset: [3.0, 8.0]
-        rotation: 0
-        size: [2.5, 2.0]
-        layer: front
-      C1:
-        offset: [6.0, 8.0]
-        rotation: 0
-        size: [1.8, 1.2]
-        layer: front
-      C2:
-        offset: [9.0, 8.0]
-        rotation: 0
-        size: [1.8, 1.2]
-        layer: front
 
   # =============================================================
-  # RF PATH - RIGHT edge
+  # ACCELEROMETER MODULE
+  # Module: elec/modules/lis3dhtr_module.ato:LIS3DHTR_SensorBlock
   # =============================================================
-  rf_path:
+  accelerometer:
+    anchor: U3
+    position: [-12.0, 4.0]
+    layer: front
+    components:
+      U3:  # LIS3DHTR IC
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [3.0, 3.0]
+      C1:  # c_bulk - 10uF
+        offset: [2.5, 0.5]
+        rotation: 0
+        size: [1.8, 1.0]
+      C2:  # c_hf - 100nF
+        offset: [2.5, -0.8]
+        rotation: 0
+        size: [1.0, 0.5]
+
+  # =============================================================
+  # IMU MODULE
+  # Module: elec/modules/qmi8658c_module.ato:QMI8658C_IMUBlock
+  # =============================================================
+  imu:
+    anchor: U5
+    position: [-12.0, -2.0]
+    layer: front
+    components:
+      U5:  # QMI8658C IC
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [3.0, 2.5]
+      C4:  # cp1 - 100nF
+        offset: [2.5, 0.3]
+        rotation: 0
+        size: [1.0, 0.5]
+      C5:  # cp2 - 100nF
+        offset: [2.5, -0.5]
+        rotation: 0
+        size: [1.0, 0.5]
+
+  # =============================================================
+  # HUMIDITY SENSOR MODULE
+  # Module: elec/modules/hdc2080_module.ato:HDC2080_SensorBlock
+  # =============================================================
+  humidity:
+    anchor: U4
+    position: [-12.0, -8.0]
+    layer: front
+    components:
+      U4:  # HDC2080 IC
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [3.0, 3.0]
+      C3:  # c_bypass - 100nF
+        offset: [2.5, 0.0]
+        rotation: 0
+        size: [1.0, 0.5]
+
+  # =============================================================
+  # EEPROM MODULE
+  # Module: elec/modules/eeprom_module.ato:EEPROM_Block
+  # =============================================================
+  eeprom:
+    anchor: U2
+    position: [-6.0, -10.0]
+    layer: front
+    components:
+      U2:  # FT24C02A EEPROM
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [2.9, 1.5]
+      # Note: Bypass cap shares with sensor caps (C series)
+
+  # =============================================================
+  # RF MATCHING MODULE
+  # Module: elec/modules/rf_matching_module.ato:RF_MatchingNetwork
+  # =============================================================
+  rf_matching:
     anchor: ANT1
     position: [14.0, 0.0]
     layer: front
     components:
-      ANT1:
+      ANT1:  # Antenna
         offset: [0.0, 0.0]
         rotation: 0
-        size: [10.0, 5.0]
-      C15:
-        offset: [-6.0, 0.0]
+        size: [6.0, 2.0]
+      L6:  # l_series - 4.3nH matching
+        offset: [-5.0, 0.0]
+        rotation: 0
+        size: [1.0, 0.5]
+      C15:  # c_match_ant - 5.6pF
+        offset: [-3.5, -1.5]
         rotation: 90
-        size: [1.8, 1.2]
-      L6:
-        offset: [-8.0, 0.0]
+        size: [1.0, 0.5]
+      L5:  # l_harmonic - 8.2nH
+        offset: [-7.0, 0.0]
         rotation: 0
-        size: [2.5, 2.0]
-      C14:
-        offset: [-10.5, 0.0]
+        size: [1.0, 0.5]
+      C16:  # c_match_mcu - 5.6pF
+        offset: [-8.5, -1.5]
         rotation: 90
-        size: [1.8, 1.2]
-      L5:
-        offset: [-12.5, 0.0]
+        size: [1.0, 0.5]
+      C13:  # c_harmonic - 3.3pF
+        offset: [-7.0, -1.5]
         rotation: 0
-        size: [2.5, 2.0]
-      C13:
-        offset: [-12.5, -2.5]
-        rotation: 0
-        size: [1.8, 1.2]
+        size: [1.0, 0.5]
 
   # =============================================================
-  # NTC - Near MCU ADC
+  # I2C BUS MODULE
+  # Module: elec/modules/i2c_bus_module.ato:I2C_BusBlock
   # =============================================================
-  ntc_circuit:
+  i2c_bus:
     anchor: R1
-    position: [8.0, -6.0]
+    position: [-3.0, 10.0]
     layer: front
     components:
-      R1:
+      R1:  # r_scl - 4.7k pull-up
         offset: [0.0, 0.0]
         rotation: 0
-        size: [1.8, 1.2]
-      R2:
-        offset: [0.0, -2.0]
+        size: [1.0, 0.5]
+      R2:  # r_sda - 4.7k pull-up
+        offset: [0.0, 1.5]
         rotation: 0
-        size: [1.8, 1.2]
+        size: [1.0, 0.5]
 
   # =============================================================
-  # UI - Bottom right
+  # STATUS LED MODULE
+  # Module: elec/modules/status_led_module.ato:StatusLED_Block
   # =============================================================
-  user_interface:
+  status_led:
     anchor: LED1
     position: [10.0, -10.0]
     layer: front
     components:
-      LED1:
+      LED1:  # Status LED
         offset: [0.0, 0.0]
         rotation: 0
-        size: [2.5, 1.5]
-      R4:
-        offset: [-3.0, 0.0]
+        size: [1.6, 0.8]
+      R3:  # r_limit - 1k
+        offset: [-2.5, 0.0]
         rotation: 0
-        size: [1.8, 1.2]
-      R3:
-        offset: [-3.0, 2.0]
-        rotation: 0
-        size: [1.8, 1.2]
+        size: [1.0, 0.5]
 
   # =============================================================
-  # I2C PULL-UPS
+  # NTC TEMPERATURE MODULE
+  # Module: elec/modules/ntc_temp_module.ato:NTC_TempSensor
   # =============================================================
-  i2c_pullups:
-    anchor: R5
-    position: [-3.0, 10.0]  # Moved up and right to clear U1
+  ntc_temp:
+    anchor: R4
+    position: [8.0, -6.0]
     layer: front
     components:
-      R5:
+      R4:  # r_fixed - 10k divider
         offset: [0.0, 0.0]
         rotation: 0
-        size: [1.8, 1.2]
-      R6:
-        offset: [0.0, 2.0]
+        size: [1.0, 0.5]
+      R5:  # r_ntc - NTC thermistor
+        offset: [0.0, -1.5]
         rotation: 0
-        size: [1.8, 1.2]
+        size: [1.0, 0.5]
 
   # =============================================================
-  # DEBUG - Bottom edge
+  # SWD DEBUG MODULE
+  # Module: elec/modules/swd_debug_module.ato:SWD_DebugBlock
   # =============================================================
-  debug:
+  swd_debug:
     anchor: H1
-    position: [-2.0, -14.0]  # Centered at bottom to clear sensors
+    position: [-2.0, -14.0]
     layer: front
     components:
-      H1:
+      H1:  # SWD Header (1x5)
         offset: [0.0, 0.0]
         rotation: 0
-        size: [15.0, 4.0]
+        size: [12.7, 2.5]
+      C14:  # c_nrst - 100nF bypass
+        offset: [8.0, 0.0]
+        rotation: 0
+        size: [1.0, 0.5]
+
+  # =============================================================
+  # ACTIVATION CIRCUIT
+  # Standalone component (not a module)
+  # =============================================================
+  activation:
+    anchor: R6
+    position: [8.0, 4.0]
+    layer: front
+    components:
+      R6:  # r_activation - 10k pull-up
+        offset: [0.0, 0.0]
+        rotation: 0
+        size: [1.0, 0.5]
 
   # =============================================================
   # RESERVED
+  # Standalone component (not a module)
   # =============================================================
   reserved:
     anchor: L1
-    position: [12.0, -12.0]  # Moved right to clear H1
+    position: [12.0, -12.0]
     layer: front
     components:
-      L1:
+      L1:  # Reserved inductor
         offset: [0.0, 0.0]
         rotation: 0
-        size: [2.5, 2.0]
+        size: [1.8, 1.0]
 
 # ================================================================
-# NETLIST CONNECTIONS
+# NETLIST CONNECTIONS - Module-aware routing priorities
 # ================================================================
 connections:
-  # MCU decoupling
-  - [U1, C3, 4.0]
-  - [U1, C4, 4.0]
-  - [U1, C16, 4.0]
-  - [U1, L3, 3.0]
-  
-  # Sensor decoupling
-  - [U2, C7, 4.0]
-  - [U2, C8, 4.0]
-  - [U4, C9, 4.0]
-  - [U4, C10, 4.0]
-  - [U5, C11, 4.0]
-  
-  # Sensor cluster
-  - [U2, U4, 2.5]
-  - [U4, U5, 2.5]
-  
-  # Sensors to MCU
-  - [U1, U2, 1.5]
-  - [U1, U4, 1.5]
-  - [U1, U5, 1.2]
-  - [U1, U3, 1.2]
-  
-  # RF path
-  - [U1, L5, 3.0]
-  - [L5, C13, 4.0]
-  - [L5, L6, 4.0]
-  - [L6, C14, 4.0]
-  - [L6, C15, 4.0]
-  - [L6, ANT1, 3.5]
-  
-  # Power
-  - [C12, L2, 3.5]
-  - [L2, C1, 3.5]
-  - [C1, C2, 3.0]
-  
-  # NTC
-  - [U1, R1, 2.0]
+  # MCU to modules
+  - [U1, U3, 2.0]   # MCU to accelerometer
+  - [U1, U5, 2.0]   # MCU to IMU
+  - [U1, U4, 1.5]   # MCU to humidity
+  - [U1, U2, 1.5]   # MCU to EEPROM
+
+  # Power filter internal
+  - [L2, C6, 4.0]   # Main ferrite to bulk cap
+  - [L2, C11, 3.5]  # Main ferrite to VCC cap
+  - [L3, C7, 4.0]   # MCU ferrite to MCU cap
+  - [L3, C8, 3.5]   # MCU ferrite to MCU bulk
+  - [L4, C9, 4.0]   # Sensor ferrite to sensor cap
+  - [L4, C10, 3.5]  # Sensor ferrite to sensor cap
+
+  # Accelerometer internal
+  - [U3, C1, 4.5]
+  - [U3, C2, 4.5]
+
+  # IMU internal
+  - [U5, C4, 4.5]
+  - [U5, C5, 4.5]
+
+  # Humidity internal
+  - [U4, C3, 4.5]
+
+  # RF path (critical - keep tight)
+  - [U1, L5, 3.5]   # MCU to RF
+  - [L5, C13, 5.0]
+  - [L5, L6, 5.0]
+  - [L6, C15, 4.5]
+  - [L6, ANT1, 4.0]
+  - [C16, L5, 4.5]
+
+  # I2C bus
+  - [U1, R1, 2.5]
+  - [U1, R2, 2.5]
   - [R1, R2, 4.0]
-  
-  # LED
-  - [U1, R4, 1.5]
-  - [R4, LED1, 4.0]
-  
-  # I2C
-  - [U1, R5, 2.0]
-  - [U1, R6, 2.0]
-  - [R5, R6, 3.5]
-  
-  # Sensor power
-  - [L4, C5, 4.0]
-  - [L4, C6, 4.0]
-  - [L3, L4, 2.5]
-  
+
+  # Status LED
+  - [U1, R3, 2.0]
+  - [R3, LED1, 4.5]
+
+  # NTC
+  - [U1, R4, 2.5]
+  - [R4, R5, 4.5]
+
   # Debug
-  - [U1, H1, 0.8]
+  - [U1, H1, 1.5]
+  - [H1, C14, 3.5]
+
+  # Sensor cluster (keep sensors together)
+  - [U3, U5, 3.0]
+  - [U5, U4, 3.0]
+  - [U4, U2, 2.5]

@@ -1,5 +1,6 @@
 #pragma experiment("TRAITS")
-import Resistor, Capacitor, Inductor
+#pragma experiment("BRIDGE_CONNECT")
+import Resistor, Capacitor, Inductor, I2C, ElectricPower, ElectricLogic
 from "lib.ato" import QMI8658C
 
 """
@@ -10,6 +11,7 @@ QMI8658C 6-Axis IMU Module with Decoupling
 DESCRIPTION:
     Reusable design block containing the QMI8658C 6-axis IMU (accelerometer
     + gyroscope) with power supply filtering per QST datasheet Figure 6.
+    Uses standard atopile interfaces for I2C and power.
 
 COMPONENTS:
     • QMI8658C - 6-axis IMU (LGA-14, 3x2.5mm)
@@ -63,34 +65,42 @@ I2C ADDRESS: 0x6B (fixed)
 """
 
 module QMI8658C_IMUBlock:
-    # External signals
-    signal vcc
-    signal gnd
-    signal i2c_scl
-    signal i2c_sda
-    signal int1
-    signal int2
+    # Standard power interface
+    power = new ElectricPower
+    assert power.voltage within 1.71V to 3.6V
+
+    # Standard I2C interface
+    i2c = new I2C
+    i2c.address = 0x6B  # Fixed address
+
+    # Connect I2C logic reference to power
+    i2c.scl.reference ~ power
+    i2c.sda.reference ~ power
+
+    # Interrupt outputs
+    int1 = new ElectricLogic
+    int2 = new ElectricLogic
+    int1.reference ~ power
+    int2.reference ~ power
 
     # Core IC
     ic = new QMI8658C
-    ic.vcc ~ vcc
-    ic.gnd ~ gnd
-    ic.i2c_scl ~ i2c_scl
-    ic.i2c_sda ~ i2c_sda
-    ic.int1 ~ int1
-    ic.int2 ~ int2
+    ic.vcc ~ power.hv
+    ic.gnd ~ power.lv
+    ic.i2c_scl ~ i2c.scl.line
+    ic.i2c_sda ~ i2c.sda.line
+    ic.int1 ~ int1.line
+    ic.int2 ~ int2.line
 
     # Dedicated Decoupling (per QST datasheet)
     # Cp1: 100nF on VDD
     cp1 = new Capacitor
     cp1.capacitance = 100nF +/- 20%
     cp1.package = "0402"
-    cp1.p1 ~ vcc
-    cp1.p2 ~ gnd
+    power.hv ~> cp1 ~> power.lv
 
     # Cp2: 100nF on VDD_IO
     cp2 = new Capacitor
     cp2.capacitance = 100nF +/- 20%
     cp2.package = "0402"
-    cp2.p1 ~ vcc
-    cp2.p2 ~ gnd
+    power.hv ~> cp2 ~> power.lv

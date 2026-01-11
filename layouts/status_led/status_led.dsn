@@ -1,0 +1,115 @@
+(pcb "/Users/glovepost/Projects/aertactx-dogtracker/layouts/status_led/status_led.dsn"
+  (parser
+    (string_quote ")
+    (space_in_quoted_tokens on)
+    (host_cad "KiCad's Pcbnew")
+    (host_version "9.0.7")
+  )
+  (resolution um 10)
+  (unit um)
+  (structure
+    (layer F.Cu
+      (type signal)
+      (property
+        (index 0)
+      )
+    )
+    (layer B.Cu
+      (type signal)
+      (property
+        (index 1)
+      )
+    )
+    (boundary
+      (path pcb 0  106911 -104848  93089.3 -104848  93089.3 -95151.8  106911 -95151.8
+            106911 -104848)
+    )
+    (via "Via[0-1]_600:300_um")
+    (rule
+      (width 200)
+      (clearance 200)
+      (clearance 50 (type smd_smd))
+    )
+  )
+  (placement
+    (component UNI_ROYAL_0402WGF1001TCE:R0402
+      (place R1 100000.000000 -100000.000000 front 0.000000 (PN "1kΩ ±1% 62.5mW"))
+    )
+    (component "Everlight_Elec_19_217_GHC_YR1S2_3T:LED0603-RD"
+      (place LED1 96500.000000 -100000.000000 front 0.000000)
+    )
+  )
+  (library
+    (image UNI_ROYAL_0402WGF1001TCE:R0402
+      (outline (path signal 150  -940 500  -230 500))
+      (outline (path signal 150  -940 -500  -940 500))
+      (outline (path signal 150  -230 -500  -940 -500))
+      (outline (path signal 150  230 -500  940 -500))
+      (outline (path signal 150  940 500  230 500))
+      (outline (path signal 150  940 -500  940 500))
+      (outline (path signal 60  -470 -250  -477.019 -269.284  -494.791 -279.544  -515 -275.981
+            -528.191 -260.261  -528.191 -239.739  -515 -224.019  -494.791 -220.456
+            -477.019 -230.716  -470 -250))
+      (pin Rect[T]Pad_570.000000x540.000000_um 1 -430 0)
+      (pin Rect[T]Pad_570.000000x540.000000_um 2 430 0)
+    )
+    (image "Everlight_Elec_19_217_GHC_YR1S2_3T:LED0603-RD"
+      (outline (path signal 150  -1490 450  -1190 750))
+      (outline (path signal 150  -1490 350  -1490 450))
+      (outline (path signal 150  -1490 350  -1490 -350))
+      (outline (path signal 150  -1490 -350  -1490 -450))
+      (outline (path signal 150  -1490 -450  -1190 -750))
+      (outline (path signal 150  -140 750  -1190 750))
+      (outline (path signal 150  -140 -750  -1190 -750))
+      (outline (path signal 150  210 -330  -120 0))
+      (outline (path signal 150  220 350  220 340))
+      (outline (path signal 150  220 350  220 -330))
+      (outline (path signal 150  220 340  -120 0))
+      (outline (path signal 150  220 0  -120 0))
+      (outline (path signal 150  220 -330  210 -330))
+      (outline (path signal 150  240 750  1390 750))
+      (outline (path signal 150  240 -750  1390 -750))
+      (outline (path signal 150  1390 750  1390 -730))
+      (outline (path signal 60  -770 -400  -777.019 -419.284  -794.791 -429.544  -815 -425.981
+            -828.191 -410.261  -828.191 -389.739  -815 -374.019  -794.791 -370.456
+            -777.019 -380.716  -770 -400))
+      (pin Rect[T]Pad_800.000000x800.000000_um (rotate 90) 1 -750 0)
+      (pin Rect[T]Pad_800.000000x800.000000_um (rotate 90) 2 750 0)
+    )
+    (padstack Rect[T]Pad_570.000000x540.000000_um
+      (shape (rect F.Cu -285 -270 285 270))
+      (attach off)
+    )
+    (padstack Rect[T]Pad_800.000000x800.000000_um
+      (shape (rect F.Cu -400 -400 400 400))
+      (attach off)
+    )
+    (padstack "Via[0-1]_600:300_um"
+      (shape (circle F.Cu 600))
+      (shape (circle B.Cu 600))
+      (attach off)
+    )
+  )
+  (network
+    (net A
+      (pins R1-2 LED1-2)
+    )
+    (net gpio_in
+      (pins R1-1)
+    )
+    (net gnd
+      (pins LED1-1)
+    )
+    (class kicad_default A gnd gpio_in
+      (circuit
+        (use_via "Via[0-1]_600:300_um")
+      )
+      (rule
+        (width 200)
+        (clearance 200)
+      )
+    )
+  )
+  (wiring
+  )
+)

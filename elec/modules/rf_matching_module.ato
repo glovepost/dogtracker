@@ -1,5 +1,6 @@
 #pragma experiment("TRAITS")
-import Resistor, Capacitor, Inductor
+#pragma experiment("BRIDGE_CONNECT")
+import Resistor, Capacitor, Inductor, Electrical
 from "lib.ato" import Antenna, Cap_5p6_RF
 
 """
@@ -65,9 +66,11 @@ FREQUENCY: 868MHz (EU868/IN865/RU864)
 """
 
 module RF_MatchingNetwork:
-    # External signals
-    signal rf_in      # From MCU RF_OUT
-    signal gnd
+    # RF input from MCU (raw electrical for RF signals)
+    rf_in = new Electrical
+
+    # Ground reference (raw electrical for RF ground)
+    gnd = new Electrical
 
     # Antenna
     ant = new Antenna
@@ -93,7 +96,7 @@ module RF_MatchingNetwork:
 
     c_match_ant = new Cap_5p6_RF
 
-    # RF Path
+    # RF Path - using bridge operator for cleaner topology
     rf_in ~ l_harmonic.p1
     l_harmonic.p2 ~ c_harmonic.p1
     c_harmonic.p2 ~ gnd
@@ -102,8 +105,5 @@ module RF_MatchingNetwork:
     l_series.p2 ~ ant.feed
 
     # Shunt capacitors
-    l_series.p1 ~ c_match_mcu.p1
-    c_match_mcu.p2 ~ gnd
-
-    l_series.p2 ~ c_match_ant.p1
-    c_match_ant.p2 ~ gnd
+    l_series.p1 ~> c_match_mcu ~> gnd
+    l_series.p2 ~> c_match_ant ~> gnd

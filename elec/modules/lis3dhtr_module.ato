@@ -1,5 +1,6 @@
 #pragma experiment("TRAITS")
-import Resistor, Capacitor, Inductor
+#pragma experiment("BRIDGE_CONNECT")
+import Resistor, Capacitor, Inductor, I2C, ElectricPower, ElectricLogic, Electrical
 from "lib.ato" import LIS3DH
 
 """
@@ -10,6 +11,7 @@ LIS3DHTR Accelerometer Module with Decoupling
 DESCRIPTION:
     Reusable design block containing the LIS3DHTR 3-axis accelerometer
     with optimized power supply filtering per ST datasheet recommendations.
+    Uses standard atopile interfaces for I2C and power.
 
 COMPONENTS:
     • LIS3DHTR - 3-axis MEMS accelerometer (LGA-16, 3x3mm)
@@ -65,23 +67,35 @@ I2C ADDRESS:
 """
 
 module LIS3DHTR_SensorBlock:
-    # External signals
-    signal vcc
-    signal gnd
-    signal i2c_scl
-    signal i2c_sda
-    signal int1
-    signal int2
-    signal sa0  # Address select
+    # Standard power interface
+    power = new ElectricPower
+    assert power.voltage within 1.71V to 3.6V
+
+    # Standard I2C interface
+    i2c = new I2C
+    i2c.address = 0x18  # Default with SA0=GND
+
+    # Connect I2C logic reference to power
+    i2c.scl.reference ~ power
+    i2c.sda.reference ~ power
+
+    # Interrupt outputs (active-high or active-low configurable)
+    int1 = new ElectricLogic
+    int2 = new ElectricLogic
+    int1.reference ~ power
+    int2.reference ~ power
+
+    # Address select pin (directly exposed as Electrical)
+    sa0 = new Electrical
 
     # Core IC
     ic = new LIS3DH
-    ic.vcc ~ vcc
-    ic.gnd ~ gnd
-    ic.i2c_scl ~ i2c_scl
-    ic.i2c_sda ~ i2c_sda
-    ic.int1 ~ int1
-    ic.int2 ~ int2
+    ic.vcc ~ power.hv
+    ic.gnd ~ power.lv
+    ic.i2c_scl ~ i2c.scl.line
+    ic.i2c_sda ~ i2c.sda.line
+    ic.int1 ~ int1.line
+    ic.int2 ~ int2.line
     ic.sa0 ~ sa0
 
     # Dedicated Decoupling (per ST datasheet)
@@ -89,12 +103,10 @@ module LIS3DHTR_SensorBlock:
     c_hf = new Capacitor
     c_hf.capacitance = 100nF +/- 20%
     c_hf.package = "0402"
-    c_hf.p1 ~ vcc
-    c_hf.p2 ~ gnd
+    power.hv ~> c_hf ~> power.lv
 
     # C2: 10uF - place slightly further (bulk capacitance)
     c_bulk = new Capacitor
     c_bulk.capacitance = 10uF +/- 20%
     c_bulk.package = "0603"
-    c_bulk.p1 ~ vcc
-    c_bulk.p2 ~ gnd
+    power.hv ~> c_bulk ~> power.lv
