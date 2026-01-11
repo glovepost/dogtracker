@@ -8,6 +8,7 @@ _autosave-*
 *.kicad_pro-bak
 *.kicad_pcb-bak
 *.kicad_prl-bak
+*.kicad_prl
 fp-info-cache
 *Zone.Identifier
 kibot_*.kicad_pcb
@@ -15,3 +16,22 @@ kibot_*.kicad_dru
 kibot_*.kicad_prl
 kibot_*.kicad_pro
 references/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Build artifacts (intermediate/binary)
+build/builds/**/*.glb
+build/builds/**/*.step
+build/builds/**/*.[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-*.kicad_pcb
+build/builds/**/*_placed.kicad_pcb
+build/builds/**/*_placement.png
+build/logs/archive/
+build/logs/latest

@@ -757,6 +757,66 @@ class NetlistParser:
         
         return ('signal', 1.0)
     
+    def _sample_power_net_connections(self, refs: List[str], weight: float, 
+                                       max_connections: int) -> List[Tuple[str, str, float]]:
+        """Sample representative connections from a large power/ground net.
+        
+        Strategy: Prioritize connections between different component types,
+        especially decoupling capacitors (C*) near ICs (U*).
+        
+        Args:
+            refs: List of component references on this net
+            weight: Base weight for connections
+            max_connections: Maximum number of connections to return
+            
+        Returns:
+            List of (ref1, ref2, weight) tuples
+        """
+        import random
+        connections = []
+        
+        # Categorize components
+        ics = [r for r in refs if r.startswith('U')]
+        caps = [r for r in refs if r.startswith('C')]
+        others = [r for r in refs if not r.startswith('U') and not r.startswith('C')]
+        
+        # Priority 1: Connect each cap to nearest IC (decoupling placement)
+        # Use higher weight for these critical connections
+        decoupling_weight = weight * 1.5
+        for cap in caps:
+            if ics and len(connections) < max_connections:
+                # Connect to first IC (in real use, would pick nearest)
+                ic = ics[0] if len(ics) == 1 else random.choice(ics)
+                connections.append((cap, ic, decoupling_weight))
+        
+        # Priority 2: Connect ICs to each other (if multiple)
+        if len(ics) > 1:
+            for i in range(min(len(ics) - 1, max_connections - len(connections))):
+                if i + 1 < len(ics):
+                    connections.append((ics[i], ics[i + 1], weight))
+        
+        # Priority 3: Random sampling of remaining pairs
+        remaining_budget = max_connections - len(connections)
+        if remaining_budget > 0 and len(refs) > 1:
+            # Create pool of unused pairs
+            used_pairs = {tuple(sorted([c[0], c[1]])) for c in connections}
+            potential_pairs = []
+            
+            for i in range(len(refs)):
+                for j in range(i + 1, len(refs)):
+                    pair = tuple(sorted([refs[i], refs[j]]))
+                    if pair not in used_pairs:
+                        potential_pairs.append((refs[i], refs[j]))
+            
+            # Random sample from remaining
+            if potential_pairs:
+                sample_size = min(remaining_budget, len(potential_pairs))
+                sampled = random.sample(potential_pairs, sample_size)
+                for ref1, ref2 in sampled:
+                    connections.append((ref1, ref2, weight * 0.5))  # Lower weight for random pairs
+        
+        return connections
+    
     def parse(self, max_pins_per_net: int = 10, 
               power_net_sample_size: int = 20) -> List[Tuple[str, str, float]]:
         """Extract connections from netlist.
