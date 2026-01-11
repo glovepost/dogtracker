@@ -83,14 +83,14 @@ module QMI8658C_IMUBlock:
     # Dedicated Decoupling (per QST datasheet)
     # Cp1: 100nF on VDD
     cp1 = new Capacitor
-    cp1.value = "100nF"
-    cp1.lcsc_id = "C131394"
+    cp1.capacitance = 100nF +/- 20%
+    cp1.package = "0402"
     cp1.p1 ~ vcc
     cp1.p2 ~ gnd
 
     # Cp2: 100nF on VDD_IO
     cp2 = new Capacitor
-    cp2.value = "100nF"
-    cp2.lcsc_id = "C131394"
+    cp2.capacitance = 100nF +/- 20%
+    cp2.package = "0402"
     cp2.p1 ~ vcc
     cp2.p2 ~ gnd

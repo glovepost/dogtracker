@@ -1,6 +1,6 @@
 #pragma experiment("TRAITS")
 import Resistor, Capacitor, Inductor
-from "lib.ato" import CR2032_Holder
+from "lib.ato" import CR2032_Holder, FerriteBead_120ohm
 
 """
 ================================================================================
@@ -78,69 +78,63 @@ module PowerFilterBlock:
     signal vcc_sensors # Sensor filtered rail
     signal gnd
 
-    # Main Ferrite Bead - Battery to VCC
-    l_main = new Inductor
-    l_main.value = "120ohm"
-    l_main.lcsc_id = "C76891"
+    # Main Ferrite Bead - Battery to VCC (120ohm@100MHz)
+    l_main = new FerriteBead_120ohm
     vbat ~ l_main.p1
     l_main.p2 ~ vcc
 
-    # MCU Rail Filter
-    l_mcu = new Inductor
-    l_mcu.value = "120ohm"
-    l_mcu.lcsc_id = "C76891"
+    # MCU Rail Filter (120ohm@100MHz)
+    l_mcu = new FerriteBead_120ohm
     vcc ~ l_mcu.p1
     l_mcu.p2 ~ vcc_mcu
 
-    # Sensor Rail Filter
-    l_sensors = new Inductor
-    l_sensors.value = "120ohm"
-    l_sensors.lcsc_id = "C76891"
+    # Sensor Rail Filter (120ohm@100MHz)
+    l_sensors = new FerriteBead_120ohm
     vcc ~ l_sensors.p1
     l_sensors.p2 ~ vcc_sensors
 
     # Bulk Capacitor (near battery)
     c_bulk = new Capacitor
-    c_bulk.value = "22uF"
-    c_bulk.lcsc_id = "C109448"
+    c_bulk.capacitance = 22uF +/- 20%
+    c_bulk.package = "0805"
     c_bulk.p1 ~ vbat
     c_bulk.p2 ~ gnd
 
     # Main VCC Decoupling
     c_vcc_1 = new Capacitor
-    c_vcc_1.value = "4.7uF"
-    c_vcc_1.lcsc_id = "C77004"
+    c_vcc_1.capacitance = 4.7uF +/- 20%
+    c_vcc_1.package = "0603"
     c_vcc_1.p1 ~ vcc
     c_vcc_1.p2 ~ gnd
 
     c_vcc_2 = new Capacitor
-    c_vcc_2.value = "100nF"
-    c_vcc_2.lcsc_id = "C131394"
+    c_vcc_2.capacitance = 100nF +/- 20%
+    c_vcc_2.package = "0402"
     c_vcc_2.p1 ~ vcc
     c_vcc_2.p2 ~ gnd
 
     # MCU Decoupling
     c_mcu_1 = new Capacitor
-    c_mcu_1.value = "100nF"
-    c_mcu_1.lcsc_id = "C131394"
+    c_mcu_1.capacitance = 100nF +/- 20%
+    c_mcu_1.package = "0402"
     c_mcu_1.p1 ~ vcc_mcu
     c_mcu_1.p2 ~ gnd
 
     c_mcu_2 = new Capacitor
-    c_mcu_2.value = "4.7uF"
-    c_mcu_2.lcsc_id = "C77004"
+    c_mcu_2.capacitance = 4.7uF +/- 20%
+    c_mcu_2.package = "0603"
     c_mcu_2.p1 ~ vcc_mcu
     c_mcu_2.p2 ~ gnd
 
     # Sensor Decoupling
     c_sensor_1 = new Capacitor
-    c_sensor_1.value = "100nF"
-    c_sensor_1.lcsc_id = "C131394"
+    c_sensor_1.capacitance = 100nF +/- 20%
+    c_sensor_1.package = "0402"
     c_sensor_1.p1 ~ vcc_sensors
     c_sensor_1.p2 ~ gnd
 
     c_sensor_2 = new Capacitor
-    c_sensor_2.value = "100nF"
-    c_sensor_2.lcsc_id = "C131394"
+    c_sensor_2.capacitance = 100nF +/- 20%
+    c_sensor_2.package = "0402"
     c_sensor_2.p1 ~ vcc_sensors
     c_sensor_2.p2 ~ gnd

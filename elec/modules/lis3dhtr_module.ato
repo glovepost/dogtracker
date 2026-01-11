@@ -87,14 +87,14 @@ module LIS3DHTR_SensorBlock:
     # Dedicated Decoupling (per ST datasheet)
     # C1: 100nF - place closest to IC (high-frequency bypass)
     c_hf = new Capacitor
-    c_hf.value = "100nF"
-    c_hf.lcsc_id = "C131394"
+    c_hf.capacitance = 100nF +/- 20%
+    c_hf.package = "0402"
     c_hf.p1 ~ vcc
     c_hf.p2 ~ gnd
 
     # C2: 10uF - place slightly further (bulk capacitance)
     c_bulk = new Capacitor
-    c_bulk.value = "10uF"
-    c_bulk.lcsc_id = "C15849"
+    c_bulk.capacitance = 10uF +/- 20%
+    c_bulk.package = "0603"
     c_bulk.p1 ~ vcc
     c_bulk.p2 ~ gnd

@@ -62,8 +62,8 @@ module StatusLED_Block:
 
     # Current limiting resistor
     r_limit = new Resistor
-    r_limit.value = "1kohm"
-    r_limit.lcsc_id = "C105637"
+    r_limit.resistance = 1kohm +/- 5%
+    r_limit.package = "0402"
 
     # LED
     led = new StatusLED

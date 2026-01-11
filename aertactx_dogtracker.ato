@@ -120,8 +120,8 @@ module AertactxDogtracker:
 
     # ==================== ACTIVATION CIRCUIT ====================
     r_activation = new Resistor
-    r_activation.value = "10kohm"
-    r_activation.lcsc_id = "C60490"
+    r_activation.resistance = 10kohm +/- 5%
+    r_activation.package = "0402"
     vcc ~ r_activation.p1
     r_activation.p2 ~ u1.activation
 
@@ -135,13 +135,13 @@ module AertactxDogtracker:
 
     # NRST Bypass Capacitor (per RAK datasheet)
     c_nrst = new Capacitor
-    c_nrst.value = "100nF"
-    c_nrst.lcsc_id = "C131394"
+    c_nrst.capacitance = 100nF +/- 20%
+    c_nrst.package = "0402"
     c_nrst.p1 ~ u1.nrst
     c_nrst.p2 ~ gnd
 
     # ==================== RESERVED ====================
     l1 = new Inductor
-    l1.value = "10uH"
-    l1.lcsc_id = "C86083"
+    l1.inductance = 10uH +/- 20%
+    l1.package = "0603"
     # Reserved for future use

@@ -1,5 +1,6 @@
 #pragma experiment("TRAITS")
 import Resistor
+from "lib.ato" import NTC_10k
 
 """
 ================================================================================
@@ -79,13 +80,11 @@ module NTC_TempSensor:
 
     # Fixed resistor (top of divider)
     r_fixed = new Resistor
-    r_fixed.value = "10kohm"
-    r_fixed.lcsc_id = "C60490"
+    r_fixed.resistance = 10kohm +/- 1%
+    r_fixed.package = "0402"
 
-    # NTC thermistor (bottom of divider)
-    r_ntc = new Resistor
-    r_ntc.value = "10kohm_ntc"
-    r_ntc.lcsc_id = "C77131"
+    # NTC thermistor (bottom of divider) - 10kohm B=3950
+    r_ntc = new NTC_10k
 
     # Voltage divider: VCC -> R_fixed -> ADC_out -> R_NTC -> GND
     vcc ~ r_fixed.p1

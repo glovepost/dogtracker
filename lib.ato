@@ -11,6 +11,11 @@ from "parts/FMD_FT24C02A_KLR_T/FMD_FT24C02A_KLR_T.ato" import FMD_FT24C02A_KLR_T
 from "parts/Texas_Instruments_HDC2080DMBR/Texas_Instruments_HDC2080DMBR.ato" import Texas_Instruments_HDC2080DMBR_package
 from "parts/Ckmtw_B_2100S05P_A110/Ckmtw_B_2100S05P_A110.ato" import Ckmtw_B_2100S05P_A110_package
 
+# Explicit part imports for special components
+from "parts/Murata_Electronics_BLM15PD121SN1D/Murata_Electronics_BLM15PD121SN1D.ato" import Murata_Electronics_BLM15PD121SN1D_package
+from "parts/Murata_Electronics_NCP15XH103F03RC/Murata_Electronics_NCP15XH103F03RC.ato" import Murata_Electronics_NCP15XH103F03RC_package
+from "parts/Murata_Electronics_GJM1555C1H5R6BB01D/Murata_Electronics_GJM1555C1H5R6BB01D.ato" import Murata_Electronics_GJM1555C1H5R6BB01D_package
+
 component RAK3172 from RAKwireless_RAK3172_SIP_8_SM_NI_package:
     # Set MPN to the Low Power EU868 version provided by user
     # 305049: RAK3172LP-SiP (EU868/IN865/RU864)
@@ -157,3 +162,22 @@ component SWD_Header from Ckmtw_B_2100S05P_A110_package:
     signal swclk ~ pin 3
     signal nrst ~ pin 4
     signal gnd ~ pin 5
+
+
+# ==================== EXPLICIT PART WRAPPERS ====================
+# These wrap specific JLCPCB parts that can't be auto-picked
+
+# Ferrite Bead 120ohm@100MHz (Murata BLM15PD121SN1D)
+component FerriteBead_120ohm from Murata_Electronics_BLM15PD121SN1D_package:
+    signal p1 ~ pin 1
+    signal p2 ~ pin 2
+
+# NTC Thermistor 10kohm B=3950 (Murata NCP15XH103F03RC)
+component NTC_10k from Murata_Electronics_NCP15XH103F03RC_package:
+    signal p1 ~ pin 1
+    signal p2 ~ pin 2
+
+# RF Capacitor 5.6pF C0G/NP0 (Murata GJM1555C1H5R6BB01D)
+component Cap_5p6_RF from Murata_Electronics_GJM1555C1H5R6BB01D_package:
+    signal p1 ~ pin 1
+    signal p2 ~ pin 2

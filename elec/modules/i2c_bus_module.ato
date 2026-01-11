@@ -61,14 +61,14 @@ module I2C_BusBlock:
 
     # SDA Pull-up
     r_sda = new Resistor
-    r_sda.value = "4.7kohm"
-    r_sda.lcsc_id = "C105870"
+    r_sda.resistance = 4.7kohm +/- 5%
+    r_sda.package = "0402"
     vcc ~ r_sda.p1
     r_sda.p2 ~ sda
 
     # SCL Pull-up
     r_scl = new Resistor
-    r_scl.value = "4.7kohm"
-    r_scl.lcsc_id = "C105870"
+    r_scl.resistance = 4.7kohm +/- 5%
+    r_scl.package = "0402"
     vcc ~ r_scl.p1
     r_scl.p2 ~ scl

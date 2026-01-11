@@ -1,6 +1,6 @@
 #pragma experiment("TRAITS")
 import Resistor, Capacitor, Inductor
-from "lib.ato" import Antenna
+from "lib.ato" import Antenna, Cap_5p6_RF
 
 """
 ================================================================================
@@ -76,25 +76,22 @@ module RF_MatchingNetwork:
 
     # Harmonic Suppression (per RAK app note: 8.2nH + 3.3pF)
     l_harmonic = new Inductor
-    l_harmonic.value = "8.2nH"
-    l_harmonic.lcsc_id = "C76832"
+    l_harmonic.inductance = 8.2nH +/- 5%
+    l_harmonic.package = "0402"
 
     c_harmonic = new Capacitor
-    c_harmonic.value = "3.3pF"
-    c_harmonic.lcsc_id = "C161313"
+    c_harmonic.capacitance = 3.3pF +/- 10%
+    c_harmonic.package = "0402"
 
     # Matching Network (L-match: Series L, Shunt C)
     l_series = new Inductor
-    l_series.value = "4.3nH"
-    l_series.lcsc_id = "C97999"
+    l_series.inductance = 4.3nH +/- 5%
+    l_series.package = "0402"
 
-    c_match_mcu = new Capacitor
-    c_match_mcu.value = "5.6pF"
-    c_match_mcu.lcsc_id = "C161329"
+    # 5.6pF RF capacitors (C0G/NP0 for stability)
+    c_match_mcu = new Cap_5p6_RF
 
-    c_match_ant = new Capacitor
-    c_match_ant.value = "5.6pF"
-    c_match_ant.lcsc_id = "C161329"
+    c_match_ant = new Cap_5p6_RF
 
     # RF Path
     rf_in ~ l_harmonic.p1
