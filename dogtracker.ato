@@ -1,0 +1,143 @@
+#pragma experiment("TRAITS")
+#pragma experiment("BRIDGE_CONNECT")
+"""
+Dogtracker - Example atopile project for atoplace
+
+This version uses:
+- ElectricPower for all power rails with voltage assertions
+- I2C interface for proper address tracking and frequency constraints
+- SWD interface for debug connections
+- ElectricLogic for GPIO and interrupt signals
+- Bridge operator (~>) for cleaner passive component connections
+"""
+
+import Resistor, Capacitor, Inductor, ElectricPower, I2C, ElectricLogic, Electrical, SWD
+
+# Import base components from lib
+from "lib.ato" import RAK3172
+from "lib.ato" import CR2032_Holder
+
+# Import reusable design block modules
+from "elec/modules/lis3dhtr_module.ato" import LIS3DHTR_SensorBlock
+from "elec/modules/qmi8658c_module.ato" import QMI8658C_IMUBlock
+from "elec/modules/hdc2080_module.ato" import HDC2080_SensorBlock
+from "elec/modules/rf_matching_module.ato" import RF_MatchingNetwork
+from "elec/modules/power_filter_module.ato" import PowerFilterBlock
+from "elec/modules/i2c_bus_module.ato" import I2C_BusBlock
+from "elec/modules/status_led_module.ato" import StatusLED_Block
+from "elec/modules/ntc_temp_module.ato" import NTC_TempSensor
+from "elec/modules/eeprom_module.ato" import EEPROM_Block
+from "elec/modules/swd_debug_module.ato" import SWD_DebugBlock
+
+module Dogtracker:
+    # ==================== POWER RAILS (ElectricPower interfaces) ====================
+    power_battery = new ElectricPower   # Raw battery (CR2032: 2.0-3.0V)
+    power_main = new ElectricPower      # Main filtered rail
+    power_mcu = new ElectricPower       # MCU-specific filtered rail
+    power_sensors = new ElectricPower   # Sensor-specific filtered rail
+
+    # Voltage assertions for design rule checking
+    assert power_battery.voltage within 2.0V to 3.3V
+    assert power_main.voltage within 2.0V to 3.3V
+    assert power_mcu.voltage within 2.0V to 3.3V
+    assert power_sensors.voltage within 2.0V to 3.3V
+
+    # ==================== COMMUNICATION BUSES ====================
+    # Standard I2C interface with address tracking
+    i2c_bus = new I2C
+    i2c_bus.frequency = 400kHz  # Fast mode
+
+    # ==================== BATTERY ====================
+    b1 = new CR2032_Holder
+    b1.neg ~ power_battery.lv
+    b1.pos ~ power_battery.hv
+
+    # ==================== POWER FILTERING MODULE ====================
+    # This module contains ferrite beads and capacitors for all rails
+    power = new PowerFilterBlock
+    power.power_battery ~ power_battery
+    power.power_main ~ power_main
+    power.power_mcu ~ power_mcu
+    power.power_sensors ~ power_sensors
+
+    # ==================== MCU ====================
+    u1 = new RAK3172
+    u1.vcc ~ power_mcu.hv
+    u1.vbat ~ power_battery.hv
+    u1.gnd ~ power_mcu.lv
+
+    # Connect MCU I2C pins to the bus
+    u1.i2c_scl ~ i2c_bus.scl.line
+    u1.i2c_sda ~ i2c_bus.sda.line
+
+    # ==================== SENSOR MODULES ====================
+
+    # LIS3DHTR Accelerometer Block (IC + decoupling)
+    accel = new LIS3DHTR_SensorBlock
+    accel.power ~ power_sensors
+    accel.i2c ~ i2c_bus
+    accel.int1.line ~ u1.g_sensor_int1
+    accel.int2.line ~ u1.g_sensor_int2
+    accel.sa0 ~ power_sensors.lv  # I2C address = 0x18
+
+    # QMI8658C IMU Block (IC + decoupling)
+    imu = new QMI8658C_IMUBlock
+    imu.power ~ power_sensors
+    imu.i2c ~ i2c_bus
+    imu.int1.line ~ u1.imu_int1
+    imu.int2.line ~ u1.imu_int2
+
+    # HDC2080 Humidity Sensor Block (IC + decoupling)
+    humidity = new HDC2080_SensorBlock
+    humidity.power ~ power_sensors
+    humidity.i2c ~ i2c_bus
+    humidity.int_out.line ~ u1.int_humid
+    humidity.addr ~ power_sensors.lv   # I2C address = 0x40
+    humidity.ep ~ power_sensors.lv     # Exposed pad to ground
+
+    # ==================== EEPROM MODULE ====================
+    eeprom = new EEPROM_Block
+    eeprom.power ~ power_sensors
+    eeprom.i2c ~ i2c_bus
+    eeprom.wp ~ power_sensors.lv  # Write protect disabled
+
+    # ==================== RF MATCHING MODULE ====================
+    rf = new RF_MatchingNetwork
+    rf.rf_in ~ u1.rf_out
+    rf.gnd ~ power_main.lv
+
+    # ==================== I2C BUS MODULE ====================
+    # Pull-up resistors for the I2C bus
+    i2c = new I2C_BusBlock
+    i2c.power ~ power_main
+    i2c.i2c ~ i2c_bus
+
+    # ==================== STATUS LED MODULE ====================
+    led = new StatusLED_Block
+    led.power ~ power_main
+    led.gpio_in.line ~ u1.led_status
+
+    # ==================== NTC TEMPERATURE MODULE ====================
+    ntc = new NTC_TempSensor
+    ntc.power ~ power_main
+    ntc.adc_out ~ u1.adc_ntc
+
+    # ==================== ACTIVATION CIRCUIT ====================
+    r_activation = new Resistor
+    r_activation.resistance = 10kohm +/- 5%
+    r_activation.package = "0402"
+    power_main.hv ~> r_activation ~> u1.activation
+
+    # ==================== DEBUG INTERFACE ====================
+    # SWD debug module with header and NRST bypass capacitor
+    debug = new SWD_DebugBlock
+    debug.power ~ power_main
+    debug.swd.dio.line ~ u1.swdio
+    debug.swd.clk.line ~ u1.swclk
+    debug.swd.reset.line ~ u1.nrst
+
+    # ==================== RESERVED ====================
+    l1 = new Inductor
+    l1.inductance = 10uH +/- 20%
+    l1.package = "0603"
+    # Reserved for future use
