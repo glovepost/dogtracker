@@ -7,7 +7,7 @@ paths:
 builds:
   # Main project build
   default:
-    entry: "aertactx_dogtracker.ato:AertactxDogtracker"
+    entry: "dogtracker.ato:Dogtracker"
 
   # ==================== REUSABLE MODULE BUILDS ====================
   # These enable layout reuse via Sync Groups in KiCad
@@ -49,12 +49,12 @@ builds:
     entry: "elec/modules/swd_debug_module.ato:SWD_DebugBlock"
 
 package:
-  identifier: "glovepost/aertactx-dogtracker"
-  repository: "https://github.com/glovepost/aertactx-dogtracker"
+  identifier: "glovepost/dogtracker"
+  repository: "https://github.com/glovepost/dogtracker"
   version: "0.1.0"
   authors:
     - name: "Glovepost"
       email: "lawrence@glovepost.com"
   summary: "CR2032-powered dog tracker with LoRa, accelerometer, IMU, and environmental sensors"
   license: "MIT license"
-  homepage: "https://github.com/glovepost/aertactx-dogtracker"
+  homepage: "https://github.com/glovepost/dogtracker"

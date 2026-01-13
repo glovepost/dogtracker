@@ -1,7 +1,7 @@
 #pragma experiment("TRAITS")
 #pragma experiment("BRIDGE_CONNECT")
 """
-AertactxDogtracker - Refactored with Standard Atopile Interfaces
+Dogtracker - Refactored with Standard Atopile Interfaces
 
 This version uses:
 - ElectricPower for all power rails with voltage assertions
@@ -29,7 +29,7 @@ from "elec/modules/ntc_temp_module.ato" import NTC_TempSensor
 from "elec/modules/eeprom_module.ato" import EEPROM_Block
 from "elec/modules/swd_debug_module.ato" import SWD_DebugBlock
 
-module AertactxDogtracker:
+module Dogtracker:
     # ==================== POWER RAILS (ElectricPower interfaces) ====================
     power_battery = new ElectricPower   # Raw battery (CR2032: 2.0-3.0V)
     power_main = new ElectricPower      # Main filtered rail
